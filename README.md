@@ -1,122 +1,116 @@
-# ServeEase — Modern Home Services Booking Platform
+# ServeEase — On-Demand Home Services Booking Platform
 
-ServeEase is a portfolio-grade, responsive on-demand home services booking web application. It showcases clean component architecture, accessible UI, route-level protection, form validation schemas, resilient client state management, normalized API client integration, and seamless user experiences.
+A responsive single-page web application for discovering and booking doorstep home repair, cleaning, and maintenance services. Built with **React 19**, **Tailwind CSS v4**, and **Vite**.
+
+Authentication, bookings, and checkout are simulated client-side through an interactive mock data store with `localStorage` persistence, allowing full end-to-end exploration without a remote backend server.
+
+---
+
+## 🔗 Live Demo & Deployment
+
+- **Live URL**: `[Deploy link here — e.g. https://serveease.vercel.app]`
+- **Single Page Application (SPA) Routing**: Configured with route rewrites via `vercel.json` and `public/_redirects` so refreshing client routes (e.g., `/bookings`, `/dashboard`) works seamlessly.
+
+---
+
+## 🔐 Demo Credentials
+
+You can test the customer experience using the seeded demo credentials or by clicking **"Fill with Demo Customer"** on the login screen:
+
+- **Email**: `rahul.sharma@example.com` (or `alex.rivera@example.com`)
+- **Password**: `demopassword` (or `demo1234`)
+- **Simulated Card**: Pre-filled test card (`•••• •••• •••• 4242`) or Pay-after-service option.
 
 ---
 
 ## 🌟 Key Features
 
 1. **Service Discovery & Search (`/`, `/services`, `/services/:id`)**:
-   - Live query searching, category pills, and multi-field sorting (Price Low/High, Rating, Duration).
-   - Rich service details with transparent base pricing, duration estimates, verified ratings, inclusion checklists, and satisfaction guarantees.
+   - Real-time search by keyword, service name, or symptom.
+   - Category filtering (AC, Plumbing, Electrical, Cleaning, Appliances, Carpentry) and multi-field sorting.
+   - Interactive 2BHK flat architectural cutaway to explore services room by room.
 
 2. **Customer Authentication & Route Protection (`/login`, `/signup`)**:
-   - Comprehensive form input validation powered by **Zod** and **React Hook Form**.
-   - Password strength checking and visibility toggling.
-   - Protected routes with destination preservation via `?redirect=...`.
-   - Safe user session management with persistent local state.
+   - Form validation powered by **Zod** and **React Hook Form**.
+   - Client session management with protected routes that preserve the intended destination URL on redirect.
 
 3. **Multi-Step Booking Wizard (`/booking/:serviceId`)**:
    - **Step 1 (Schedule)**: 14-day date picker with 2-hour arrival windows.
-   - **Step 2 (Address & Notes)**: Saved address book selection, manual entry, and permission-based browser geolocation.
-   - **Step 3 (Review)**: Comprehensive itemized summary snapshot before checkout initiation.
+   - **Step 2 (Address & Notes)**: Saved address selection, manual entry, or browser geolocation.
+   - **Step 3 (Review)**: Itemized cost calculation (base fare, 5% GST, and platform fee).
 
-4. **Transparent Checkout & Sandbox Payments (`/checkout/:bookingId`, `/booking-success/:bookingId`)**:
-   - Transparent breakdown for taxes, platform fees, and order totals.
-   - Pre-loaded PCI-safe developer test card (`•••• •••• •••• 4242`) and Pay-after-service options.
-   - Verified status screen with appointment ID, reference tracking, and pro dispatch details.
+4. **Simulated Checkout & Booking Confirmation (`/checkout/:bookingId`, `/booking-success/:bookingId`)**:
+   - Interactive payment simulation (demo card or cash/pay after service).
+   - Generates a booking confirmation reference with scheduled technician details.
 
 5. **Customer Portal (`/dashboard`, `/bookings`, `/profile`, `/payments`)**:
-   - **Dashboard**: Live overview of upcoming appointments, total jobs completed, total spent, and quick action cards.
-   - **Bookings History**: Filter by status (`Confirmed`, `Pending`, `Completed`, `Cancelled`), appointment rescheduling, and cancellation management.
-   - **Address Book**: Add, edit, remove, or set default service locations.
-   - **Payments & Receipts**: Transaction IDs, gateway provider records, and status badges.
+   - Overview of active bookings, completed jobs, and total spend.
+   - Reschedule or cancel appointments.
+   - Saved address book management.
 
 ---
 
-## 🏗️ Architecture & Technology Stack
+## 🏗️ Tech Stack
 
 | Layer | Technologies |
 |---|---|
-| **Frontend Framework** | React 19 + Vite 8 + JavaScript |
+| **Framework** | React 19 + Vite 8 + JavaScript |
 | **Styling** | Tailwind CSS v4 + Plus Jakarta Sans Typography |
-| **Routing** | React Router v7 with dynamic code-splitting (`React.lazy`) |
-| **Form & Validation** | React Hook Form + Zod Schema Validation |
-| **State Management** | Context API (`AuthContext`, `CartContext`) + Interactive Client Store |
-| **Icons & Feedback** | Lucide React + React Hot Toast |
-| **Animations & Smooth Scroll** | Framer Motion + Lenis |
+| **Routing** | React Router v7 with route code-splitting (`React.lazy`) |
+| **Form & Validation** | React Hook Form + Zod |
+| **Animation & Scroll** | Framer Motion + Lenis Smooth Scroll |
+| **State Management** | Context API (`AuthContext`, `CartContext`) + LocalStorage Store |
+| **Icons & Notifications** | Lucide React + React Hot Toast |
+| **Testing** | Vitest + React Testing Library + jsdom |
 
 ---
 
-## 🚀 Getting Started
+## ⚡ Performance Optimization
 
-### Prerequisites
-- **Node.js** (v18.0 or higher) and **npm**
+- **Bundle Optimization**: Initial production bundle was reduced from **520 kB** down to **120 kB** (~77% reduction in main chunk size) by configuring manual chunk splitting for `framer-motion`, `lenis`, and core libraries in `vite.config.js`.
+- **Dynamic Imports**: Route-level code splitting ensures secondary views (Dashboard, Checkout, Details) load on demand.
 
 ---
 
-### Quick Start
+## 🧪 Testing
+
+The repository includes automated tests covering validation, route guards, price calculations, and booking workflows:
+
+```bash
+# Run unit and component tests with Vitest
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+```
+
+**Test Coverage Highlights**:
+- **Zod Schemas**: Input sanitization, password constraints, email validation, and matching confirmations.
+- **Route Guards**: `ProtectedRoute` redirection and URL query destination preservation.
+- **Calculations**: Itemized totals, 5% GST tax calculation, platform fees, and currency formatters.
+- **Booking Workflows**: Step definitions, payload structures, and time slot validation.
+
+---
+
+## 🚀 Quick Start
 
 1. **Install dependencies**:
    ```bash
    npm install
    ```
 
-2. **Configure environment variables (optional)**:
-   ```bash
-   cp .env.example .env
-   ```
-
-3. **Start the development server**:
+2. **Start the development server**:
    ```bash
    npm run dev
    ```
-   The application is available at `http://localhost:5173/`.
+   Open `http://localhost:5173/` in your browser.
 
-4. **Build production bundle**:
+3. **Run the test suite**:
+   ```bash
+   npm test
+   ```
+
+4. **Build for production**:
    ```bash
    npm run build
    ```
-
----
-
-## 🔐 Demo Credentials
-
-When evaluating or demonstrating the platform, you can use the pre-seeded customer account:
-
-- **Email**: `alex.rivera@example.com`
-- **Password**: `demo1234` (or click **"Fill with Demo Customer"** on the `/login` screen)
-- **Test Card**: Pre-loaded sandbox test card (`•••• •••• •••• 4242`, Exp: `12/28`)
-
----
-
-## 📡 Client Data Service Contract Reference (`/api/v1`)
-
-| Method | Endpoint | Description |
-|---|---|---|
-| `POST` | `/auth/register` | Register new customer account |
-| `POST` | `/auth/login` | Authenticate customer and issue session token |
-| `POST` | `/auth/logout` | Terminate active session |
-| `GET` | `/auth/me` | Fetch authenticated user profile |
-| `GET` | `/services` | List active services (supports `q`, `category`, `sort`) |
-| `GET` | `/services/{id}` | Retrieve single service detail |
-| `GET` | `/addresses` | List current user's saved addresses |
-| `POST` | `/addresses` | Save new address |
-| `PATCH` | `/addresses/{id}` | Update address (e.g. set as default) |
-| `DELETE`| `/addresses/{id}` | Delete saved address |
-| `POST` | `/bookings` | Create pending booking with verified price calculation |
-| `GET` | `/bookings` | List user's bookings (supports `status` filter) |
-| `GET` | `/bookings/{id}` | Retrieve booking detail (user ownership verified) |
-| `PATCH` | `/bookings/{id}` | Reschedule or cancel booking |
-| `POST` | `/payments/checkout-session` | Initialize provider payment order |
-| `POST` | `/payments/confirm` | Complete provider test transaction callback |
-| `GET` | `/payments` | List user's payment records |
-| `GET` | `/payments/{id}` | View single payment invoice detail |
-
----
-
-## ♿ Accessibility & UX Highlights
-- **Keyboard Operable**: Full keyboard accessibility on all modals (Escape key listener), dropdowns, and form controls.
-- **Visual Focus Rings**: Distinct `focus-visible` outlines matching design tokens.
-- **Responsive Breakpoints**: Seamless scaling across mobile (360px, 390px), tablet (768px), and desktop (1024px, 1440px) without horizontal scrolling.
-- **Truthful States**: Explicitly demarcates simulated sandbox test transactions from live financial charges.

@@ -1,6 +1,5 @@
 /**
- * Canonical Motion System for ServeEase
- * Adheres to Section 10 specification:
+ * Motion System presets for ServeEase:
  * - Fluid ease-out [0.16, 1, 0.3, 1]
  * - Standard reveal: 0.7s - 0.8s
  * - Stagger interval: 0.06s - 0.10s

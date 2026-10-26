@@ -39,7 +39,7 @@
 
   --container-max: 1320px;
 
-  /* Unified typography scale matching UX-first specification */
+  /* Unified typography scale */
   --text-xs: 0.8125rem;    /* 13px */
   --text-sm: 0.875rem;     /* 14px */
   --text-base: 1rem;       /* 16px */

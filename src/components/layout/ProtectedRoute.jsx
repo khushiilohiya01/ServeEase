@@ -21,7 +21,7 @@ export function ProtectedRoute({ children }) {
   }
 
   if (!isAuthenticated) {
-    // Preserve intended destination per testing checklist
+    // Preserve intended destination
     const redirectUrl = encodeURIComponent(location.pathname + location.search);
     return <Navigate to={`/login?redirect=${redirectUrl}`} replace />;
   }

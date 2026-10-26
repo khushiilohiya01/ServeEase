@@ -84,7 +84,7 @@ export function BookingWizardPage() {
     loadData();
   }, [serviceId]);
 
-  // Geolocation Handler (Per Section 10: permission-based, editable confirmation)
+  // Geolocation Handler (permission-based, editable confirmation)
   const handleUseCurrentLocation = () => {
     if (!navigator.geolocation) {
       toast.error('Geolocation is not supported by your browser.');
