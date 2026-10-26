@@ -213,7 +213,7 @@ export function TransparentPricing() {
             </div>
           </div>
 
-          {/* Bottom Inclusions Bar (Mandated in PDF Section 06) */}
+          {/* Bottom Inclusions Bar */}
           <div className="mt-8 pt-6 border-t border-neutral-100 grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">

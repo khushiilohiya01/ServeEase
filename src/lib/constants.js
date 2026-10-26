@@ -1,6 +1,5 @@
 /**
  * Canonical Constants for ServeEase
- * Adheres strictly to Section 6 and Section 4 of the specification.
  */
 export const SERVICE_CATEGORIES = [
   { id: 'all', name: 'All Services', icon: 'Sparkles', shortName: 'All' },

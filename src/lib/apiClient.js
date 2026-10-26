@@ -23,6 +23,15 @@ class MockDataStore {
             status: 'active',
             created_at: '2026-01-15T10:00:00Z',
           },
+          {
+            id: 2,
+            full_name: 'Alex Rivera',
+            email: 'alex.rivera@example.com',
+            password: 'demo1234',
+            phone: '+91 98765 43211',
+            status: 'active',
+            created_at: '2026-01-15T10:00:00Z',
+          },
         ];
 
     // Load persisted bookings (defaults to demo user's initial bookings)
@@ -390,7 +399,7 @@ export async function apiRequest(endpoint, options = {}) {
   }
 }
 
-// Mock dispatch router adhering strictly to Section 8 API contract
+// Client-side mock dispatch router
 function handleMockFallback(endpoint, options = {}) {
   const method = (options.method || 'GET').toUpperCase();
   const [path, queryString] = endpoint.split('?');

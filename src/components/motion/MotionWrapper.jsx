@@ -1,8 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion';
 
 /**
- * Shared motion variants respecting user's prefers-reduced-motion preferences.
- * Adheres to Section 6 of the ServeEase Frontend Experience Guide:
+ * Shared motion variants respecting user's prefers-reduced-motion preferences:
  * - Subtle transforms (12-20px)
  * - Coordinated entrance sequence (450-600ms)
  * - Viewport reveal triggering once
