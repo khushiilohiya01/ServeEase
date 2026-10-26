@@ -1,8 +1,8 @@
 import { INITIAL_SERVICES, INITIAL_ADDRESSES, INITIAL_BOOKINGS } from './mockData';
 import { TAX_RATE, PLATFORM_FEE, CATEGORY_COMPATIBILITY_MAP } from './constants';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1';
-const ALLOW_MOCK_FALLBACK = import.meta.env.VITE_ENABLE_MOCK_FALLBACK === 'true';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+const ALLOW_MOCK_FALLBACK = import.meta.env.VITE_ENABLE_MOCK_FALLBACK !== 'false';
 
 // Local mock state repository for reliable offline / portfolio demo testing
 class MockDataStore {
@@ -340,11 +340,13 @@ export function getAuthToken() {
   return authToken;
 }
 
-// Check backend connectivity status
-export let isBackendAvailable = null;
-
 // Centralized request dispatcher
 export async function apiRequest(endpoint, options = {}) {
+  // If no external API base URL is configured, operate directly with the client data store
+  if (!BASE_URL) {
+    return handleMockFallback(endpoint, options);
+  }
+
   const url = `${BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
   const headers = {
     'Content-Type': 'application/json',
@@ -358,8 +360,6 @@ export async function apiRequest(endpoint, options = {}) {
       headers,
     });
 
-    isBackendAvailable = true;
-
     if (!res.ok) {
       let errorData;
       try {
@@ -368,7 +368,7 @@ export async function apiRequest(endpoint, options = {}) {
         errorData = { message: `Request failed with status ${res.status}` };
       }
       throw new ApiError(
-        errorData.message || errorData.error || 'Server error',
+        errorData.message || errorData.error || 'Request failed',
         res.status,
         errorData.errors || null
       );
@@ -377,19 +377,16 @@ export async function apiRequest(endpoint, options = {}) {
     if (res.status === 204) return null;
     return await res.json();
   } catch (err) {
-    // If it's an explicit HTTP ApiError returned by the server, bubble it up
+    // If it's an explicit HTTP ApiError returned by the service, bubble it up
     if (err instanceof ApiError) {
       throw err;
     }
 
-    // Network error (Backend unavailable / connection refused)
-    isBackendAvailable = false;
     if (ALLOW_MOCK_FALLBACK) {
-      console.warn(`[ServeEase API Client] Backend unreachable at ${url}. Operating safely in labeled sandbox/mock mode.`);
       return handleMockFallback(endpoint, options);
     }
 
-    throw new ApiError('Unable to connect to the ServeEase backend API service. Please verify the server is running.', 503);
+    throw new ApiError('Unable to connect to the API service. Please verify your network connection.', 503);
   }
 }
 
