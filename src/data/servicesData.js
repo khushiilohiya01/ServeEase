@@ -1,0 +1,843 @@
+/**
+ * ServeEase Canonical Services Catalogue
+ * India-first, plain-language, real customer wording, zero jargon.
+ * All pricing in INR. Typed pricing models.
+ * All descriptions strictly one plain line, max 70 characters.
+ */
+
+export const ROOMS = [
+  { id: 'kitchen', label: 'Kitchen' },
+  { id: 'bathroom', label: 'Bathroom' },
+  { id: 'bedroom', label: 'Bedroom' },
+  { id: 'hall', label: 'Hall' },
+  { id: 'balcony', label: 'Balcony' },
+  { id: 'whole_home', label: 'Whole home' },
+];
+
+export const SERVICES = [
+  // ==========================================
+  // AC SERVICES (5 Services)
+  // ==========================================
+  {
+    id: 'ac-service-jet-wash',
+    name: 'AC service (jet wash)',
+    category: 'ac',
+    rooms: ['bedroom', 'hall'],
+    symptoms: ['ac service', 'ac dirty', 'ac servicing', 'jet wash ac', 'foul smell from ac', 'ac dust cleaning'],
+    description: 'Deep pressure jet wash for indoor cooling coils and outdoor unit.',
+    includes: ['Indoor coil high-pressure wash', 'Outdoor unit jet spray clean', 'Filter and drain line flush', 'Cooling temperature check'],
+    durationMins: 45,
+    pricing: { kind: 'fixed', price: 599 },
+    sparesNote: 'Spare parts at MRP, bill shown before fitting',
+    popular: true,
+  },
+  {
+    id: 'ac-not-cooling',
+    name: 'AC not cooling',
+    category: 'ac',
+    rooms: ['bedroom', 'hall'],
+    symptoms: ['ac not cooling', 'ac thanda nahi', 'ac warm air', 'ac cooling kam hai', 'compressor not working'],
+    description: 'Diagnosis of low cooling, fan speed, gas leak, or sensor faults.',
+    includes: ['Full diagnostic inspection', 'Gas pressure check', 'Electrical and capacitor test', 'Quote before any repair'],
+    durationMins: 45,
+    pricing: { kind: 'inspection', visitCharge: 199, note: 'Visit charge adjusted in final bill' },
+    sparesNote: 'Spare parts at MRP, bill shown before fitting',
+    popular: true,
+  },
+  {
+    id: 'ac-gas-refill',
+    name: 'AC gas refill',
+    category: 'ac',
+    rooms: ['bedroom', 'hall'],
+    symptoms: ['ac gas leak', 'ac gas refill', 'gas charging', 'r32 gas ac', 'ac ice formation', 'r410 gas'],
+    description: 'Nitrogen leak test followed by precise refrigerant gas top-up.',
+    includes: ['Nitrogen leak detection', 'Flaring and joint tightening', 'Full vacuum pump cycle', 'Refrigerant gas refill by weight'],
+    durationMins: 60,
+    pricing: { kind: 'fixed', price: 2499 },
+    sparesNote: 'Copper pipe welding charged extra if needed',
+    popular: true,
+  },
+  {
+    id: 'ac-installation',
+    name: 'AC installation',
+    category: 'ac',
+    rooms: ['bedroom', 'hall'],
+    symptoms: ['ac install', 'fit new ac', 'split ac installation', 'ac fitting', 'install window ac'],
+    description: 'Neat split AC wall mounting with secure copper piping setup.',
+    includes: ['Indoor unit wall mounting', 'Outdoor bracket fixing', 'Copper piping connection', 'Vacuum and cooling test'],
+    durationMins: 90,
+    pricing: { kind: 'fixed', price: 1399 },
+    sparesNote: 'Outdoor wall stand and extra copper pipe at MRP',
+    popular: false,
+  },
+  {
+    id: 'ac-uninstallation',
+    name: 'AC uninstallation',
+    category: 'ac',
+    rooms: ['bedroom', 'hall'],
+    symptoms: ['ac remove', 'uninstall ac', 'shift ac', 'remove split ac', 'dismantle ac'],
+    description: 'Safe gas pump down and removal of indoor and outdoor units.',
+    includes: ['Refrigerant pump down into unit', 'Safe indoor unit dismantling', 'Outdoor unit dismounting', 'Neat pipe wrapping'],
+    durationMins: 60,
+    pricing: { kind: 'fixed', price: 699 },
+    popular: false,
+  },
+
+  // ==========================================
+  // APPLIANCES (6 Services)
+  // ==========================================
+  {
+    id: 'washing-machine-repair',
+    name: 'Washing machine repair',
+    category: 'appliances',
+    rooms: ['balcony', 'bathroom'],
+    symptoms: ['washing machine not spinning', 'water leaking from washing machine', 'drain error', 'washing machine noise', 'drum not moving'],
+    description: 'Diagnosis for drum spinning, drainage, and motor or PCB faults.',
+    includes: ['Drum and motor testing', 'Inlet and drain pump check', 'PCB board error diagnosis', 'Transparent cost estimate'],
+    durationMins: 60,
+    pricing: { kind: 'inspection', visitCharge: 249, note: 'Visit charge adjusted in final bill' },
+    sparesNote: 'Spare parts at MRP, bill shown before fitting',
+    popular: true,
+  },
+  {
+    id: 'fridge-repair',
+    name: 'Fridge repair',
+    category: 'appliances',
+    rooms: ['kitchen', 'hall'],
+    symptoms: ['fridge not cooling', 'refrigerator cooling bandh', 'fridge water leak', 'freezer ice buildup', 'compressor humming sound'],
+    description: 'Fixing cooling failure, water leakage, and compressor issues.',
+    includes: ['Thermostat and sensor check', 'Defrost heater & timer test', 'Compressor relay diagnosis', 'Door seal inspection'],
+    durationMins: 60,
+    pricing: { kind: 'inspection', visitCharge: 249, note: 'Visit charge adjusted in final bill' },
+    sparesNote: 'Spare parts at MRP, bill shown before fitting',
+    popular: true,
+  },
+  {
+    id: 'ro-water-purifier-service',
+    name: 'RO water purifier service',
+    category: 'appliances',
+    rooms: ['kitchen'],
+    symptoms: ['ro water slow', 'filter change', 'water purifier taste bad', 'ro filter replacement', 'purifier leaking', 'tds high'],
+    description: 'Complete RO filter health check, filter clean, and TDS tuning.',
+    includes: ['Pre-filter housing cleaning', 'Sediment & carbon filter check', 'TDS output measurement', 'Pump pressure verification'],
+    durationMins: 45,
+    pricing: { kind: 'fixed', price: 449 },
+    sparesNote: 'Genuine branded filters & membrane at MRP',
+    popular: true,
+  },
+  {
+    id: 'geyser-repair',
+    name: 'Geyser repair',
+    category: 'appliances',
+    rooms: ['bathroom'],
+    symptoms: ['geyser not heating', 'water heater tripping mcb', 'geyser water not hot', 'pani garam nahi ho raha', 'geyser tank leak'],
+    description: 'Fast repair for water heating, thermostat, and tripping faults.',
+    includes: ['Heating element check', 'Thermostat cut-off test', 'Electrical wiring inspection', 'Tank leak assessment'],
+    durationMins: 45,
+    pricing: { kind: 'inspection', visitCharge: 199, note: 'Visit charge adjusted in final bill' },
+    sparesNote: 'Spare parts at MRP, bill shown before fitting',
+    popular: true,
+  },
+  {
+    id: 'geyser-installation',
+    name: 'Geyser installation',
+    category: 'appliances',
+    rooms: ['bathroom'],
+    symptoms: ['fit geyser', 'install water heater', 'geyser mounting', 'new geyser fitting'],
+    description: 'Safe wall bracket mounting and inlet-outlet plumbing setup.',
+    includes: ['Heavy wall bracket mounting', 'Inlet and outlet connection', 'Safety valve fitting', 'Power connection and test run'],
+    durationMins: 60,
+    pricing: { kind: 'fixed', price: 499 },
+    sparesNote: 'Flexible connection pipes at MRP if needed',
+    popular: false,
+  },
+  {
+    id: 'microwave-repair',
+    name: 'Microwave repair',
+    category: 'appliances',
+    rooms: ['kitchen'],
+    symptoms: ['microwave not heating', 'oven spark', 'plate not rotating', 'touchpad not working', 'microwave burning smell'],
+    description: 'Checking magnetron heating, turntable motor, and keypad faults.',
+    includes: ['Magnetron voltage test', 'High voltage diode check', 'Turntable motor inspection', 'Door switch alignment'],
+    durationMins: 45,
+    pricing: { kind: 'inspection', visitCharge: 199, note: 'Visit charge adjusted in final bill' },
+    sparesNote: 'Spare parts at MRP, bill shown before fitting',
+    popular: false,
+  },
+
+  // ==========================================
+  // KITCHEN (4 Services)
+  // ==========================================
+  {
+    id: 'chimney-cleaning',
+    name: 'Chimney cleaning',
+    category: 'kitchen',
+    rooms: ['kitchen'],
+    symptoms: ['chimney greasy', 'chimney oil dripping', 'chimney suction low', 'chimney filter clean', 'baffle filter cleaning'],
+    description: 'Deep degreasing of baffle filters, oil collector, and hood.',
+    includes: ['Baffle/mesh filter chemical wash', 'Oil collector cup cleanup', 'Blower fan degreasing', 'Exterior stainless steel polish'],
+    durationMins: 60,
+    pricing: { kind: 'fixed', price: 999 },
+    popular: true,
+  },
+  {
+    id: 'kitchen-deep-cleaning',
+    name: 'Kitchen deep cleaning',
+    category: 'kitchen',
+    rooms: ['kitchen'],
+    symptoms: ['kitchen dirty', 'oil stains on tiles', 'clean kitchen cabinets', 'kitchen degreasing', 'gas stove scrub'],
+    description: 'Degreasing tiles, gas stove, kitchen cabinets, and sink.',
+    includes: ['Tile backsplash degreasing', 'Stovetop and knob cleaning', 'Cabinet exterior scrub & wipe', 'Sink descaling and drain flush'],
+    durationMins: 120,
+    pricing: { kind: 'fixed', price: 1499 },
+    popular: true,
+  },
+  {
+    id: 'gas-stove-repair',
+    name: 'Gas stove repair',
+    category: 'kitchen',
+    rooms: ['kitchen'],
+    symptoms: ['gas stove flame low', 'gas burner yellow flame', 'gas cylinder smell', 'hob flame issue', 'gas stove lighter not clicking'],
+    description: 'Burner nozzle cleaning, knob service, and gas leak check.',
+    includes: ['Burner nozzle jet cleaning', 'Gas valve lubrication', 'Hose leak bubble test', 'Flame calibration to crisp blue'],
+    durationMins: 45,
+    pricing: { kind: 'inspection', visitCharge: 199, note: 'Visit charge adjusted in final bill' },
+    sparesNote: 'Burners or auto-ignition switch at MRP',
+    popular: false,
+  },
+  {
+    id: 'sink-blockage',
+    name: 'Sink blockage',
+    category: 'kitchen',
+    rooms: ['kitchen'],
+    symptoms: ['kitchen sink blocked', 'water not draining in sink', 'sink chocked', 'sink overflow', 'food stuck in sink drain'],
+    description: 'Clearing choked kitchen sink drain lines and waste pipes.',
+    includes: ['Trap dismantling & cleanout', 'Drain rod unclogging', 'Debris and grease clearance', 'High-volume flow test'],
+    durationMins: 45,
+    pricing: { kind: 'fixed', price: 349 },
+    popular: true,
+  },
+
+  // ==========================================
+  // CLEANING (6 Services)
+  // ==========================================
+  {
+    id: 'full-home-cleaning',
+    name: 'Full home cleaning',
+    category: 'cleaning',
+    rooms: ['whole_home', 'hall', 'bedroom', 'kitchen', 'bathroom', 'balcony'],
+    symptoms: ['deep cleaning', 'full house clean', 'home cleaning', 'diwali cleaning', 'ghar safai', 'floor machine scrub'],
+    description: 'Machine floor scrub, tile descaling, and cobweb removal.',
+    includes: ['Single-disc machine floor scrub', 'Bathroom wall tile descaling', 'Kitchen grease removal', 'Ceiling cobwebs and fan blades'],
+    durationMins: 240,
+    pricing: {
+      kind: 'per_bhk',
+      prices: {
+        '1BHK': 2999,
+        '2BHK': 3999,
+        '3BHK': 4999,
+        '4BHK+': 5999,
+      },
+    },
+    popular: true,
+  },
+  {
+    id: 'bathroom-cleaning',
+    name: 'Bathroom cleaning',
+    category: 'cleaning',
+    rooms: ['bathroom'],
+    symptoms: ['dirty bathroom', 'hard water stains', 'tile yellowing', 'toilet pot cleaning', 'taps dirty', 'bathroom deep clean'],
+    description: 'Tile descaling, tap polishing, and toilet sanitization.',
+    includes: ['Wall and floor tile descaling', 'Chrome tap & shower polishing', 'Toilet bowl disinfection', 'Mirror and exhaust wipe'],
+    durationMins: 45,
+    pricing: { kind: 'per_unit', unitLabel: 'bathroom', price: 449 },
+    popular: true,
+  },
+  {
+    id: 'sofa-cleaning',
+    name: 'Sofa cleaning',
+    category: 'cleaning',
+    rooms: ['hall'],
+    symptoms: ['sofa dirty', 'couch stains', 'sofa shampooing', 'dusty sofa', 'sofa dry clean', 'fabric sofa cleaning'],
+    description: 'Dry vacuuming, stain removal, and quick-dry shampooing.',
+    includes: ['High-suction dry vacuuming', 'Foam stain treatment', 'Rotary brush scrub', 'Moisture extraction for quick dry'],
+    durationMins: 60,
+    pricing: { kind: 'per_unit', unitLabel: 'seat', price: 249, min: 3 },
+    popular: true,
+  },
+  {
+    id: 'carpet-cleaning',
+    name: 'Carpet cleaning',
+    category: 'cleaning',
+    rooms: ['hall', 'bedroom'],
+    symptoms: ['carpet wash', 'rug cleaning', 'carpet shampoo', 'dusty carpet', 'carpet stains', 'mat cleaning'],
+    description: 'Deep dust extraction, active foam scrub, and water vacuum.',
+    includes: ['Deep dust extraction', 'Targeted spot stain removal', 'Neutral foam shampooing', 'Wet-vacuum water extraction'],
+    durationMins: 45,
+    pricing: { kind: 'per_unit', unitLabel: 'sq ft', price: 30, min: 599 },
+    popular: false,
+  },
+  {
+    id: 'water-tank-cleaning',
+    name: 'Water tank cleaning',
+    category: 'cleaning',
+    rooms: ['whole_home', 'bathroom'],
+    symptoms: ['dirty water tank', 'mud in water', 'overhead tank clean', 'sintex tank cleaning', 'water tank mud removal'],
+    description: 'Sludge removal, high-pressure inner scrub, and UV clean.',
+    includes: ['Sludge water pump evacuation', 'High pressure jet spray scrub', 'Anti-bacterial spray treatment', 'UV germicidal exposure'],
+    durationMins: 60,
+    pricing: { kind: 'fixed', price: 999 },
+    popular: false,
+  },
+  {
+    id: 'move-in-cleaning',
+    name: 'Move-in / move-out cleaning',
+    category: 'cleaning',
+    rooms: ['whole_home', 'hall', 'bedroom', 'kitchen', 'bathroom', 'balcony'],
+    symptoms: ['new flat clean', 'tenant move in cleaning', 'empty house deep clean', 'post renovation dust', 'move out cleaning'],
+    description: 'Deep sanitizing of empty flat cabinets, floors, and glass.',
+    includes: ['Wardrobe and cabinet interior wipe', 'Window channels and glass buffing', 'Bathroom & kitchen deep sanitize', 'Balcony and utility area wash'],
+    durationMins: 240,
+    pricing: {
+      kind: 'per_bhk',
+      prices: {
+        '1BHK': 3499,
+        '2BHK': 4499,
+        '3BHK': 5499,
+      },
+    },
+    popular: false,
+  },
+
+  // ==========================================
+  // ELECTRICIAN (7 Services)
+  // ==========================================
+  {
+    id: 'fan-installation',
+    name: 'Fan installation',
+    category: 'electrician',
+    rooms: ['bedroom', 'hall', 'kitchen'],
+    symptoms: ['ceiling fan fitting', 'install new fan', 'hang ceiling fan', 'fan assemble', 'exhaust fan fitting'],
+    description: 'Ceiling or exhaust fan assembly and secure hook mounting.',
+    includes: ['Downrod and blade assembly', 'Hook mounting and safety pin', 'Speed regulator connection', 'Wobble and noise check'],
+    durationMins: 30,
+    pricing: { kind: 'fixed', price: 199 },
+    popular: true,
+  },
+  {
+    id: 'fan-repair',
+    name: 'Fan repair',
+    category: 'electrician',
+    rooms: ['bedroom', 'hall', 'kitchen'],
+    symptoms: ['fan making noise', 'fan slow', 'fan humming', 'fan capacitor change', 'ceiling fan not turning'],
+    description: 'Fixing slow speeds, humming noise, or capacitor faults.',
+    includes: ['Capacitor speed diagnosis', 'Bearing noise inspection', 'Wiring and regulator check', 'Upfront quote for parts'],
+    durationMins: 30,
+    pricing: { kind: 'inspection', visitCharge: 149, note: 'Visit charge adjusted in final bill' },
+    sparesNote: 'Capacitor at MRP (~₹60-₹120)',
+    popular: false,
+  },
+  {
+    id: 'switchboard-repair',
+    name: 'Switchboard repair',
+    category: 'electrician',
+    rooms: ['hall', 'bedroom', 'kitchen', 'bathroom'],
+    symptoms: ['switchboard spark', 'switch loose', 'socket not working', 'plug point dead', 'burnt switch', 'switchboard current'],
+    description: 'Fixing burnt switches, loose plugs, and board wiring.',
+    includes: ['Faceplate safe opening', 'Phase & neutral check', 'Terminal rewiring', 'Socket earthing test'],
+    durationMins: 30,
+    pricing: { kind: 'fixed', price: 149 },
+    sparesNote: 'Modular switches & sockets at MRP',
+    popular: true,
+  },
+  {
+    id: 'light-fitting',
+    name: 'Light fitting',
+    category: 'electrician',
+    rooms: ['hall', 'bedroom', 'kitchen', 'balcony', 'bathroom'],
+    symptoms: ['tube light fitting', 'hang ceiling light', 'led batten install', 'spotlight fitting', 'bulb holder fix'],
+    description: 'Mounting tube lights, LED battens, spotlights, and bulbs.',
+    includes: ['Wall/ceiling drilling', 'Insulated electrical connections', 'Secure bracket mount', 'Switch operation check'],
+    durationMins: 30,
+    pricing: { kind: 'fixed', price: 129 },
+    popular: false,
+  },
+  {
+    id: 'mcb-keeps-tripping',
+    name: 'MCB keeps tripping',
+    category: 'electrician',
+    rooms: ['hall', 'whole_home'],
+    symptoms: ['mcb trip', 'power cut in one room', 'short circuit', 'fuse blown', 'inverter tripping', 'main switch off'],
+    description: 'Finding root cause of circuit overloads and short circuits.',
+    includes: ['Circuit insulation test', 'Appliance load testing', 'Neutral leakage identification', 'Defective breaker check'],
+    durationMins: 60,
+    pricing: { kind: 'inspection', visitCharge: 199, note: 'Visit charge adjusted in final bill' },
+    sparesNote: 'Replacement MCB / RCCB at MRP',
+    popular: true,
+  },
+  {
+    id: 'inverter-installation',
+    name: 'Inverter installation',
+    category: 'electrician',
+    rooms: ['balcony', 'hall'],
+    symptoms: ['install inverter', 'inverter battery connect', 'power backup setup', 'ups fitting'],
+    description: 'Safe battery and inverter wiring with backup load check.',
+    includes: ['Inverter to battery connection', 'Electrolyte terminal greasing', 'Main bypass circuit wiring', 'Load testing on backup'],
+    durationMins: 60,
+    pricing: { kind: 'fixed', price: 499 },
+    popular: false,
+  },
+  {
+    id: 'new-wiring-point',
+    name: 'New wiring point',
+    category: 'electrician',
+    rooms: ['bedroom', 'hall', 'kitchen', 'balcony'],
+    symptoms: ['extra plug point', 'new ac point', 'concealed wiring', 'power point fitting', 'geyser wiring point'],
+    description: 'Running new concealed or casing wiring with switch socket.',
+    includes: ['Wire route planning', 'Casing/conduit laying', 'Fire-retardant copper wire pull', 'New modular box fitting'],
+    durationMins: 90,
+    pricing: { kind: 'quote', note: 'Free visit · quote on site' },
+    sparesNote: 'Wire and conduit charged per meter',
+    popular: false,
+  },
+
+  // ==========================================
+  // PLUMBER (5 Services)
+  // ==========================================
+  {
+    id: 'tap-leaking',
+    name: 'Tap leaking',
+    category: 'plumber',
+    rooms: ['bathroom', 'kitchen', 'balcony'],
+    symptoms: ['tap leaking', 'tap tap pani', 'dripping faucet', 'water tap dripping', 'nal leak ho raha hai', 'loose tap'],
+    description: 'Fixing dripping faucets, worn washers, and spindle leaks.',
+    includes: ['Tap internal spindle inspection', 'Washer or ceramic disc replacement', 'Thread PTFE teflon sealing', 'Water pressure test'],
+    durationMins: 30,
+    pricing: { kind: 'fixed', price: 129 },
+    sparesNote: 'Ceramic cartridge / spindle at MRP if needed',
+    popular: true,
+  },
+  {
+    id: 'blocked-drain',
+    name: 'Blocked drain',
+    category: 'plumber',
+    rooms: ['bathroom', 'balcony'],
+    symptoms: ['bathroom water stuck', 'drain blocked', 'nahane ka pani nahi ja raha', 'floor drain overflow', 'bathroom jali choked'],
+    description: 'Clearing hair, soap buildup, and choked floor drain traps.',
+    includes: ['Drain grating removal', 'Manual/spring rod cleanout', 'Clog sludge extraction', 'High-flow water check'],
+    durationMins: 45,
+    pricing: { kind: 'fixed', price: 399 },
+    popular: true,
+  },
+  {
+    id: 'flush-tank-repair',
+    name: 'Flush tank repair',
+    category: 'plumber',
+    rooms: ['bathroom'],
+    symptoms: ['flush tank water running', 'toilet flush not working', 'flush button stuck', 'cistern water overflow', 'commode water continuously leaking'],
+    description: 'Fixing continuously running cisterns and flush valves.',
+    includes: ['Inlet valve and float ball check', 'Siphon washer cleaning', 'Push button linkage adjustment', 'Continuous leak stoppage'],
+    durationMins: 45,
+    pricing: { kind: 'fixed', price: 299 },
+    sparesNote: 'Internal flush kit / siphon at MRP',
+    popular: false,
+  },
+  {
+    id: 'washbasin-sink-installation',
+    name: 'Washbasin / sink installation',
+    category: 'plumber',
+    rooms: ['bathroom', 'kitchen'],
+    symptoms: ['new washbasin fitting', 'install bathroom sink', 'fit kitchen sink', 'replace wash basin', 'basin bracket mount'],
+    description: 'Mounting washbasin or kitchen sink with waste coupling.',
+    includes: ['Wall bracket fixing', 'Ceramic basin mounting', 'Waste coupling & bottle trap setup', 'Hot & cold inlet connection'],
+    durationMins: 60,
+    pricing: { kind: 'fixed', price: 599 },
+    sparesNote: 'Connection hoses and silicone sealant at MRP',
+    popular: false,
+  },
+  {
+    id: 'low-water-pressure',
+    name: 'Low water pressure',
+    category: 'plumber',
+    rooms: ['bathroom', 'kitchen'],
+    symptoms: ['pani slow aa raha hai', 'shower pressure low', 'tap water thin', 'air lock in pipe', 'low water in tap'],
+    description: 'Clearing pipeline air locks and choked tap aerators.',
+    includes: ['Aerator filter unclogging', 'Air lock clearance from pipeline', 'Main line valve check', 'Flow rate measurement'],
+    durationMins: 45,
+    pricing: { kind: 'inspection', visitCharge: 199, note: 'Visit charge adjusted in final bill' },
+    sparesNote: 'Spare parts at MRP, bill shown before fitting',
+    popular: false,
+  },
+
+  // ==========================================
+  // PEST CONTROL (5 Services)
+  // ==========================================
+  {
+    id: 'cockroach-control',
+    name: 'Cockroach control',
+    category: 'pest_control',
+    rooms: ['kitchen', 'bathroom'],
+    symptoms: ['cockroaches in kitchen', 'small roaches', 'cockroach gel', 'kitchen cockroaches', 'cockroach treatment', 'lal telchatta'],
+    description: 'Odorless kitchen gel baiting and drain barrier spray.',
+    includes: ['Kitchen cabinet gel application', 'Hinges and electrical crack baiting', 'Drain line barrier spray', 'Follow-up advice'],
+    durationMins: 45,
+    pricing: {
+      kind: 'per_bhk',
+      prices: {
+        '1BHK': 999,
+        '2BHK': 1299,
+        '3BHK': 1599,
+      },
+    },
+    popular: true,
+  },
+  {
+    id: 'termite-treatment',
+    name: 'Termite treatment',
+    category: 'pest_control',
+    rooms: ['whole_home', 'bedroom', 'hall'],
+    symptoms: ['termite mud tubes', 'deemak', 'wood powder falling', 'hollow wooden frame', 'termite in door frame'],
+    description: 'Drill and chemical injection into wooden frames.',
+    includes: ['Drilling along infested wood', 'Chemical termiticide injection', 'Hole sealing with matching putty', 'Warranty certificate'],
+    durationMins: 120,
+    pricing: { kind: 'quote', note: 'Free inspection · quote on site' },
+    popular: false,
+  },
+  {
+    id: 'bed-bug-treatment',
+    name: 'Bed bug treatment',
+    category: 'pest_control',
+    rooms: ['bedroom'],
+    symptoms: ['bed bug bites', 'khatmal', 'blood spots on mattress', 'bed bug spray', 'bugs in bed'],
+    description: 'Two-visit intensive chemical spray on bed crevices.',
+    includes: ['Mattress seam inspection', 'Crevice & joint barrier spray', 'Egg neutralizing chemical spray', 'Second visit in 15 days included'],
+    durationMins: 60,
+    pricing: {
+      kind: 'per_bhk',
+      prices: {
+        '1BHK': 1499,
+        '2BHK': 1999,
+        '3BHK': 2499,
+      },
+    },
+    popular: false,
+  },
+  {
+    id: 'mosquito-treatment',
+    name: 'Mosquito treatment',
+    category: 'pest_control',
+    rooms: ['whole_home', 'balcony', 'bedroom', 'hall'],
+    symptoms: ['mosquitoes in flat', 'dengue prevention', 'mosquito spray indoors', 'balcony mosquitoes', 'machar treatment'],
+    description: 'Indoor wall spray and balcony fogging for mosquitoes.',
+    includes: ['Dark corner residual spray', 'Balcony fogging session', 'Under-furniture barrier spray', 'Safety advisory for kids & pets'],
+    durationMins: 45,
+    pricing: {
+      kind: 'per_bhk',
+      prices: {
+        '1BHK': 799,
+        '2BHK': 999,
+        '3BHK': 1199,
+      },
+    },
+    popular: false,
+  },
+  {
+    id: 'rodent-control',
+    name: 'Rodent control',
+    category: 'pest_control',
+    rooms: ['kitchen', 'balcony'],
+    symptoms: ['rat in kitchen', 'chuha pakadna', 'mice in false ceiling', 'wire chewed by rat', 'rat poop on counter'],
+    description: 'Placement of secure bait stations and sticky glue pads.',
+    includes: ['Entry point inspection', 'Strategic glue pad placement', 'Odorless rodenticide baiting', 'Disposal guidance'],
+    durationMins: 45,
+    pricing: { kind: 'fixed', price: 1199 },
+    popular: false,
+  },
+
+  // ==========================================
+  // CARPENTER (4 Services)
+  // ==========================================
+  {
+    id: 'door-lock-change',
+    name: 'Door lock change',
+    category: 'carpenter',
+    rooms: ['hall', 'bedroom'],
+    symptoms: ['change main door lock', 'godrej lock fitting', 'lock jammed', 'key not turning', 'door handle loose'],
+    description: 'Fitting main door cylindrical or mortise lock sets.',
+    includes: ['Old lock removal', 'Chisel pocket alignment', 'New lock and strike plate fitting', 'Smooth key turning check'],
+    durationMins: 45,
+    pricing: { kind: 'fixed', price: 299 },
+    sparesNote: 'New lock unit purchased separately or at MRP',
+    popular: true,
+  },
+  {
+    id: 'hinge-drawer-channel-repair',
+    name: 'Hinge / drawer channel repair',
+    category: 'carpenter',
+    rooms: ['kitchen', 'bedroom', 'hall'],
+    symptoms: ['cupboard door hanging', 'drawer not closing', 'channel jammed', 'wardrobe door loose', 'hinge screw loose'],
+    description: 'Fixing sagging doors, hydraulic hinges, and channels.',
+    includes: ['Hinge screw hole packing', 'Hydraulic hinge replacement', 'Drawer telescopic channel fitting', 'Smooth soft-close test'],
+    durationMins: 45,
+    pricing: { kind: 'fixed', price: 199 },
+    sparesNote: 'Hinges and telescopic channels at MRP',
+    popular: false,
+  },
+  {
+    id: 'furniture-assembly',
+    name: 'Furniture assembly',
+    category: 'carpenter',
+    rooms: ['bedroom', 'hall'],
+    symptoms: ['assemble ikea furniture', 'bed assembly', 'wardrobe setup', 'study table fitting', 'flatpack assembly'],
+    description: 'Step-by-step assembly for IKEA, Urban Ladder, or Amazon.',
+    includes: ['Hardware inventory check', 'Manual step-by-step assembly', 'Structural leveling & anchoring', 'Packaging cleanup'],
+    durationMins: 90,
+    pricing: { kind: 'inspection', visitCharge: 199, note: 'Visit charge adjusted in final bill' },
+    popular: true,
+  },
+  {
+    id: 'bed-wardrobe-repair',
+    name: 'Bed / wardrobe repair',
+    category: 'carpenter',
+    rooms: ['bedroom'],
+    symptoms: ['bed wooden plank broken', 'wardrobe sliding door off track', 'creaking bed', 'drawer bottom broken'],
+    description: 'Fixing sliding door tracks, wooden slats, and joints.',
+    includes: ['Sliding roller adjustment', 'Plywood slat reinforcement', 'Bracket and bolt tightening', 'Track clearing and oiling'],
+    durationMins: 60,
+    pricing: { kind: 'inspection', visitCharge: 199, note: 'Visit charge adjusted in final bill' },
+    sparesNote: 'Wood, ply and brackets at MRP',
+    popular: false,
+  },
+
+  // ==========================================
+  // PAINTING & WALLS (4 Services)
+  // ==========================================
+  {
+    id: 'paint-one-room',
+    name: 'Paint one room',
+    category: 'painting',
+    rooms: ['bedroom', 'hall', 'kitchen'],
+    symptoms: ['room painting', 'single room paint', 'accent wall painting', 'fresh coat of paint', 'paint bedroom'],
+    description: 'Wall masking, putty touch-up, and 2 emulsion coats.',
+    includes: ['Floor & furniture plastic masking', 'Nail hole putty filling', 'Two roller coats of paint', 'Post-painting cleanup'],
+    durationMins: 360,
+    pricing: { kind: 'quote', note: 'Free site survey · quote on site' },
+    popular: true,
+  },
+  {
+    id: 'full-home-painting',
+    name: 'Full home painting',
+    category: 'painting',
+    rooms: ['whole_home', 'hall', 'bedroom', 'kitchen', 'balcony'],
+    symptoms: ['whole house painting', 'ghar ka paint', 'wall putty and paint', 'exterior painting', 'full flat repaint'],
+    description: 'Laser measurement, wall prep, and 2 coats with warranty.',
+    includes: ['Laser surface measurement', 'Full furniture masking protection', 'Putty, primer and 2 top coats', '1-year peeling warranty'],
+    durationMins: 480,
+    pricing: { kind: 'quote', note: 'Starting from ₹6,999 · quote on site' },
+    popular: false,
+  },
+  {
+    id: 'damp-seepage-fix',
+    name: 'Damp / seepage fix',
+    category: 'painting',
+    rooms: ['bathroom', 'bedroom', 'hall', 'balcony'],
+    symptoms: ['seepage on wall', 'damp wall', 'paint bubbling', 'wall efflorescence', 'bathroom wall seepage', 'pani nikal raha hai wall se'],
+    description: 'Moisture testing, waterproof barrier, and putty repair.',
+    includes: ['Digital moisture testing', 'Peeling paint scraping', 'Elastomeric waterproof coating', 'Waterproof acrylic putty base'],
+    durationMins: 120,
+    pricing: { kind: 'quote', note: 'Free moisture meter inspection · quote on site' },
+    popular: true,
+  },
+  {
+    id: 'wall-putty-touch-up',
+    name: 'Wall putty touch-up',
+    category: 'painting',
+    rooms: ['hall', 'bedroom'],
+    symptoms: ['wall nail holes', 'wall crack repair', 'tv bracket holes fill', 'wall patch paint', 'putty work'],
+    description: 'Filling nail holes and hairline cracks with sanding.',
+    includes: ['Loose plaster scraping', 'Double-coat acrylic putty filling', 'Sanding for flush smooth finish', 'Primer spot application'],
+    durationMins: 60,
+    pricing: { kind: 'fixed', price: 799 },
+    popular: false,
+  },
+
+  // ==========================================
+  // ODD JOBS & MOUNTS (5 Services)
+  // ==========================================
+  {
+    id: 'tv-wall-mounting',
+    name: 'TV wall mounting',
+    category: 'odd_jobs',
+    rooms: ['hall', 'bedroom'],
+    symptoms: ['mount tv on wall', 'tv installation', 'tv bracket fitting', 'hang led tv', 'tv fitting on wall'],
+    description: 'Spirit-level wall bracket mounting up to 65-inch TVs.',
+    includes: ['Wall studs check & drilling', 'Bracket alignment with spirit level', 'TV secure hook mounting', 'HDMI and power cable dressing'],
+    durationMins: 45,
+    pricing: { kind: 'fixed', price: 499 },
+    sparesNote: 'Heavy duty wall bracket at MRP if needed',
+    popular: true,
+  },
+  {
+    id: 'curtain-rod-fitting',
+    name: 'Curtain rod fitting',
+    category: 'odd_jobs',
+    rooms: ['hall', 'bedroom', 'balcony'],
+    symptoms: ['hang curtain rod', 'curtain pipe fitting', 'window curtain bracket', 'curtain track install'],
+    description: 'Precision drilling and level bracket mounting for rods.',
+    includes: ['Height and level marking', 'Precision concrete drilling', 'Wall plugs and bracket fixing', 'Rod placement and hook check'],
+    durationMins: 30,
+    pricing: { kind: 'fixed', price: 199 },
+    popular: false,
+  },
+  {
+    id: 'drilling-hanging',
+    name: 'Drilling & hanging',
+    category: 'odd_jobs',
+    rooms: ['hall', 'bedroom', 'bathroom', 'kitchen', 'balcony'],
+    symptoms: ['drill hole in wall', 'hang photo frame', 'hang mirror', 'clock on wall', 'bathroom shelf hanging'],
+    description: 'Clean drill holes with heavy-duty plugs for mirrors.',
+    includes: ['Concealed pipe detector check', 'Clean concrete drilling with dust catch', 'Grip wall plugs and screws inserted', 'Item hung and level verified'],
+    durationMins: 30,
+    pricing: { kind: 'per_unit', unitLabel: 'hole', price: 79 },
+    popular: true,
+  },
+  {
+    id: 'mosquito-mesh-fitting',
+    name: 'Mosquito mesh fitting',
+    category: 'odd_jobs',
+    rooms: ['bedroom', 'balcony', 'hall', 'kitchen'],
+    symptoms: ['window mosquito net', 'mesh for window', 'velcro mosquito net', 'mosquito jali fitting'],
+    description: 'Custom velcro or aluminum mosquito nets for windows.',
+    includes: ['Accurate window measurement', 'Fiberglass mesh cutting', 'Self-adhesive heavy velcro or frame', 'Smooth latch test'],
+    durationMins: 60,
+    pricing: { kind: 'quote', note: 'Free window measurement · quote on site' },
+    popular: false,
+  },
+  {
+    id: 'pigeon-net-installation',
+    name: 'Pigeon net installation',
+    category: 'odd_jobs',
+    rooms: ['balcony'],
+    symptoms: ['pigeon net balcony', 'kabootar jali', 'bird netting for balcony', 'pigeon spike fitting', 'pigeon droppings on balcony'],
+    description: 'UV-resistant nylon netting with stainless steel hooks.',
+    includes: ['Balcony perimeter hook drilling', 'UV-stabilized transparent nylon net', 'Wire rope border tensioning', 'Zero gaps guarantee for pigeons'],
+    durationMins: 90,
+    pricing: { kind: 'quote', note: 'Free balcony inspection · quote on site' },
+    popular: true,
+  },
+
+  // ==========================================
+  // CATCH-ALL (1 Service)
+  // ==========================================
+  {
+    id: 'not-sure-inspection',
+    name: "Not sure what's wrong? Book an inspection",
+    category: 'odd_jobs',
+    rooms: ['whole_home', 'kitchen', 'bathroom', 'bedroom', 'hall', 'balcony'],
+    symptoms: ['not sure what is wrong', 'problem diagnosis', 'expert visit', 'general inspection', 'home repair check', 'something broken'],
+    description: 'Expert home visit to inspect the issue and give estimate.',
+    includes: ['Doorstep technical inspection', 'Root cause identification', 'Itemized parts & labor quote', 'Zero pressure to proceed'],
+    durationMins: 30,
+    pricing: { kind: 'inspection', visitCharge: 99, note: 'Visit charge adjusted in final bill' },
+    popular: true,
+  },
+];
+
+/**
+ * Top symptom chips per room zone for hero interactive cutaway
+ */
+export const ROOM_SYMPTOM_CHIPS = {
+  kitchen: [
+    { label: 'Chimney greasy', query: 'Chimney greasy' },
+    { label: 'RO water slow', query: 'RO water slow' },
+    { label: 'Gas stove flame low', query: 'Gas stove flame' },
+    { label: 'Kitchen sink blocked', query: 'Kitchen sink blocked' },
+    { label: 'Cockroaches in kitchen', query: 'Cockroaches in kitchen' },
+  ],
+  bathroom: [
+    { label: 'Tap leaking', query: 'Tap leaking' },
+    { label: 'Geyser not heating', query: 'Geyser not heating' },
+    { label: 'Blocked drain', query: 'Blocked drain' },
+    { label: 'Flush tank running', query: 'Flush tank running' },
+    { label: 'Bathroom cleaning', query: 'Bathroom cleaning' },
+  ],
+  bedroom: [
+    { label: 'AC not cooling', query: 'AC not cooling' },
+    { label: 'Fan slow / noise', query: 'Fan slow' },
+    { label: 'Bed / wardrobe repair', query: 'Bed wardrobe repair' },
+    { label: 'Bed bug treatment', query: 'Bed bug' },
+    { label: 'Paint bedroom', query: 'Paint one room' },
+  ],
+  hall: [
+    { label: 'Fan repair & fitting', query: 'Fan installation' },
+    { label: 'Sofa cleaning', query: 'Sofa cleaning' },
+    { label: 'TV wall mounting', query: 'TV wall mounting' },
+    { label: 'MCB keeps tripping', query: 'MCB keeps tripping' },
+    { label: 'Main door lock change', query: 'Door lock change' },
+  ],
+  balcony: [
+    { label: 'Pigeon net installation', query: 'Pigeon net' },
+    { label: 'Washing machine repair', query: 'Washing machine' },
+    { label: 'Balcony drain blocked', query: 'Blocked drain' },
+    { label: 'Mosquito mesh fitting', query: 'Mosquito mesh' },
+  ],
+  whole_home: [
+    { label: 'Full home cleaning', query: 'Full home cleaning' },
+    { label: 'Full home painting', query: 'Full home painting' },
+    { label: 'Termite treatment', query: 'Termite treatment' },
+    { label: 'Water tank cleaning', query: 'Water tank cleaning' },
+  ],
+};
+
+export function getRoomSymptomChips(roomId) {
+  return ROOM_SYMPTOM_CHIPS[roomId] || [];
+}
+
+/**
+ * Format pricing for display across cards and detail pages
+ */
+export function formatPricingDisplay(pricing, selectedBhk = '2BHK') {
+  if (!pricing) return 'Price on request';
+
+  switch (pricing.kind) {
+    case 'fixed':
+      return `₹${pricing.price.toLocaleString('en-IN')}`;
+    case 'per_bhk': {
+      const price = pricing.prices[selectedBhk] ?? pricing.prices['2BHK'] ?? Object.values(pricing.prices)[0];
+      return `₹${price.toLocaleString('en-IN')}`;
+    }
+    case 'per_unit':
+      return `₹${pricing.price.toLocaleString('en-IN')} per ${pricing.unitLabel}${pricing.min ? ` (min ${pricing.min}${pricing.unitLabel === 'sq ft' ? '₹' : ''})` : ''}`;
+    case 'inspection':
+      return `Visit ₹${pricing.visitCharge} · adjusted in final bill`;
+    case 'quote':
+      return pricing.note || 'Free visit · quote on site';
+    default:
+      return 'Price on request';
+  }
+}
+
+/**
+ * Compute numeric price for cart calculation
+ */
+export function getServiceNumericPrice(service, selectedBhk = '2BHK', quantity = 1) {
+  if (!service || !service.pricing) return 0;
+  const { pricing } = service;
+
+  switch (pricing.kind) {
+    case 'fixed':
+      return pricing.price;
+    case 'per_bhk':
+      return pricing.prices[selectedBhk] ?? pricing.prices['2BHK'] ?? Object.values(pricing.prices)[0] ?? 0;
+    case 'per_unit': {
+      const effectiveQty = pricing.min ? Math.max(quantity, pricing.min) : quantity;
+      return pricing.price * effectiveQty;
+    }
+    case 'inspection':
+      return pricing.visitCharge;
+    case 'quote':
+      return 0;
+    default:
+      return 0;
+  }
+}

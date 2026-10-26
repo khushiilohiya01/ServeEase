@@ -1,0 +1,274 @@
+@import "tailwindcss";
+
+:root {
+  --background: #F7F8F4;
+  --surface: #FFFFFF;
+  --surface-muted: #E8EDE7;
+
+  --primary: #173D32;
+  --primary-hover: #245544;
+  --accent: #A9C9AC;
+
+  --text-primary: #191E1B;
+  --text-secondary: #647269;
+
+  --border: #DDE4DB;
+
+  --success: #367A55;
+  --error: #B54848;
+
+  --navbar-height: 5rem; /* 80px */
+
+  /* Backwards compatibility aliases */
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-accent: var(--accent);
+  --color-text: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-border: var(--border);
+  --color-success: var(--success);
+  --color-error: var(--error);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
+
+  --container-max: 1320px;
+
+  /* Unified typography scale matching UX-first specification */
+  --text-xs: 0.8125rem;    /* 13px */
+  --text-sm: 0.875rem;     /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg: 1.125rem;     /* 18px */
+  --text-xl: 1.25rem;      /* 20px */
+  --text-2xl: 1.5rem;      /* 24px */
+
+  /* Responsive clamp() sizes: 36-64px Hero, 28-42px Section, 22-26px Sub, 18-20px Card */
+  --heading-hero: clamp(2.25rem, 3.8vw, 4rem);
+  --heading-section: clamp(1.75rem, 2.4vw, 2.625rem);
+  --heading-sub: clamp(1.375rem, 1.6vw, 1.625rem);
+  --heading-card: clamp(1.125rem, 1.2vw, 1.25rem);
+
+  --heading-sm: clamp(1.5rem, 2vw, 2rem);
+  --heading-md: clamp(2rem, 3vw, 2.75rem);
+  --heading-xl: clamp(2.5rem, 4vw, 3.5rem);
+}
+
+@theme {
+  --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Forest Green Signature Brand */
+  --color-forest-950: #0a1f18;
+  --color-forest-900: #173D32;
+  --color-forest-800: #245544;
+  --color-forest-700: #2f6955;
+  --color-forest-600: #3d886f;
+  --color-forest-500: #52a88b;
+  --color-forest-100: #e3eee9;
+  --color-forest-50: #f2f7f4;
+
+  /* Soft Sage Accent */
+  --color-sage-500: #A9C9AC;
+  --color-sage-400: #bdd7bf;
+  --color-sage-300: #cfe2d1;
+  --color-sage-200: #e0eee2;
+  --color-sage-100: #eef6ef;
+  --color-sage-50: #f7fbf8;
+
+  /* Natural Neutrals */
+  --color-warm-bg: #F7F7F2;
+  --color-warm-surface: #FFFFFF;
+  --color-warm-muted: #E8EBE2;
+  --color-warm-border: #DDE3DA;
+  --color-warm-text: #191E1B;
+  --color-warm-subtext: #66716A;
+
+  /* Backwards compatibility for existing teal references */
+  --color-teal-50: #f2f7f4;
+  --color-teal-100: #e3eee9;
+  --color-teal-200: #cfe2d1;
+  --color-teal-500: #52a88b;
+  --color-teal-600: #3d886f;
+  --color-teal-700: #245544;
+  --color-teal-800: #173D32;
+  --color-teal-900: #0f2a22;
+  --color-teal-950: #0a1f18;
+
+  --color-canvas: #F7F7F2;
+  --color-surface-subtle: #E8EBE2;
+  --color-surface-card: #FFFFFF;
+  --color-charcoal-900: #191E1B;
+  --color-charcoal-800: #262c28;
+  --color-charcoal-700: #373f3a;
+}
+
+/* Base resets & accessible focus indicators */
+@layer base {
+  html {
+    scroll-padding-top: 5.5rem;
+    background-color: var(--color-background);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-background);
+    color: var(--color-text);
+    margin: 0;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Accessible reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Shared centered container across all sections */
+.container-custom {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .container-custom {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-custom {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F7F7F2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #DDE3DA;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #66716A;
+}
+
+/* Reusable Typography System */
+.heading-hero {
+  font-size: var(--heading-hero);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+.heading-section {
+  font-size: var(--heading-section);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+.heading-sub {
+  font-size: var(--heading-sub);
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+}
+
+.heading-card {
+  font-size: var(--heading-card);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+.text-body {
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
+.text-supporting {
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.text-meta {
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+
+/* Continuous Infinite Marquee for Trust Strip */
+@keyframes trustMarquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.trust-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: trustMarquee 32s linear infinite;
+  will-change: transform;
+}
+
+.trust-marquee-track:hover,
+.trust-marquee-track:focus-within {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trust-marquee-track {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Enforce one section = approximately one desktop viewport */
+@media (min-width: 1024px) and (min-height: 600px) {
+  .section-viewport {
+    height: calc(100dvh - var(--navbar-height));
+    min-height: calc(100dvh - var(--navbar-height));
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
