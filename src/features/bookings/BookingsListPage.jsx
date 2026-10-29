@@ -64,7 +64,6 @@ export function BookingsListPage() {
         }
       />
 
-      {/* Status Filter Tabs - only shown if user has bookings */}
       {(!isLoading && (bookings.length > 0 || selectedFilter !== 'all')) && (
         <div className="flex gap-2 border-b border-neutral-200 pb-2 overflow-x-auto no-scrollbar">
           {filterTabs.map((tab) => {
@@ -87,7 +86,6 @@ export function BookingsListPage() {
         </div>
       )}
 
-      {/* Bookings List Body */}
       {isLoading ? (
         <div className="space-y-4 min-h-[400px]">
           <Skeleton className="h-32 rounded-2xl" />

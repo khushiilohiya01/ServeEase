@@ -48,7 +48,6 @@ export function Testimonials() {
   return (
     <section className="section-viewport bg-[#F7F8F4] border-b border-[#DDE4DB] py-6 lg:py-0" aria-labelledby="testimonials-heading">
       <div className="container-custom max-w-3xl space-y-4 lg:space-y-6 text-center">
-        {/* Section Heading */}
         <div className="space-y-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8EDE7] text-[#173D32] text-xs font-semibold">
             <ShieldCheck className="w-3.5 h-3.5" />
@@ -62,9 +61,7 @@ export function Testimonials() {
           </h2>
         </div>
 
-        {/* Featured Testimonial Composition */}
         <div className="relative bg-white rounded-3xl border border-[#DDE4DB] shadow-lg p-6 sm:p-8 lg:p-9 overflow-hidden">
-          {/* Subtle Decorative Quotation Mark in Background */}
           <div className="absolute top-4 right-6 text-5xl text-[#A9C9AC]/20 font-bold select-none pointer-events-none leading-none">
             &ldquo;
           </div>
@@ -78,19 +75,16 @@ export function Testimonials() {
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
               className="space-y-4 sm:space-y-5 relative z-10"
             >
-              {/* Star Rating */}
               <div className="flex items-center justify-center gap-1 text-amber-500">
                 {[...Array(current.rating)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                 ))}
               </div>
 
-              {/* Quotation Typography (Clean Manrope) */}
               <blockquote className="text-base sm:text-lg md:text-xl text-[#191E1B] leading-relaxed font-normal max-w-2xl mx-auto">
                 &ldquo;{current.quote}&rdquo;
               </blockquote>
 
-              {/* Author Info */}
               <div className="pt-1">
                 <p className="text-sm font-semibold text-[#191E1B]">{current.author}</p>
                 <p className="text-xs text-[#647269] mt-0.5">
@@ -100,7 +94,6 @@ export function Testimonials() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Navigation Controls */}
           <div className="pt-5 flex items-center justify-center gap-4 relative z-10">
             <button
               type="button"
@@ -111,7 +104,6 @@ export function Testimonials() {
               <ChevronLeft className="w-4 h-4" />
             </button>
 
-            {/* Dots */}
             <div className="flex items-center gap-2">
               {SAMPLE_TESTIMONIALS.map((t, idx) => (
                 <button

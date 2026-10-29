@@ -27,7 +27,6 @@ function SeasonalStripContent({ activeSeason, selectedBhk, mockDate }) {
     }
   };
 
-  // Resolve matching services for the active season
   const seasonalServices = useMemo(() => {
     if (!activeSeason || !activeSeason.serviceIds) return [];
     return activeSeason.serviceIds
@@ -45,7 +44,6 @@ function SeasonalStripContent({ activeSeason, selectedBhk, mockDate }) {
       className="bg-[#EAF2E9] border-b border-[#DDE4DB] py-2.5 px-4 text-[#173D32] relative z-20"
     >
       <div className="container-custom flex flex-col md:flex-row items-start md:items-center justify-between gap-2.5 sm:gap-4">
-        {/* Left: Seasonal Tag & Headline */}
         <div className="flex items-center gap-2 min-w-0">
           <span className="w-6 h-6 rounded-lg bg-[#173D32] text-white flex items-center justify-center shrink-0 shadow-2xs">
             <Sparkles className="w-3.5 h-3.5" />
@@ -62,7 +60,6 @@ function SeasonalStripContent({ activeSeason, selectedBhk, mockDate }) {
           </div>
         </div>
 
-        {/* Center / Right: Service Quick Links & Dismiss Button */}
         <div className="flex items-center gap-2 sm:gap-3 flex-wrap self-stretch md:self-auto justify-between md:justify-end">
           <div className="flex items-center gap-1.5 flex-wrap">
             {seasonalServices.map((service) => {
@@ -85,7 +82,6 @@ function SeasonalStripContent({ activeSeason, selectedBhk, mockDate }) {
             })}
           </div>
 
-          {/* Dismiss button (persists for session) */}
           <button
             type="button"
             onClick={handleDismiss}

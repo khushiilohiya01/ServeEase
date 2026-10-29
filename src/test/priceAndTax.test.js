@@ -1,11 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import { formatCurrency, formatDuration, getStatusBadgeVariant } from '../lib/formatters';
-import { TAX_RATE, PLATFORM_FEE } from '../lib/constants';
+import { priceBreakdown } from '../lib/pricing';
 
 describe('Pricing, Tax & Formatter Calculations', () => {
   it('formats currency correctly in INR format', () => {
     const formatted = formatCurrency(1499);
-    // Should format with rupee symbol or INR currency conventions
     expect(formatted).toContain('1,499');
   });
 
@@ -14,15 +13,13 @@ describe('Pricing, Tax & Formatter Calculations', () => {
     expect(formatCurrency(null)).toContain('0');
   });
 
-  it('correctly calculates 5% GST tax and platform fee', () => {
-    const basePrice = 1000;
-    const tax = Math.round(basePrice * TAX_RATE);
-    const total = basePrice + tax + PLATFORM_FEE;
+  it('adds 5% GST and the platform fee', () => {
+    expect(priceBreakdown(1000)).toEqual({ subtotal: 1000, tax: 50, platformFee: 49, total: 1099 });
+    expect(priceBreakdown(899).tax).toBe(45);
+  });
 
-    expect(TAX_RATE).toBe(0.05);
-    expect(PLATFORM_FEE).toBe(49);
-    expect(tax).toBe(50);
-    expect(total).toBe(1099);
+  it('does not charge a platform fee on a free visit', () => {
+    expect(priceBreakdown(0)).toEqual({ subtotal: 0, tax: 0, platformFee: 0, total: 0 });
   });
 
   it('formats duration in hours and minutes cleanly', () => {

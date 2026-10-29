@@ -21,7 +21,6 @@ export function CartPage() {
 
   const handleProceedToCheckout = () => {
     if (!isAuthenticated) {
-      // Gate through sign in/sign up with explicit return path
       openAuthModal('signin');
       localStorage.setItem('serveease_auth_return_to', '/checkout');
     } else {
@@ -66,7 +65,6 @@ export function CartPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Cart Items List */}
         <div className="lg:col-span-8 space-y-4">
           {items.map((item) => (
             <Card key={item.cartItemId} className="p-5 border-[#DDE4DB] bg-white">
@@ -89,7 +87,6 @@ export function CartPage() {
                       {item.description}
                     </p>
 
-                    {/* BHK Selector - Strictly only for the 3 size-based services */}
                     {item.isBhkEligible && (
                       <div className="mt-3 flex items-center gap-2">
                         <span className="text-xs font-semibold text-[#191E1B]">
@@ -116,7 +113,6 @@ export function CartPage() {
                   </div>
                 </div>
 
-                {/* Price & Remove */}
                 <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-[#DDE4DB]/60">
                   <span className="text-lg font-bold text-[#191E1B]">
                     {formatCurrency(item.price)}
@@ -135,7 +131,6 @@ export function CartPage() {
           ))}
         </div>
 
-        {/* Order Summary & Checkout Card */}
         <div className="lg:col-span-4 bg-white rounded-3xl p-6 border border-[#DDE4DB] shadow-sm space-y-5">
           <h2 className="text-base font-bold text-[#191E1B] border-b border-[#DDE4DB]/60 pb-3">
             Payment Summary
@@ -173,7 +168,6 @@ export function CartPage() {
             Proceed to Checkout
           </Button>
 
-          {/* Business Approved Payment Promise & Guarantee */}
           <div className="pt-3 border-t border-[#DDE4DB]/60 space-y-2.5">
             <div className="flex items-start gap-2 text-[11px] text-[#647269]">
               <CreditCard className="w-4 h-4 text-[#173D32] shrink-0 mt-0.5" />

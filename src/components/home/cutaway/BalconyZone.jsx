@@ -30,7 +30,6 @@ export function BalconyZone({ isSelected, onSelect }) {
         className="transition-colors duration-200 group-hover:fill-[#F2F7F1]"
       />
 
-      {/* Open Balcony Grill Railing */}
       <line
         x1="642"
         y1="188"
@@ -59,7 +58,6 @@ export function BalconyZone({ isSelected, onSelect }) {
         />
       ))}
 
-      {/* Scissor Clothes Drying Stand */}
       <line
         x1="655"
         y1="106"
@@ -84,7 +82,6 @@ export function BalconyZone({ isSelected, onSelect }) {
         stroke="#173D32"
         strokeWidth="2.2"
       />
-      {/* Drying towel */}
       <rect
         x="680"
         y="108"
@@ -96,7 +93,6 @@ export function BalconyZone({ isSelected, onSelect }) {
         strokeWidth="1.8"
       />
 
-      {/* Potted Green Plants */}
       <g transform="translate(768, 134)">
         <path
           d="M 12,28 L 38,28 L 32,54 L 18,54 Z"
@@ -109,7 +105,6 @@ export function BalconyZone({ isSelected, onSelect }) {
         <circle cx="37" cy="24" r="9" fill="#367A55" />
       </g>
 
-      {/* Pigeon Net Grid Mesh Indicator */}
       <rect
         x="644"
         y="48"
@@ -122,7 +117,6 @@ export function BalconyZone({ isSelected, onSelect }) {
         opacity="0.8"
       />
 
-      {/* Room Tag Indicator */}
       <g transform="translate(645, 32)">
         <rect
           width="100"

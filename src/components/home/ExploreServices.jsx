@@ -28,7 +28,6 @@ export function ExploreServices() {
       aria-labelledby="explore-heading"
     >
       <div className="container-custom space-y-8 lg:space-y-10">
-        {/* Section Heading & Reassurance */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8EDE7] text-[#173D32] text-xs font-semibold">
@@ -54,7 +53,6 @@ export function ExploreServices() {
           </div>
         </div>
 
-        {/* Bookable Featured Services Grid */}
         <div className="space-y-6">
           <div className="flex items-center justify-between border-b border-[#DDE4DB]/80 pb-3">
             <div className="flex items-center gap-2">
@@ -80,7 +78,6 @@ export function ExploreServices() {
           </div>
         </div>
 
-        {/* Unified Bottom Catalog Action Button */}
         <div className="pt-2 text-center space-y-3">
           <Link
             to="/services"

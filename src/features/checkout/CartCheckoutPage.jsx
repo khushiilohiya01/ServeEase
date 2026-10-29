@@ -16,6 +16,7 @@ import { Card } from '../../components/ui/Card';
 import { Input } from '../../components/ui/Input';
 import { TIME_SLOTS, PAYMENT_PROMISE, GUARANTEE_PROMISE } from '../../lib/constants';
 import { formatCurrency } from '../../lib/formatters';
+import { firstOpenSlot, isSlotInPast, slotToISO, toDateKey } from '../../lib/dates';
 import toast from 'react-hot-toast';
 
 export function CartCheckoutPage() {
@@ -24,11 +25,9 @@ export function CartCheckoutPage() {
 
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(() => {
-    const today = new Date();
-    return today.toISOString().split('T')[0];
-  });
-  const [selectedSlot, setSelectedSlot] = useState(TIME_SLOTS[1]);
+  const [initialSlot] = useState(() => firstOpenSlot(TIME_SLOTS));
+  const [selectedDate, setSelectedDate] = useState(initialSlot.date);
+  const [selectedSlot, setSelectedSlot] = useState(initialSlot.slot);
   const [paymentOption, setPaymentOption] = useState('pay_after');
   const [notes, setNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -54,7 +53,7 @@ export function CartCheckoutPage() {
           setIsAddingAddress(true);
         }
       } catch {
-        // Mock fallback handles this
+        // not fatal, user can still add an address
       }
     }
     loadAddresses();
@@ -94,30 +93,36 @@ export function CartCheckoutPage() {
   };
 
   const handleConfirmBooking = async () => {
-    if (!selectedAddressId && !isAddingAddress) {
-      toast.error('Please select or add a service address');
+    if (!selectedAddressId || isAddingAddress) {
+      toast.error(isAddingAddress ? 'Please save the new address first' : 'Please select or add a service address');
+      return;
+    }
+    if (isSlotInPast(selectedDate, selectedSlot)) {
+      toast.error('That slot has already started. Please pick a later one.');
       return;
     }
 
     setIsSubmitting(true);
     try {
-      const scheduledAt = `${selectedDate}T${selectedSlot.split(' ')[0]}:00Z`;
       const res = await apiRequest('/bookings', {
         method: 'POST',
         body: JSON.stringify({
           service_id: items[0]?.serviceId,
           address_id: selectedAddressId,
-          scheduled_at: scheduledAt,
+          scheduled_at: slotToISO(selectedDate, selectedSlot),
           notes,
-          custom_total: total,
           cart_items: items,
         }),
       });
 
       const booking = res.data;
       clearCart();
-      toast.success('Booking confirmed successfully!');
-      navigate(`/booking-success/${booking.id}`, { replace: true });
+      if (paymentOption === 'online_payment') {
+        navigate(`/checkout/${booking.id}`, { replace: true });
+      } else {
+        toast.success('Booking confirmed. Pay after the job is done.');
+        navigate(`/booking-success/${booking.id}`, { replace: true });
+      }
     } catch (err) {
       toast.error(err.message || 'Failed to place booking. Please try again.');
     } finally {
@@ -137,9 +142,7 @@ export function CartCheckoutPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Side: Address & Schedule */}
         <div className="lg:col-span-7 space-y-6">
-          {/* 1. Address Selection */}
           <Card className="p-6 bg-white border-[#DDE3DA]">
             <div className="flex items-center justify-between mb-4 pb-2 border-b border-[#DDE3DA]/60">
               <div className="flex items-center gap-2">
@@ -237,7 +240,6 @@ export function CartCheckoutPage() {
             )}
           </Card>
 
-          {/* 2. Schedule & Slot Selection */}
           <Card className="p-6 bg-white border-[#DDE3DA]">
             <div className="flex items-center gap-2 mb-4 pb-2 border-b border-[#DDE3DA]/60">
               <Clock className="w-4 h-4 text-[#173D32]" />
@@ -253,7 +255,7 @@ export function CartCheckoutPage() {
                 </label>
                 <input
                   type="date"
-                  min={new Date().toISOString().split('T')[0]}
+                  min={toDateKey()}
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
                   className="w-full sm:w-64 rounded-xl border border-[#DDE3DA] bg-white px-3.5 py-2 text-xs sm:text-sm text-neutral-900 focus:outline-hidden focus:border-[#173D32]"
@@ -269,8 +271,9 @@ export function CartCheckoutPage() {
                     <button
                       key={slot}
                       type="button"
+                      disabled={isSlotInPast(selectedDate, slot)}
                       onClick={() => setSelectedSlot(slot)}
-                      className={`p-2.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
+                      className={`p-2.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 disabled:line-through ${
                         selectedSlot === slot
                           ? 'border-[#173D32] bg-[#E8EBE2] text-[#173D32]'
                           : 'border-[#DDE3DA] bg-white text-neutral-700 hover:border-[#173D32]/40'
@@ -297,7 +300,6 @@ export function CartCheckoutPage() {
             </div>
           </Card>
 
-          {/* 3. Payment Method */}
           <Card className="p-6 bg-white border-[#DDE3DA]">
             <div className="flex items-center gap-2 mb-4 pb-2 border-b border-[#DDE3DA]/60">
               <CreditCard className="w-4 h-4 text-[#173D32]" />
@@ -346,7 +348,6 @@ export function CartCheckoutPage() {
           </Card>
         </div>
 
-        {/* Right Side: Order Summary & Confirmation */}
         <div className="lg:col-span-5 bg-white rounded-3xl p-6 border border-[#DDE3DA] shadow-sm space-y-5">
           <div className="flex items-center justify-between border-b border-[#DDE3DA]/60 pb-3">
             <h2 className="text-base font-bold text-neutral-900">

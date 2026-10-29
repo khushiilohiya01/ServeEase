@@ -6,7 +6,6 @@ import { Skeleton } from '../components/ui/Skeleton';
 import { EmptyState } from '../components/ui/EmptyState';
 import { Compass } from 'lucide-react';
 
-// Lazy-loaded Feature Pages for optimized code-splitting
 const HomePage = lazy(() => import('../features/services/HomePage').then(m => ({ default: m.HomePage })));
 const ServicesListPage = lazy(() => import('../features/services/ServicesListPage').then(m => ({ default: m.ServicesListPage })));
 const ServiceDetailPage = lazy(() => import('../features/services/ServiceDetailPage').then(m => ({ default: m.ServiceDetailPage })));
@@ -64,7 +63,6 @@ export const router = createBrowserRouter([
     path: '/',
     element: <AppShell />,
     children: [
-      // Public routes
       { index: true, element: withSuspense(HomePage) },
       { path: 'services', element: withSuspense(ServicesListPage) },
       { path: 'services/:serviceId', element: withSuspense(ServiceDetailPage) },
@@ -72,7 +70,6 @@ export const router = createBrowserRouter([
       { path: 'login', element: withSuspense(LoginPage) },
       { path: 'signup', element: withSuspense(SignupPage) },
 
-      // Protected routes (require authenticated session)
       {
         element: <ProtectedRoute />,
         children: [
@@ -88,7 +85,6 @@ export const router = createBrowserRouter([
         ],
       },
 
-      // Fallback 404
       { path: '*', element: <NotFoundPage /> },
     ],
   },

@@ -18,6 +18,7 @@ import { DateSlotPicker } from '../../components/booking/DateSlotPicker';
 import { Skeleton } from '../../components/ui/Skeleton';
 import { ServiceSpotIllustration } from '../../components/illustrations/ServiceSpotIllustration';
 import toast from 'react-hot-toast';
+import { addDays, isSlotInPast, slotToISO, toDateKey } from '../../lib/dates';
 
 export function BookingDetailPage() {
   const { bookingId } = useParams();
@@ -25,17 +26,11 @@ export function BookingDetailPage() {
   const [booking, setBooking] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Reschedule Modal State
   const [isRescheduleOpen, setIsRescheduleOpen] = useState(false);
-  const [rescheduleDate, setRescheduleDate] = useState(() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 2);
-    return d.toISOString().split('T')[0];
-  });
+  const [rescheduleDate, setRescheduleDate] = useState(() => toDateKey(addDays(new Date(), 2)));
   const [rescheduleSlot, setRescheduleSlot] = useState('02:00 PM - 04:00 PM');
   const [isUpdating, setIsUpdating] = useState(false);
 
-  // Cancel Modal State
   const [isCancelOpen, setIsCancelOpen] = useState(false);
 
   useEffect(() => {
@@ -54,14 +49,17 @@ export function BookingDetailPage() {
   }, [bookingId]);
 
   const handleConfirmReschedule = async () => {
+    if (isSlotInPast(rescheduleDate, rescheduleSlot)) {
+      toast.error('That slot has already started. Please pick a later one.');
+      return;
+    }
     setIsUpdating(true);
     try {
-      const newScheduledAt = `${rescheduleDate}T14:00:00Z`;
+      const newScheduledAt = slotToISO(rescheduleDate, rescheduleSlot);
       const res = await apiRequest(`/bookings/${bookingId}`, {
         method: 'PATCH',
         body: JSON.stringify({
           scheduled_at: newScheduledAt,
-          notes: `${booking.notes || ''} [Rescheduled to ${rescheduleDate} ${rescheduleSlot}]`.trim(),
         }),
       });
       setBooking(res?.data);
@@ -126,7 +124,6 @@ export function BookingDetailPage() {
         </Link>
       </div>
 
-      {/* Top Banner Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[#DDE3DA]">
         <div>
           <div className="flex items-center gap-2.5 mb-1.5">
@@ -165,9 +162,7 @@ export function BookingDetailPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* Left 2 Columns: Main Details */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Service Info Card */}
           <Card className="border-[#DDE3DA] shadow-sm">
             <CardHeader className="pb-3 border-b border-[#DDE3DA]/60">
               <CardTitle className="text-base">Service Information</CardTitle>
@@ -225,7 +220,6 @@ export function BookingDetailPage() {
             </CardContent>
           </Card>
 
-          {/* Payment & Transaction Card */}
           <Card className="border-[#DDE3DA] shadow-sm">
             <CardHeader className="pb-3 border-b border-[#DDE3DA]/60">
               <CardTitle className="text-base flex items-center justify-between">
@@ -282,7 +276,6 @@ export function BookingDetailPage() {
           </Card>
         </div>
 
-        {/* Right Column: Support & Guarantees */}
         <div className="space-y-6">
           <Card className="border-neutral-200/90 shadow-sm p-6 space-y-4 text-xs">
             <h3 className="text-sm font-bold text-neutral-900 flex items-center gap-2">
@@ -300,7 +293,6 @@ export function BookingDetailPage() {
         </div>
       </div>
 
-      {/* Reschedule Modal */}
       <Modal
         isOpen={isRescheduleOpen}
         onClose={() => setIsRescheduleOpen(false)}
@@ -330,7 +322,6 @@ export function BookingDetailPage() {
         </div>
       </Modal>
 
-      {/* Cancel Confirmation Modal */}
       <Modal
         isOpen={isCancelOpen}
         onClose={() => setIsCancelOpen(false)}

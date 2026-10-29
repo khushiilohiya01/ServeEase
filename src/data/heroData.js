@@ -16,9 +16,6 @@ export const BASE_SYMPTOM_CHIPS = [
   { label: 'Geyser not heating', query: 'Geyser not heating' },
 ];
 
-/**
- * Returns symptom chips including the seasonal chip if one is currently active
- */
 export function getHeroSymptomChips(city = 'Bengaluru', dateOverride = null) {
   const chips = [...BASE_SYMPTOM_CHIPS];
   const activeSeason = getActiveSeason(city, dateOverride);

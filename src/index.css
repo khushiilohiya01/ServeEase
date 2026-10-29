@@ -19,7 +19,7 @@
 
   --navbar-height: 5rem; /* 80px */
 
-  /* Backwards compatibility aliases */
+  /* old names, still used in a few places */
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-surface-muted: var(--surface-muted);
@@ -39,7 +39,6 @@
 
   --container-max: 1320px;
 
-  /* Unified typography scale */
   --text-xs: 0.8125rem;    /* 13px */
   --text-sm: 0.875rem;     /* 14px */
   --text-base: 1rem;       /* 16px */
@@ -47,7 +46,7 @@
   --text-xl: 1.25rem;      /* 20px */
   --text-2xl: 1.5rem;      /* 24px */
 
-  /* Responsive clamp() sizes: 36-64px Hero, 28-42px Section, 22-26px Sub, 18-20px Card */
+  /* hero 36-64px, section 28-42px, sub 22-26px, card 18-20px */
   --heading-hero: clamp(2.25rem, 3.8vw, 4rem);
   --heading-section: clamp(1.75rem, 2.4vw, 2.625rem);
   --heading-sub: clamp(1.375rem, 1.6vw, 1.625rem);
@@ -64,7 +63,7 @@
   --font-display: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-serif: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  /* Forest Green Signature Brand */
+  /* brand green */
   --color-forest-950: #0a1f18;
   --color-forest-900: #173D32;
   --color-forest-800: #245544;
@@ -74,7 +73,7 @@
   --color-forest-100: #e3eee9;
   --color-forest-50: #f2f7f4;
 
-  /* Soft Sage Accent */
+  /* sage */
   --color-sage-500: #A9C9AC;
   --color-sage-400: #bdd7bf;
   --color-sage-300: #cfe2d1;
@@ -82,7 +81,7 @@
   --color-sage-100: #eef6ef;
   --color-sage-50: #f7fbf8;
 
-  /* Natural Neutrals */
+  /* neutrals */
   --color-warm-bg: #F7F7F2;
   --color-warm-surface: #FFFFFF;
   --color-warm-muted: #E8EBE2;
@@ -90,7 +89,7 @@
   --color-warm-text: #191E1B;
   --color-warm-subtext: #66716A;
 
-  /* Backwards compatibility for existing teal references */
+  /* teal-* classes are mapped onto the brand green */
   --color-teal-50: #f2f7f4;
   --color-teal-100: #e3eee9;
   --color-teal-200: #cfe2d1;
@@ -109,7 +108,6 @@
   --color-charcoal-700: #373f3a;
 }
 
-/* Base resets & accessible focus indicators */
 @layer base {
   html {
     scroll-padding-top: 5.5rem;
@@ -135,7 +133,6 @@
   }
 }
 
-/* Accessible reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-duration: 0.01ms !important;
@@ -145,7 +142,6 @@
   }
 }
 
-/* Shared centered container across all sections */
 .container-custom {
   width: 100%;
   max-width: var(--container-max);
@@ -169,7 +165,6 @@
   }
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -188,7 +183,6 @@
   background: #66716A;
 }
 
-/* Reusable Typography System */
 .heading-hero {
   font-size: var(--heading-hero);
   line-height: 1.12;
@@ -232,7 +226,7 @@
   line-height: 1.5;
 }
 
-/* Continuous Infinite Marquee for Trust Strip */
+/* trust strip marquee */
 @keyframes trustMarquee {
   0% {
     transform: translate3d(0, 0, 0);
@@ -261,7 +255,7 @@
   }
 }
 
-/* Enforce one section = approximately one desktop viewport */
+/* home sections are roughly one screen tall on desktop */
 @media (min-width: 1024px) and (min-height: 600px) {
   .section-viewport {
     height: calc(100dvh - var(--navbar-height));

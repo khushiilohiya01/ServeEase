@@ -3,12 +3,13 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Mail, Lock, User, Phone, ArrowRight, ShieldCheck, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
+import { safeRedirect } from '../../lib/formatters';
 
 export function SignupPage() {
   const { register: registerAuth, login } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const redirectUrl = searchParams.get('redirect') || localStorage.getItem('serveease_auth_return_to') || '/dashboard';
+  const redirectUrl = safeRedirect(searchParams.get('redirect') || localStorage.getItem('serveease_auth_return_to'));
 
   const [fullName, setFullName] = useState('');
   const [identifier, setIdentifier] = useState('');
@@ -50,8 +51,8 @@ export function SignupPage() {
       return;
     }
 
-    if (!password || password.length < 6) {
-      setServerError('Password must be at least 6 characters');
+    if (!password || password.length < 8) {
+      setServerError('Password must be at least 8 characters');
       return;
     }
 
@@ -65,7 +66,7 @@ export function SignupPage() {
       const cleanEmail = identifier.includes('@')
         ? identifier.trim().toLowerCase()
         : `${identifier.trim()}@serveease.demo`;
-      const phone = useMobile ? identifier.trim() : '+91 98765 43210';
+      const phone = useMobile ? identifier.trim() : '';
       await registerAuth({
         full_name: fullName.trim(),
         email: cleanEmail,
@@ -224,13 +225,13 @@ export function SignupPage() {
                 <div className="flex items-center justify-between text-[11px]">
                   <span className="text-neutral-500">Strength:</span>
                   <span className={`font-semibold ${
-                    password.length < 6
+                    password.length < 8
                       ? 'text-rose-600'
                       : password.length < 8
                       ? 'text-amber-600'
                       : 'text-emerald-600'
                   }`}>
-                    {password.length < 6
+                    {password.length < 8
                       ? 'Too short (min 6)'
                       : password.length < 8
                       ? 'Moderate'
@@ -240,7 +241,7 @@ export function SignupPage() {
                 <div className="w-full h-1 bg-neutral-100 rounded-full overflow-hidden">
                   <div
                     className={`h-full transition-all duration-300 ${
-                      password.length < 6
+                      password.length < 8
                         ? 'w-1/4 bg-rose-500'
                         : password.length < 8
                         ? 'w-2/3 bg-amber-500'
@@ -252,7 +253,7 @@ export function SignupPage() {
             )}
             {!password && (
               <p className="text-[11px] text-neutral-500 mt-1">
-                Must be at least 6 characters with mixed characters.
+                Must be at least 8 characters.
               </p>
             )}
           </div>
@@ -280,7 +281,6 @@ export function SignupPage() {
             </div>
           </div>
 
-          {/* Terms Consent Checkbox */}
           <div className="flex items-start gap-2 pt-0.5">
             <input
               id="signup-terms"

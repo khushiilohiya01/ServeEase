@@ -28,7 +28,6 @@ export function BathroomZone({ isSelected, onSelect }) {
         className="transition-colors duration-200 group-hover:fill-[#F2F7F1]"
       />
 
-      {/* Wall-mounted Cylindrical Geyser with hot/cold pipes */}
       <rect
         x="398"
         y="42"
@@ -58,7 +57,6 @@ export function BathroomZone({ isSelected, onSelect }) {
       <circle cx="427" cy="62" r="3.5" fill="#367A55" />
       <circle cx="427" cy="76" r="3.5" fill="#D97706" />
 
-      {/* Wall-Mounted Shower Head with Pipe & Flange */}
       <rect
         x="604"
         y="48"
@@ -86,12 +84,10 @@ export function BathroomZone({ isSelected, onSelect }) {
         stroke="#FFFFFF"
         strokeWidth="1.5"
       />
-      {/* Spray water droplets */}
       <circle cx="526" cy="104" r="1.8" fill="#367A55" />
       <circle cx="532" cy="112" r="1.8" fill="#367A55" />
       <circle cx="538" cy="105" r="1.8" fill="#367A55" />
 
-      {/* Washbasin with Mirror */}
       <rect
         x="465"
         y="126"
@@ -108,7 +104,6 @@ export function BathroomZone({ isSelected, onSelect }) {
         stroke="#173D32"
         strokeWidth="2.2"
       />
-      {/* Washbasin Tap with Ambient Single Drip */}
       <path
         d="M 489,182 L 489,165 Q 489,156 480,156"
         fill="none"
@@ -124,7 +119,6 @@ export function BathroomZone({ isSelected, onSelect }) {
         className="hero-tap-drop"
       />
 
-      {/* Authentic Bathroom Bucket & Mug */}
       <path
         d="M 536,214 L 582,214 L 574,254 L 544,254 Z"
         fill="#A9C9AC"
@@ -149,7 +143,6 @@ export function BathroomZone({ isSelected, onSelect }) {
         strokeWidth="1.8"
       />
 
-      {/* Room Tag Indicator */}
       <g transform="translate(395, 32)">
         <rect
           width="106"

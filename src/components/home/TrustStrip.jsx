@@ -23,7 +23,7 @@ const TRUST_PILLARS = [
   },
 ];
 
-// Duplicate items twice to form two equal halves for a seamless -50% marquee loop
+// rendered twice so translating by -50% loops cleanly
 const MARQUEE_SET = [...TRUST_PILLARS, ...TRUST_PILLARS];
 
 export function TrustStrip() {
@@ -32,17 +32,14 @@ export function TrustStrip() {
       className="relative bg-white border-b border-[#DDE4DB] overflow-hidden py-4 sm:py-5 select-none"
       aria-label="Trust and Key Service Guarantees"
     >
-      {/* Soft gradient edge fade masks */}
       <div className="pointer-events-none absolute inset-y-0 left-0 w-12 sm:w-24 bg-gradient-to-r from-white to-transparent z-10" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-12 sm:w-24 bg-gradient-to-l from-white to-transparent z-10" />
 
-      {/* Marquee Track Container */}
       <div
         className="trust-marquee-track items-center"
         tabIndex={0}
         aria-label="Continuous guarantees marquee. Hover or focus to pause."
       >
-        {/* Render Set A & Set B for seamless 0% -> -50% linear infinite loop */}
         {[0, 1].map((setIndex) => (
           <div key={setIndex} className="flex items-center shrink-0">
             {MARQUEE_SET.map((pillar, idx) => {
@@ -63,7 +60,6 @@ export function TrustStrip() {
                     </div>
                   </div>
 
-                  {/* Subtle vertical divider between items */}
                   <div className="h-6 w-[1px] bg-[#DDE4DB] shrink-0" aria-hidden="true" />
                 </div>
               );

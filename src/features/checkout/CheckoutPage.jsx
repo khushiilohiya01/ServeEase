@@ -18,19 +18,20 @@ import { Input } from '../../components/ui/Input';
 import { Skeleton } from '../../components/ui/Skeleton';
 import { ServiceSpotIllustration } from '../../components/illustrations/ServiceSpotIllustration';
 import toast from 'react-hot-toast';
+import { useAuth } from '../../context/AuthContext';
 
 export function CheckoutPage() {
   const { bookingId } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [booking, setBooking] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('card_sandbox');
 
-  // Simulated test card form state
   const [cardData, setCardData] = useState({
-    name: 'Alex Rivera',
+    name: user?.full_name || '',
     number: '•••• •••• •••• 4242',
     expiry: '12/28',
     cvv: '•••',
@@ -44,7 +45,7 @@ export function CheckoutPage() {
         const data = res?.data;
         setBooking(data);
 
-        // If already paid, redirect straight to success
+        // already paid, nothing to do here
         if (data?.payment && data?.payment.status === 'succeeded') {
           navigate(`/booking-success/${bookingId}`, { replace: true });
         }
@@ -61,20 +62,18 @@ export function CheckoutPage() {
   const handleProcessPayment = async () => {
     setIsProcessing(true);
     try {
-      // 1. Initiate checkout session from server
       await apiRequest('/payments/checkout-session', {
         method: 'POST',
         body: JSON.stringify({
-          booking_id: Number(bookingId),
+          booking_id: booking.id,
           payment_method: paymentMethod,
         }),
       });
 
-      // 2. Complete payment confirmation callback
       await apiRequest('/payments/confirm', {
         method: 'POST',
         body: JSON.stringify({
-          booking_id: Number(bookingId),
+          booking_id: booking.id,
           provider: 'stripe_sandbox_demo',
           order_id: `ord_${Date.now()}`,
           payment_id: `pay_${Date.now()}`,
@@ -137,12 +136,11 @@ export function CheckoutPage() {
             Finalize Your Booking & Payment
           </h1>
           <p className="text-xs sm:text-sm text-[#647269] mt-1">
-            Booking ID: {booking.id} • Authenticated server session
+            Booking ID: {booking.id}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-          {/* Left Column: Payment Method Selection */}
           <div className="lg:col-span-2 space-y-6">
             <Card className="border-[#DDE4DB] shadow-sm bg-white">
               <CardHeader>
@@ -156,7 +154,6 @@ export function CheckoutPage() {
               </CardHeader>
 
               <CardContent className="space-y-5">
-                {/* Payment Notice */}
                 <div className="p-4 rounded-xl bg-[#E8EDE7]/60 border border-[#DDE4DB] text-xs text-[#173D32] space-y-1">
                   <div className="font-semibold flex items-center gap-1.5 text-[#173D32]">
                     <ShieldCheck className="w-4 h-4 text-[#173D32]" />
@@ -167,7 +164,6 @@ export function CheckoutPage() {
                   </p>
                 </div>
 
-                {/* Option 1: Card / UPI */}
                 <div
                   onClick={() => setPaymentMethod('card_sandbox')}
                   className={`p-4 rounded-2xl border transition-all cursor-pointer ${
@@ -210,7 +206,6 @@ export function CheckoutPage() {
                   </div>
                 </div>
 
-                {/* Option 2: Pay After Service Completed */}
                 <div
                   onClick={() => setPaymentMethod('pay_later')}
                   className={`p-4 rounded-2xl border transition-all cursor-pointer ${
@@ -234,7 +229,6 @@ export function CheckoutPage() {
                   </div>
                 </div>
 
-                {/* Submit Action */}
                 <div className="pt-4">
                   <Button
                     variant="primary"
@@ -254,7 +248,6 @@ export function CheckoutPage() {
             </Card>
           </div>
 
-          {/* Right Column: Order Details */}
           <div className="space-y-6">
             <Card className="border-[#DDE3DA] shadow-sm">
               <CardHeader className="pb-3 border-b border-[#DDE3DA]/60">
@@ -262,7 +255,6 @@ export function CheckoutPage() {
               </CardHeader>
 
               <CardContent className="space-y-4 text-xs">
-                {/* Service Details */}
                 <div className="flex gap-3 pb-3 border-b border-[#DDE3DA]/60">
                   <ServiceSpotIllustration
                     serviceId={booking.service?.id}
@@ -280,7 +272,6 @@ export function CheckoutPage() {
                   </div>
                 </div>
 
-                {/* Schedule & Address */}
                 <div className="space-y-2 py-1">
                   <div className="flex items-start gap-2 text-[#66716A]">
                     <Calendar className="w-3.5 h-3.5 text-[#66716A] shrink-0 mt-0.5" />
@@ -294,7 +285,6 @@ export function CheckoutPage() {
                   </div>
                 </div>
 
-                {/* Pricing Line Items */}
                 <div className="space-y-2 pt-3 border-t border-[#DDE3DA]/60 text-[#66716A]">
                   <div className="flex justify-between">
                     <span>Base Service</span>

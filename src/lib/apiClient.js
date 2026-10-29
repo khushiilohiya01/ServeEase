@@ -1,15 +1,20 @@
 import { INITIAL_SERVICES, INITIAL_ADDRESSES, INITIAL_BOOKINGS } from './mockData';
-import { TAX_RATE, PLATFORM_FEE, CATEGORY_COMPATIBILITY_MAP } from './constants';
+import { CATEGORY_COMPATIBILITY_MAP } from './constants';
+import { priceBreakdown } from './pricing';
+import { getServiceNumericPrice } from '../data/servicesData';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
-const ALLOW_MOCK_FALLBACK = import.meta.env.VITE_ENABLE_MOCK_FALLBACK !== 'false';
+// only fall back to local data when a real API is down if explicitly asked to,
+// otherwise users could end up "booking" against fake data without knowing
+const ALLOW_MOCK_FALLBACK = import.meta.env.VITE_ENABLE_MOCK_FALLBACK === 'true';
 
-// Local mock state repository for reliable offline / portfolio demo testing
+// seeded bookings use ids like 'SE-26K701', new ones are numeric
+const sameId = (a, b) => String(a) === String(b);
+
 class MockDataStore {
   constructor() {
     this.services = [...INITIAL_SERVICES];
 
-    // Persist registered users across reloads
     const storedUsers = localStorage.getItem('serveease_mock_users');
     this.users = storedUsers
       ? JSON.parse(storedUsers)
@@ -34,17 +39,14 @@ class MockDataStore {
           },
         ];
 
-    // Load persisted bookings (defaults to demo user's initial bookings)
     const storedBookings = localStorage.getItem('serveease_mock_bookings');
     this.bookings = storedBookings ? JSON.parse(storedBookings) : [...INITIAL_BOOKINGS];
 
-    // Load persisted addresses (defaults to demo user's initial addresses)
     const storedAddresses = localStorage.getItem('serveease_mock_addresses');
     this.addresses = storedAddresses ? JSON.parse(storedAddresses) : [...INITIAL_ADDRESSES];
 
     this.payments = this.bookings.map(b => b.payment).filter(Boolean);
 
-    // Check if an authenticated user session exists
     const token = localStorage.getItem('serveease_token');
     const sessionUserId = localStorage.getItem('serveease_mock_session_user_id');
     if (token && sessionUserId) {
@@ -66,7 +68,7 @@ class MockDataStore {
     try {
       localStorage.setItem('serveease_mock_users', JSON.stringify(this.users));
     } catch {
-      // storage unavailable fallback
+      // ignore
     }
   }
 
@@ -74,7 +76,7 @@ class MockDataStore {
     try {
       localStorage.setItem('serveease_mock_bookings', JSON.stringify(this.bookings));
     } catch {
-      // storage unavailable fallback
+      // ignore
     }
   }
 
@@ -82,7 +84,7 @@ class MockDataStore {
     try {
       localStorage.setItem('serveease_mock_addresses', JSON.stringify(this.addresses));
     } catch {
-      // storage unavailable fallback
+      // ignore
     }
   }
 
@@ -106,7 +108,6 @@ class MockDataStore {
         const symptoms = (s.symptoms || []).map(sym => sym.toLowerCase());
         const inclusions = (s.includes || s.inclusions || []).map(inc => inc.toLowerCase());
 
-        // Direct substring match
         if (
           name.includes(normalizedQuery) ||
           desc.includes(normalizedQuery) ||
@@ -117,7 +118,6 @@ class MockDataStore {
           return true;
         }
 
-        // Token match: all words in query appear across name, description, symptoms or inclusions
         return tokens.every(token =>
           name.includes(token) ||
           desc.includes(token) ||
@@ -173,7 +173,7 @@ class MockDataStore {
   }
 
   updateAddress(id, patch) {
-    const idx = this.addresses.findIndex(a => a.id === Number(id) && a.user_id === this.user?.id);
+    const idx = this.addresses.findIndex(a => sameId(a.id, id) && a.user_id === this.user?.id);
     if (idx === -1) throw new Error('Address not found');
     if (patch.is_default) {
       this.addresses = this.addresses.map(a =>
@@ -186,38 +186,32 @@ class MockDataStore {
   }
 
   deleteAddress(id) {
-    this.addresses = this.addresses.filter(a => !(a.id === Number(id) && a.user_id === this.user?.id));
+    this.addresses = this.addresses.filter(a => !(sameId(a.id, id) && a.user_id === this.user?.id));
     this.saveAddresses();
     return { success: true };
   }
 
-  createBooking({ service_id, address_id, scheduled_at, notes, custom_address, custom_total, cart_items }) {
+  createBooking({ service_id, address_id, scheduled_at, notes, custom_address, cart_items }) {
     if (!this.user) throw new Error('You must be signed in to create a booking');
-    const service = service_id
-      ? this.getServiceById(service_id)
-      : (cart_items?.[0] ? this.getServiceById(cart_items[0].serviceId) : this.services[0]);
-    let address = this.addresses.find(a => a.id === Number(address_id) && a.user_id === this.user.id);
-    if (!address && custom_address) {
+    const serviceKey = service_id ?? cart_items?.[0]?.serviceId;
+    if (!serviceKey) throw new ApiError('No service selected', 400);
+    const service = this.getServiceById(serviceKey);
+
+    let address = this.addresses.find(a => sameId(a.id, address_id) && a.user_id === this.user.id);
+    if (!address && custom_address?.line1) {
       address = this.addAddress(custom_address);
     }
-    if (!address) {
-      const userAddresses = this.getAddresses();
-      address = userAddresses[0] || this.addAddress({
-        label: 'Home',
-        line1: '123 Indiranagar 100ft Road',
-        city: 'Bengaluru',
-        state: 'Karnataka',
-        postal_code: '560038',
-      });
-    }
+    if (!address) throw new ApiError('Please choose a service address', 400);
 
-    const subtotal = custom_total
-      ? Math.round((custom_total - PLATFORM_FEE) / (1 + TAX_RATE))
+    // price comes from the catalogue, never from what the client sends
+    const itemsSubtotal = cart_items?.length
+      ? cart_items.reduce((sum, item) => {
+          const catalogueItem = this.getServiceById(item.serviceId);
+          return sum + getServiceNumericPrice(catalogueItem, item.bhk || undefined, item.quantity || 1);
+        }, 0)
       : service.base_price;
-    const discount_amount = 0.00;
-    const tax_amount = Math.round(subtotal * TAX_RATE * 100) / 100;
-    const platform_fee = PLATFORM_FEE;
-    const total_amount = custom_total || Math.round((subtotal + tax_amount + platform_fee - discount_amount) * 100) / 100;
+    const { subtotal, tax: tax_amount, platformFee: platform_fee, total: total_amount } = priceBreakdown(itemsSubtotal);
+    const discount_amount = 0;
 
     const newBooking = {
       id: Date.now(),
@@ -257,15 +251,16 @@ class MockDataStore {
   }
 
   getBookingById(id) {
-    const booking = this.bookings.find(b => b.id === Number(id));
-    if (!booking) throw new Error('Booking not found');
+    const booking = this.bookings.find(b => sameId(b.id, id) && b.user_id === this.user?.id);
+    if (!booking) throw new ApiError('Booking not found', 404);
     return booking;
   }
 
-  updateBookingStatus(id, { status, scheduled_at }) {
+  updateBookingStatus(id, { status, scheduled_at, notes }) {
     const booking = this.getBookingById(id);
     if (status) booking.status = status;
     if (scheduled_at) booking.scheduled_at = scheduled_at;
+    if (typeof notes === 'string') booking.notes = notes;
     booking.updated_at = new Date().toISOString();
     this.saveBookings();
     return booking;
@@ -315,7 +310,7 @@ class MockDataStore {
   }
 
   getPaymentById(id) {
-    const payment = this.payments.find(p => p.id === Number(id));
+    const payment = this.payments.find(p => sameId(p.id, id));
     if (!payment) throw new Error('Payment record not found');
     return payment;
   }
@@ -323,7 +318,6 @@ class MockDataStore {
 
 export const mockStore = new MockDataStore();
 
-// Normalized custom API error
 export class ApiError extends Error {
   constructor(message, status = 500, errors = null) {
     super(message);
@@ -333,7 +327,6 @@ export class ApiError extends Error {
   }
 }
 
-// Token storage helpers
 let authToken = localStorage.getItem('serveease_token') || null;
 
 export function setAuthToken(token) {
@@ -349,9 +342,7 @@ export function getAuthToken() {
   return authToken;
 }
 
-// Centralized request dispatcher
 export async function apiRequest(endpoint, options = {}) {
-  // If no external API base URL is configured, operate directly with the client data store
   if (!BASE_URL) {
     return handleMockFallback(endpoint, options);
   }
@@ -386,7 +377,6 @@ export async function apiRequest(endpoint, options = {}) {
     if (res.status === 204) return null;
     return await res.json();
   } catch (err) {
-    // If it's an explicit HTTP ApiError returned by the service, bubble it up
     if (err instanceof ApiError) {
       throw err;
     }
@@ -399,13 +389,11 @@ export async function apiRequest(endpoint, options = {}) {
   }
 }
 
-// Client-side mock dispatch router
 function handleMockFallback(endpoint, options = {}) {
   const method = (options.method || 'GET').toUpperCase();
   const [path, queryString] = endpoint.split('?');
   const query = new URLSearchParams(queryString || '');
 
-  // Simulate minimal realistic latency
   // GET /services
   if (path === '/services' && method === 'GET') {
     const category = query.get('category');
@@ -418,7 +406,7 @@ function handleMockFallback(endpoint, options = {}) {
     };
   }
 
-  // GET /services/:id (supports string kebab-case and numeric IDs)
+  // GET /services/:id
   const serviceDetailMatch = path.match(/^\/services\/([^/]+)$/);
   if (serviceDetailMatch && method === 'GET') {
     return {
@@ -500,8 +488,6 @@ function handleMockFallback(endpoint, options = {}) {
     mockStore.users.push(newUser);
     mockStore.saveUsers();
 
-    // Crucial: A newly registered user is NOT logged in automatically;
-    // they must sign in with their credentials to establish their session!
     return {
       user: {
         id: newUser.id,
@@ -541,7 +527,7 @@ function handleMockFallback(endpoint, options = {}) {
   }
 
   // PATCH /addresses/:id
-  const addressPatchMatch = path.match(/^\/addresses\/(\d+)$/);
+  const addressPatchMatch = path.match(/^\/addresses\/([^/]+)$/);
   if (addressPatchMatch && method === 'PATCH') {
     const body = JSON.parse(options.body || '{}');
     const updated = mockStore.updateAddress(addressPatchMatch[1], body);
@@ -568,7 +554,7 @@ function handleMockFallback(endpoint, options = {}) {
   }
 
   // GET /bookings/:id
-  const bookingDetailMatch = path.match(/^\/bookings\/(\d+)$/);
+  const bookingDetailMatch = path.match(/^\/bookings\/([^/]+)$/);
   if (bookingDetailMatch && method === 'GET') {
     return { data: mockStore.getBookingById(bookingDetailMatch[1]), isMock: true };
   }
@@ -587,7 +573,7 @@ function handleMockFallback(endpoint, options = {}) {
     return { data: session, isMock: true };
   }
 
-  // POST /payments/confirm (demo/sandbox webhook mock)
+  // POST /payments/confirm
   if (path === '/payments/confirm' && method === 'POST') {
     const body = JSON.parse(options.body || '{}');
     const result = mockStore.confirmPayment(body.booking_id, body);
@@ -600,7 +586,7 @@ function handleMockFallback(endpoint, options = {}) {
   }
 
   // GET /payments/:id
-  const paymentDetailMatch = path.match(/^\/payments\/(\d+)$/);
+  const paymentDetailMatch = path.match(/^\/payments\/([^/]+)$/);
   if (paymentDetailMatch && method === 'GET') {
     return { data: mockStore.getPaymentById(paymentDetailMatch[1]), isMock: true };
   }

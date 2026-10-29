@@ -19,7 +19,6 @@ import {
 import toast from 'react-hot-toast';
 
 export function LocationModal({ isOpen, onClose }) {
-  // Handle ESC key and scroll-lock
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape' && isOpen) onClose();
@@ -70,7 +69,6 @@ function LocationModalContent({ onClose }) {
     : null;
   const isUnknownPincode = isExact6DigitPin && !matchedPincodeLocality;
 
-  // Search results for text or partial query
   const searchResults = !isUnknownPincode && trimmedQuery ? searchLocalities(trimmedQuery) : [];
 
   const currentCityObj =
@@ -103,7 +101,6 @@ function LocationModalContent({ onClose }) {
           matchedPincodeLocality.locality
         );
       }
-      // If unknown pincode, the "Area not covered yet" UI will render automatically
     } else if (searchResults.length > 0) {
       handleSelectLocality(searchResults[0].city, searchResults[0].locality);
     }
@@ -167,7 +164,6 @@ function LocationModalContent({ onClose }) {
       />
 
       <div className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-[#DDE4DB] p-5 sm:p-7 z-10 my-auto transform transition-all duration-200 space-y-4 max-h-[90vh] flex flex-col">
-        {/* Header */}
         <div className="flex items-center justify-between pb-2 border-b border-[#DDE4DB]/70">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#173D32]" />
@@ -197,7 +193,6 @@ function LocationModalContent({ onClose }) {
           </p>
         </div>
 
-        {/* GPS Geolocation Button */}
         <div>
           <button
             type="button"
@@ -211,7 +206,6 @@ function LocationModalContent({ onClose }) {
             </span>
           </button>
 
-          {/* Friendly inline error if geolocation fails */}
           {geoError && (
             <div className="mt-2.5 p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-start gap-2">
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-amber-600" />
@@ -220,7 +214,6 @@ function LocationModalContent({ onClose }) {
           )}
         </div>
 
-        {/* Search input for locality, society or 6-digit pincode */}
         <form onSubmit={handleSearchSubmit} className="space-y-1">
           <div className="relative">
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#647269]" />
@@ -256,9 +249,7 @@ function LocationModalContent({ onClose }) {
           )}
         </form>
 
-        {/* Content Body: Unknown Pincode State OR Search Results OR City Browsing Tabs */}
         <div className="flex-1 overflow-y-auto pr-1 space-y-3 min-h-[200px]">
-          {/* STATE 1: "Area not covered yet" with Email Capture */}
           {isUnknownPincode ? (
             <div className="p-5 rounded-2xl bg-[#F7F8F4] border border-[#DDE4DB] text-center space-y-3">
               <div className="w-10 h-10 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center mx-auto">
@@ -303,7 +294,6 @@ function LocationModalContent({ onClose }) {
               )}
             </div>
           ) : trimmedQuery ? (
-            /* STATE 2: Active Search Query Results */
             <div className="space-y-1.5">
               <span className="text-[11px] font-bold text-[#647269] uppercase tracking-wider block px-1">
                 Search Results ({searchResults.length})
@@ -347,9 +337,7 @@ function LocationModalContent({ onClose }) {
               )}
             </div>
           ) : (
-            /* STATE 3: Default Browsing - City Tabs & Localities Grid */
             <div className="space-y-3">
-              {/* City Filter Pills */}
               <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none border-b border-[#DDE4DB]/70">
                 {CITIES_CONFIG.map((c) => {
                   const isActive = activeCityTab.toLowerCase() === c.name.toLowerCase();
@@ -370,7 +358,6 @@ function LocationModalContent({ onClose }) {
                 })}
               </div>
 
-              {/* Localities in Active City */}
               <div className="space-y-1">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-[#647269] block px-1">
                   Active Neighbourhoods in {currentCityObj.name}
@@ -413,7 +400,6 @@ function LocationModalContent({ onClose }) {
           )}
         </div>
 
-        {/* Footer info note */}
         <div className="pt-2 border-t border-[#DDE4DB]/70 flex items-center justify-between text-[11px] text-[#647269]">
           <span>All pros vetted and dispatched from local neighbourhood hubs.</span>
           <span className="font-semibold text-[#173D32]">30-Day Guarantee</span>

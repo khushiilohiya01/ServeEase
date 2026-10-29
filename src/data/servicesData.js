@@ -1,9 +1,3 @@
-/**
- * ServeEase Canonical Services Catalogue
- * India-first, plain-language, real customer wording, zero jargon.
- * All pricing in INR. Typed pricing models.
- * All descriptions strictly one plain line, max 70 characters.
- */
 
 export const ROOMS = [
   { id: 'kitchen', label: 'Kitchen' },
@@ -15,9 +9,7 @@ export const ROOMS = [
 ];
 
 export const SERVICES = [
-  // ==========================================
-  // AC SERVICES (5 Services)
-  // ==========================================
+  // ac services
   {
     id: 'ac-service-jet-wash',
     name: 'AC service (jet wash)',
@@ -83,9 +75,7 @@ export const SERVICES = [
     popular: false,
   },
 
-  // ==========================================
-  // APPLIANCES (6 Services)
-  // ==========================================
+  // appliances
   {
     id: 'washing-machine-repair',
     name: 'Washing machine repair',
@@ -165,9 +155,7 @@ export const SERVICES = [
     popular: false,
   },
 
-  // ==========================================
-  // KITCHEN (4 Services)
-  // ==========================================
+  // kitchen
   {
     id: 'chimney-cleaning',
     name: 'Chimney cleaning',
@@ -218,9 +206,7 @@ export const SERVICES = [
     popular: true,
   },
 
-  // ==========================================
-  // CLEANING (6 Services)
-  // ==========================================
+  // cleaning
   {
     id: 'full-home-cleaning',
     name: 'Full home cleaning',
@@ -309,9 +295,7 @@ export const SERVICES = [
     popular: false,
   },
 
-  // ==========================================
-  // ELECTRICIAN (7 Services)
-  // ==========================================
+  // electrician
   {
     id: 'fan-installation',
     name: 'Fan installation',
@@ -401,9 +385,7 @@ export const SERVICES = [
     popular: false,
   },
 
-  // ==========================================
-  // PLUMBER (5 Services)
-  // ==========================================
+  // plumber
   {
     id: 'tap-leaking',
     name: 'Tap leaking',
@@ -469,9 +451,7 @@ export const SERVICES = [
     popular: false,
   },
 
-  // ==========================================
-  // PEST CONTROL (5 Services)
-  // ==========================================
+  // pest control
   {
     id: 'cockroach-control',
     name: 'Cockroach control',
@@ -554,9 +534,7 @@ export const SERVICES = [
     popular: false,
   },
 
-  // ==========================================
-  // CARPENTER (4 Services)
-  // ==========================================
+  // carpenter
   {
     id: 'door-lock-change',
     name: 'Door lock change',
@@ -609,9 +587,7 @@ export const SERVICES = [
     popular: false,
   },
 
-  // ==========================================
-  // PAINTING & WALLS (4 Services)
-  // ==========================================
+  // painting & walls
   {
     id: 'paint-one-room',
     name: 'Paint one room',
@@ -661,9 +637,7 @@ export const SERVICES = [
     popular: false,
   },
 
-  // ==========================================
-  // ODD JOBS & MOUNTS (5 Services)
-  // ==========================================
+  // odd jobs & mounts
   {
     id: 'tv-wall-mounting',
     name: 'TV wall mounting',
@@ -726,9 +700,7 @@ export const SERVICES = [
     popular: true,
   },
 
-  // ==========================================
-  // CATCH-ALL (1 Service)
-  // ==========================================
+  // catch-all
   {
     id: 'not-sure-inspection',
     name: "Not sure what's wrong? Book an inspection",
@@ -743,9 +715,6 @@ export const SERVICES = [
   },
 ];
 
-/**
- * Top symptom chips per room zone for hero interactive cutaway
- */
 export const ROOM_SYMPTOM_CHIPS = {
   kitchen: [
     { label: 'Chimney greasy', query: 'Chimney greasy' },
@@ -793,9 +762,6 @@ export function getRoomSymptomChips(roomId) {
   return ROOM_SYMPTOM_CHIPS[roomId] || [];
 }
 
-/**
- * Format pricing for display across cards and detail pages
- */
 export function formatPricingDisplay(pricing, selectedBhk = '2BHK') {
   if (!pricing) return 'Price on request';
 
@@ -817,9 +783,6 @@ export function formatPricingDisplay(pricing, selectedBhk = '2BHK') {
   }
 }
 
-/**
- * Compute numeric price for cart calculation
- */
 export function getServiceNumericPrice(service, selectedBhk = '2BHK', quantity = 1) {
   if (!service || !service.pricing) return 0;
   const { pricing } = service;

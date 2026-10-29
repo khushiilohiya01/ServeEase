@@ -26,7 +26,6 @@ export function WhyServeEase() {
     <section id="why-serveease" className="section-viewport bg-white border-b border-[#DDE4DB] py-6 lg:py-0" aria-labelledby="why-heading">
       <div className="container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 xl:gap-16 items-center">
-          {/* Left Column: Clean Lifestyle Image Frame (5 cols) */}
           <div className="lg:col-span-5 relative order-2 lg:order-1">
             <div className="relative mx-auto max-w-[320px] xl:max-w-[360px]">
               <div className="relative aspect-3/4 max-h-[min(440px,calc(100dvh-12rem))] rounded-3xl overflow-hidden border border-[#DDE4DB] shadow-xl bg-neutral-100">
@@ -37,7 +36,6 @@ export function WhyServeEase() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#191E1B]/40 via-transparent to-transparent" />
 
-                {/* Subtle caption tag */}
                 <div className="absolute bottom-4 left-4 right-4 p-3 rounded-2xl bg-white/95 backdrop-blur-md border border-[#DDE4DB] shadow-md flex items-center justify-between text-xs">
                   <span className="font-semibold text-[#191E1B]">The ServeEase Standard</span>
                   <span className="text-[#173D32] font-semibold">Disciplined craftsmanship</span>
@@ -46,7 +44,6 @@ export function WhyServeEase() {
             </div>
           </div>
 
-          {/* Right Column: Prominent Heading & Editorial Pillars (7 cols) */}
           <div className="lg:col-span-7 space-y-4 lg:space-y-5 xl:space-y-6 order-1 lg:order-2">
             <div className="space-y-2.5">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8EDE7] text-[#173D32] text-xs font-semibold">
@@ -60,13 +57,12 @@ export function WhyServeEase() {
                 The little details make all the difference.
               </h2>
               <p className="text-sm sm:text-base text-[#647269] leading-relaxed max-w-xl">
-                We believe home services shouldn&apos;t feel stressful or chaotic. By treating
-                technicians with dignity and homeowners with radical transparency, we elevate the
-                everyday standard of living.
+                Getting something fixed at home shouldn&apos;t mean chasing people on the phone.
+                You see the price before you book, the technician is verified, and if the job
+                isn&apos;t right we come back.
               </p>
             </div>
 
-            {/* 3 Concise Value Propositions with Subtle Separators */}
             <div className="space-y-3 lg:space-y-3.5 xl:space-y-4 divide-y divide-[#DDE4DB]/80">
               {PROPOSITIONS.map((prop) => {
                 const Icon = prop.icon;

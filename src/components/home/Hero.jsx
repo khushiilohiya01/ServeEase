@@ -38,7 +38,6 @@ export function Hero() {
   const searchContainerRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Cycling placeholder through real symptoms — stops cycling when focused
   useEffect(() => {
     if (isFocused) return;
     const interval = setInterval(() => {
@@ -47,12 +46,10 @@ export function Hero() {
     return () => clearInterval(interval);
   }, [isFocused]);
 
-  // Default symptom chips from config including seasonal chip
   const defaultChips = useMemo(() => {
     return getHeroSymptomChips(selectedCity, mockDate);
   }, [selectedCity, mockDate]);
 
-  // Active chips: either room-specific symptoms or default + seasonal
   const activeChips = useMemo(() => {
     if (!selectedRoom) return defaultChips;
     const roomSymptoms = getRoomSymptomChips(selectedRoom);
@@ -62,7 +59,6 @@ export function Hero() {
     ];
   }, [selectedRoom, defaultChips]);
 
-  // Live matching services across name, description, symptoms, and rooms
   const matchingServices = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     if (!q) {
@@ -88,7 +84,6 @@ export function Hero() {
     }).slice(0, 5);
   }, [searchQuery, selectedRoom]);
 
-  // Keyboard navigation for search dropdown
   const handleKeyDown = (e) => {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
@@ -116,7 +111,6 @@ export function Hero() {
     }
   };
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (
@@ -157,21 +151,17 @@ export function Hero() {
 
   return (
     <section className="relative bg-[#F7F8F4] border-b border-[#DDE4DB] py-6 sm:py-8 lg:py-10 overflow-visible">
-      {/* Screen reader announcement for room-driven chip swaps */}
       <div aria-live="polite" className="sr-only">
         {selectedRoom
           ? `Showing common issues for ${ROOM_NAMES[selectedRoom] || selectedRoom}`
           : 'Showing all common issues'}
       </div>
 
-      {/* Subtle ambient lighting */}
       <div className="absolute top-0 right-1/4 w-[420px] h-[420px] bg-[#A9C9AC]/15 rounded-full blur-3xl pointer-events-none -z-10" />
 
       <div className="container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-          {/* Left Column: Eyebrow, Two-tone Headline, Subline, Search, Chips, CTAs, Proof */}
           <div className="lg:col-span-6 space-y-4 text-left">
-            {/* 1. Eyebrow */}
             <div>
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#DDE4DB] text-[#173D32] text-xs font-semibold shadow-2xs">
                 <span className="w-2 h-2 rounded-full bg-[#173D32] animate-pulse" />
@@ -181,18 +171,15 @@ export function Hero() {
               </div>
             </div>
 
-            {/* 2. Headline: Two-tone treatment ONLY here */}
             <h1 className="heading-hero text-[#191E1B]">
               What&apos;s not working{' '}
               <span className="text-[#173D32]">at home?</span>
             </h1>
 
-            {/* 3. Subline: One sentence */}
             <p className="text-sm sm:text-base text-[#647269] max-w-xl leading-relaxed font-normal">
               Book a trusted technician in minutes. Pay only after the job is done.
             </p>
 
-            {/* 4. Search input with cycling placeholder & instant dropdown */}
             <div className="pt-0.5 max-w-xl relative" ref={searchContainerRef}>
               <form
                 onSubmit={handleSearchSubmit}
@@ -253,7 +240,6 @@ export function Hero() {
                 </button>
               </form>
 
-              {/* Instant Search Combobox Dropdown */}
               {isFocused && (
                 <div
                   id="hero-search-listbox"
@@ -358,7 +344,6 @@ export function Hero() {
               )}
             </div>
 
-            {/* 5. Symptom chips: Swapped by Room with zero layout shift */}
             <div className="space-y-1.5 pt-0.5">
               <div className="min-h-[38px] flex items-center">
                 <div
@@ -394,7 +379,6 @@ export function Hero() {
                 </div>
               </div>
 
-              {/* Direct Link to Room Services (only visible when room is selected) */}
               {selectedRoom && (
                 <div className="animate-in fade-in duration-150 motion-reduce:animate-none">
                   <Link
@@ -408,7 +392,6 @@ export function Hero() {
               )}
             </div>
 
-            {/* Mobile-Only 2BHK Illustration: Rendered below search & chips, keeping search above fold */}
             <div className="block lg:hidden pt-3 pb-1 max-w-sm sm:max-w-md mx-auto">
               <FlatCutawaySvg
                 selectedRoom={selectedRoom}
@@ -419,7 +402,6 @@ export function Hero() {
               </p>
             </div>
 
-            {/* 6. CTAs */}
             <div className="flex flex-wrap items-center gap-3 pt-1">
               <button
                 type="button"
@@ -453,7 +435,6 @@ export function Hero() {
               </button>
             </div>
 
-            {/* 7. Live proof line below CTAs */}
             <div className="flex items-center gap-2 pt-1 text-xs font-semibold text-[#173D32]">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -463,7 +444,6 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right Column: 2BHK Flat Cutaway Illustration (~45-50% width on Desktop, No Card Chrome) */}
           <div className="lg:col-span-6 relative hidden lg:block">
             <div className="w-full max-w-xl mx-auto">
               <FlatCutawaySvg

@@ -1,10 +1,6 @@
-/**
- * Seasonal configuration keyed by month range (1-indexed) and optional city filters.
- * City-specific seasons are evaluated first so localized conditions take precedence.
- */
 
 export const SEASONS_CONFIG = [
-  // 1. Localized: Post-monsoon pest control for Bengaluru and Mumbai (Oct-Nov)
+  // post-monsoon pest control for bengaluru and mumbai (oct-nov)
   {
     id: 'post_monsoon_pest',
     title: 'Post-monsoon pest control',
@@ -13,7 +9,7 @@ export const SEASONS_CONFIG = [
     cities: ['bengaluru', 'mumbai'],
     serviceIds: ['cockroach-control', 'mosquito-treatment'],
   },
-  // 2. Localized: Winter geyser service for Delhi NCR (Nov-Jan)
+  // winter geyser service for delhi ncr (nov-jan)
   {
     id: 'winter_geyser',
     title: 'Winter ready: geyser service',
@@ -22,7 +18,7 @@ export const SEASONS_CONFIG = [
     cities: ['delhi', 'delhincr', 'noida', 'gurgaon'],
     serviceIds: ['geyser-repair', 'geyser-installation'],
   },
-  // 3. National: Diwali deep cleaning (Sep-Nov)
+  // diwali deep cleaning (sep-nov)
   {
     id: 'diwali_cleaning',
     title: 'Diwali deep cleaning — slots filling fast',
@@ -31,7 +27,7 @@ export const SEASONS_CONFIG = [
     cities: null, // all cities
     serviceIds: ['full-home-cleaning', 'sofa-cleaning', 'paint-one-room'],
   },
-  // 4. National: Monsoon prep (May-Jun)
+  // monsoon prep (may-jun)
   {
     id: 'monsoon_prep',
     title: 'Monsoon prep: seepage & waterproofing',
@@ -40,7 +36,7 @@ export const SEASONS_CONFIG = [
     cities: null,
     serviceIds: ['damp-seepage-fix'],
   },
-  // 5. National: Beat the heat / Pre-summer AC service (Mar-May)
+  // beat the heat / pre-summer ac service (mar-may)
   {
     id: 'summer_ac',
     title: 'Beat the heat: AC service before summer',
@@ -51,9 +47,6 @@ export const SEASONS_CONFIG = [
   },
 ];
 
-/**
- * Returns the active season for a given date (or query override) and city.
- */
 export function getActiveSeason(currentCity = 'Bengaluru', dateOverride = null) {
   let targetDate = new Date();
 

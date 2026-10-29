@@ -4,7 +4,6 @@ import { ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
 export function FinalCTA() {
   return (
     <section className="relative overflow-hidden bg-[#173D32] text-white section-viewport py-6 lg:py-0" aria-labelledby="cta-heading">
-      {/* Background Architectural Line Accents */}
       <div className="absolute inset-0 pointer-events-none opacity-10">
         <svg
           className="w-full h-full"
@@ -25,7 +24,7 @@ export function FinalCTA() {
         <div className="space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-[#A9C9AC] text-xs font-semibold backdrop-blur-md border border-white/10">
             <Sparkles className="w-3.5 h-3.5 text-[#A9C9AC]" />
-            <span>Ready for effortless home maintenance?</span>
+            <span>Something at home needs fixing?</span>
           </div>
 
           <h2
@@ -36,12 +35,11 @@ export function FinalCTA() {
           </h2>
 
           <p className="text-sm sm:text-base text-white/80 max-w-xl mx-auto leading-relaxed font-normal">
-            Whatever your home needs, we&apos;re here to make the next step simple. Book certified
-            specialists with clear fixed quotes and zero friction.
+            Pick a service, choose a slot, and a verified technician turns up. You see the
+            price before you book.
           </p>
         </div>
 
-        {/* Action Button & Badges */}
         <div className="space-y-4 lg:space-y-5">
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link

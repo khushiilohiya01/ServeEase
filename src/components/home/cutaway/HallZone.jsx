@@ -28,7 +28,6 @@ export function HallZone({ isSelected, onSelect }) {
         className="transition-colors duration-200 group-hover:fill-[#F2F7F1]"
       />
 
-      {/* Ceiling Fan Downrod */}
       <line
         x1="580"
         y1="280"
@@ -38,7 +37,6 @@ export function HallZone({ isSelected, onSelect }) {
         strokeWidth="3.2"
       />
 
-      {/* Rotating Motor & 3 Blades */}
       <g className="hero-fan-blades">
         <circle cx="580" cy="320" r="11" fill="#173D32" />
         <path
@@ -61,7 +59,6 @@ export function HallZone({ isSelected, onSelect }) {
         />
       </g>
 
-      {/* Wall Mounted Flat Screen TV */}
       <rect
         x="404"
         y="332"
@@ -80,7 +77,6 @@ export function HallZone({ isSelected, onSelect }) {
         fill="#3B4841"
       />
 
-      {/* 3-Seater Sofa / Couch */}
       <rect
         x="510"
         y="420"
@@ -111,7 +107,6 @@ export function HallZone({ isSelected, onSelect }) {
         stroke="#173D32"
         strokeWidth="1.8"
       />
-      {/* Accent Cushions */}
       <rect
         x="532"
         y="430"
@@ -133,7 +128,6 @@ export function HallZone({ isSelected, onSelect }) {
         strokeWidth="1.8"
       />
 
-      {/* Coffee Table */}
       <rect
         x="572"
         y="476"
@@ -145,7 +139,6 @@ export function HallZone({ isSelected, onSelect }) {
         strokeWidth="2.2"
       />
 
-      {/* Corner Potted Tall Indoor Plant */}
       <g transform="translate(795, 420)">
         <path
           d="M 12,30 L 38,30 L 32,70 L 18,70 Z"
@@ -158,7 +151,6 @@ export function HallZone({ isSelected, onSelect }) {
         <ellipse cx="38" cy="12" rx="13" ry="18" fill="#367A55" />
       </g>
 
-      {/* Room Tag Indicator */}
       <g transform="translate(395, 292)">
         <rect
           width="82"

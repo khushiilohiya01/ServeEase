@@ -3,12 +3,13 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Mail, Lock, Phone, ArrowRight, ShieldCheck, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
+import { safeRedirect } from '../../lib/formatters';
 
 export function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const redirectUrl = searchParams.get('redirect') || localStorage.getItem('serveease_auth_return_to') || '/dashboard';
+  const redirectUrl = safeRedirect(searchParams.get('redirect') || localStorage.getItem('serveease_auth_return_to'));
   const initialEmail = searchParams.get('email') || '';
 
   const [identifier, setIdentifier] = useState(initialEmail || '');

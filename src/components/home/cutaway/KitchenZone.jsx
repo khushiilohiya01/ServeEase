@@ -28,7 +28,6 @@ export function KitchenZone({ isSelected, onSelect }) {
         className="transition-colors duration-200 group-hover:fill-[#F2F7F1]"
       />
 
-      {/* Upper Cabinets */}
       <rect
         x="36"
         y="296"
@@ -56,7 +55,6 @@ export function KitchenZone({ isSelected, onSelect }) {
         strokeWidth="1.8"
       />
 
-      {/* Kitchen Chimney with Stainless Steel Hood */}
       <polygon
         points="225,296 295,296 306,338 214,338"
         fill="#173D32"
@@ -77,7 +75,6 @@ export function KitchenZone({ isSelected, onSelect }) {
         strokeWidth="2.5"
       />
 
-      {/* Wall-Mounted Compact RO Purifier */}
       <rect
         x="314"
         y="312"
@@ -99,7 +96,6 @@ export function KitchenZone({ isSelected, onSelect }) {
       />
       <circle cx="335" cy="325" r="3" fill="#367A55" />
 
-      {/* Granite Countertop */}
       <rect
         x="36"
         y="412"
@@ -109,7 +105,6 @@ export function KitchenZone({ isSelected, onSelect }) {
         fill="#191E1B"
       />
 
-      {/* 3-Burner Gas Stove */}
       <rect
         x="220"
         y="400"
@@ -124,7 +119,6 @@ export function KitchenZone({ isSelected, onSelect }) {
       <ellipse cx="261" cy="406" rx="7" ry="3.5" fill="#DDE4DB" />
       <ellipse cx="284" cy="406" rx="6" ry="3" fill="#DDE4DB" />
 
-      {/* Stainless Steel Sink & Faucet */}
       <rect
         x="64"
         y="414"
@@ -143,7 +137,6 @@ export function KitchenZone({ isSelected, onSelect }) {
         strokeLinecap="round"
       />
 
-      {/* Lower Modular Drawers */}
       <rect
         x="36"
         y="430"
@@ -179,7 +172,6 @@ export function KitchenZone({ isSelected, onSelect }) {
         strokeWidth="1.8"
       />
 
-      {/* Room Tag Indicator */}
       <g transform="translate(36, 292)">
         <rect
           width="98"
