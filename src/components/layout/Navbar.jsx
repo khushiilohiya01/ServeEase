@@ -34,7 +34,6 @@ export function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Handle scroll detection and scroll progress
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -47,7 +46,6 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Lock background scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -59,7 +57,7 @@ export function Navbar() {
     };
   }, [mobileMenuOpen]);
 
-  // Reset menus on route change without effect cascade
+  // close menus on route change (done during render, not in an effect)
   const [prevPath, setPrevPath] = useState(location.pathname);
   if (prevPath !== location.pathname) {
     setPrevPath(location.pathname);
@@ -80,7 +78,6 @@ export function Navbar() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Services dropdown hover handlers with small debounce
   const handleServicesMouseEnter = () => {
     if (servicesTimeoutRef.current) clearTimeout(servicesTimeoutRef.current);
     setServicesMenuOpen(true);
@@ -121,14 +118,12 @@ export function Navbar() {
         }`}
       >
         <div className="container-custom h-20 flex items-center justify-between relative">
-          {/* 1. Left: Brand Logo */}
           <Link
             to="/"
             className="flex items-center gap-3 group focus-visible:outline-[#173D32] rounded-xl py-1"
             aria-label="ServeEase Home"
           >
             <div className="w-10 h-10 rounded-2xl bg-[#173D32] flex items-center justify-center text-[#A9C9AC] group-hover:bg-[#245544] transition-all duration-300 shadow-sm shadow-[#173D32]/10 shrink-0">
-              {/* Minimal architectural house/service emblem */}
               <svg
                 width="20"
                 height="20"
@@ -150,7 +145,6 @@ export function Navbar() {
             </span>
           </Link>
 
-          {/* 2. Center: Desktop Navigation with Mega Menu */}
           <nav className="hidden lg:flex items-center gap-1.5" aria-label="Main Navigation">
             <NavLink
               to="/"
@@ -166,7 +160,6 @@ export function Navbar() {
               Home
             </NavLink>
 
-            {/* Services with Interactive Mega Menu */}
             <div
               onMouseEnter={handleServicesMouseEnter}
               onMouseLeave={handleServicesMouseLeave}
@@ -191,7 +184,6 @@ export function Navbar() {
                 />
               </button>
 
-              {/* Mega Menu Dropdown */}
               <ServicesMegaMenu
                 isOpen={servicesMenuOpen}
                 onClose={() => setServicesMenuOpen(false)}
@@ -215,9 +207,7 @@ export function Navbar() {
             </button>
           </nav>
 
-          {/* 3. Right: Location Selector + Cart + Account + CTA */}
           <div className="hidden sm:flex items-center gap-3">
-            {/* Location Selector */}
             <button
               type="button"
               onClick={() => setIsLocationModalOpen(true)}
@@ -231,7 +221,6 @@ export function Navbar() {
               <ChevronDown className="w-3 h-3 text-[#66716A] shrink-0" />
             </button>
 
-            {/* Cart Icon Link */}
             <Link
               to="/cart"
               aria-label={`View cart with ${cartCount} items`}
@@ -245,7 +234,6 @@ export function Navbar() {
               )}
             </Link>
 
-            {/* User Account / Auth Dropdown */}
             {isAuthenticated ? (
               <div className="relative" ref={dropdownRef}>
                 <button
@@ -350,7 +338,6 @@ export function Navbar() {
               </button>
             )}
 
-            {/* Primary CTA */}
             <Link
               to={cartCount > 0 ? '/cart' : '/services'}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#173D32] hover:bg-[#245544] text-white text-xs font-semibold transition-all duration-200 shadow-sm hover:shadow active:scale-98"
@@ -360,7 +347,6 @@ export function Navbar() {
             </Link>
           </div>
 
-          {/* 4. Mobile Menu Trigger */}
           <div className="flex sm:hidden items-center gap-2">
             <Link
               to="/cart"
@@ -387,27 +373,22 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Scroll Progress Accent Bar */}
         <div
           className="h-[2px] bg-[#173D32]/80 transition-all duration-75"
           style={{ width: `${Math.min(100, Math.max(0, scrollProgress * 100))}%` }}
         />
       </header>
 
-      {/* Mobile Full-Height Drawer */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          {/* Backdrop */}
           <div
             className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"
             onClick={() => setMobileMenuOpen(false)}
             aria-hidden="true"
           />
 
-          {/* Panel */}
           <div className="fixed inset-y-0 right-0 w-full max-w-sm bg-[#F7F7F2] border-l border-[#DDE3DA] shadow-2xl p-6 flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right duration-250">
             <div>
-              {/* Header */}
               <div className="flex items-center justify-between pb-6 border-b border-[#DDE3DA]">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-xl bg-[#173D32] text-[#A9C9AC] flex items-center justify-center">
@@ -427,7 +408,6 @@ export function Navbar() {
                 </button>
               </div>
 
-              {/* Location Badge on Mobile */}
               <div className="py-4">
                 <button
                   type="button"
@@ -447,7 +427,6 @@ export function Navbar() {
                 </button>
               </div>
 
-              {/* Navigation Links */}
               <nav className="space-y-1.5 py-2">
                 <Link
                   to="/"
@@ -524,7 +503,6 @@ export function Navbar() {
               </nav>
             </div>
 
-            {/* Bottom Actions */}
             <div className="pt-6 border-t border-[#DDE3DA] space-y-3">
               {isAuthenticated ? (
                 <button
@@ -562,7 +540,6 @@ export function Navbar() {
         </div>
       )}
 
-      {/* Global Location Modal */}
       <LocationModal
         isOpen={isLocationModalOpen}
         onClose={() => setIsLocationModalOpen(false)}

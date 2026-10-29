@@ -83,7 +83,7 @@ describe('Authentication & Address Schemas (Zod)', () => {
       const result = addressSchema.safeParse(validAddress);
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data.country).toBe('United States'); // default fallback
+        expect(result.data.country).toBe('India');
         expect(result.data.is_default).toBe(false);
       }
     });

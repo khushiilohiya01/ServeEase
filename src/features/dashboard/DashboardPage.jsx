@@ -68,7 +68,6 @@ export function DashboardPage() {
 
   return (
     <div className="container-custom py-8 sm:py-12 space-y-8 min-h-[520px]">
-      {/* Welcome Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-neutral-200">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight">
@@ -95,7 +94,6 @@ export function DashboardPage() {
         </div>
       </div>
 
-      {/* KPI Stats Grid or New User Get-Started Card */}
       {hasBookings ? (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
           <Card className="p-5 border-[#DDE3DA]">
@@ -175,7 +173,6 @@ export function DashboardPage() {
         </Card>
       )}
 
-      {/* Next Upcoming Booking Card */}
       {upcomingBooking ? (
         <Card className="border-[#DDE3DA] bg-gradient-to-r from-[#E8EBE2]/40 via-white to-white shadow-sm overflow-hidden">
           <CardHeader className="border-b border-[#DDE3DA]/60 pb-3 flex flex-row items-center justify-between">
@@ -247,7 +244,6 @@ export function DashboardPage() {
         </Card>
       ) : null}
 
-      {/* Recent Bookings Mini List */}
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-base font-bold text-neutral-900">

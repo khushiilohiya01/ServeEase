@@ -24,4 +24,9 @@ export default defineConfig([
       ],
     },
   },
+  {
+    // the router config and context files (provider + hook) don't need fast refresh
+    files: ['src/app/router.jsx', 'src/context/**/*.jsx'],
+    rules: { 'react-refresh/only-export-components': 'off' },
+  },
 ])

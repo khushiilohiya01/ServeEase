@@ -23,21 +23,16 @@ export function AppShell() {
   return (
     <div className="min-h-screen flex flex-col bg-[#F7F7F2] text-[#191E1B] selection:bg-[#A9C9AC]/40 selection:text-[#173D32] overflow-x-clip">
       <ScrollToTop />
-      {/* Global Auth Modal for Sign in and Create account */}
       <AuthModal />
 
-      {/* Main Navigation */}
       <Navbar />
 
-      {/* Primary Page Outlet */}
       <main className="flex-1">
         <Outlet />
       </main>
 
-      {/* Global Footer */}
       <Footer />
 
-      {/* Toast Notifications */}
       <Toaster
         position="bottom-right"
         toastOptions={{

@@ -1,6 +1,3 @@
-/**
- * Config for Indian Metros, Localities, Pincodes, Coordinates and Proof Data
- */
 
 export const CITIES_CONFIG = [
   {
@@ -127,10 +124,6 @@ export const CITIES_CONFIG = [
   },
 ];
 
-/**
- * Returns deterministic live proof data for a given locality
- * e.g. "18 pros active near Koramangala · Next slot today, 4–6 PM"
- */
 export function getLocalityProof(locality = 'Koramangala') {
   let hash = 0;
   for (let i = 0; i < locality.length; i++) {
@@ -162,9 +155,6 @@ function calculateDistanceKm(lat1, lon1, lat2, lon2) {
   return R * c;
 }
 
-/**
- * Finds the nearest configured locality to the user's GPS coordinates
- */
 export function findNearestLocality(userLat, userLng) {
   let nearestCity = CITIES_CONFIG[0];
   let nearestLocality = CITIES_CONFIG[0].localities[0];
@@ -190,9 +180,6 @@ export function findNearestLocality(userLat, userLng) {
   };
 }
 
-/**
- * Matches a 6-digit pincode to a configured locality
- */
 export function findLocalityByPincode(pincode) {
   const cleanPin = (pincode || '').trim();
   for (const city of CITIES_CONFIG) {
@@ -207,9 +194,6 @@ export function findLocalityByPincode(pincode) {
   return null;
 }
 
-/**
- * Searches localities across all cities by name, state, or pincode
- */
 export function searchLocalities(query) {
   const q = (query || '').toLowerCase().trim();
   if (!q) return [];
@@ -231,4 +215,3 @@ export function searchLocalities(query) {
   }
   return results;
 }
-

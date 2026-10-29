@@ -78,7 +78,6 @@ export function ServicesMegaMenu({ isOpen, onClose }) {
   const menuRef = useRef(null);
   const navigate = useNavigate();
 
-  // Close on Escape or click outside
   useEffect(() => {
     if (!isOpen) return;
 
@@ -116,11 +115,9 @@ export function ServicesMegaMenu({ isOpen, onClose }) {
           role="region"
           aria-label="Services Navigation Directory"
         >
-          {/* Subtle architectural background texture accent */}
           <div className="absolute top-0 right-0 w-80 h-80 bg-[#A9C9AC]/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative z-10">
-            {/* Left 8 cols: Category Grids */}
             <div className="lg:col-span-8 space-y-4">
               <div className="flex items-center justify-between pb-3 border-b border-[#DDE3DA]/80">
                 <div>
@@ -175,7 +172,6 @@ export function ServicesMegaMenu({ isOpen, onClose }) {
               </div>
             </div>
 
-            {/* Right 4 cols: Featured Service Spotlight Card */}
             <div className="lg:col-span-4 bg-[#F7F7F2] rounded-2xl p-5 border border-[#DDE3DA] flex flex-col justify-between space-y-4">
               <div>
                 <div className="flex items-center justify-between mb-3">
@@ -232,7 +228,6 @@ export function ServicesMegaMenu({ isOpen, onClose }) {
             </div>
           </div>
 
-          {/* Bottom Trust & Peace of Mind Bar */}
           <div className="mt-6 pt-4 border-t border-[#DDE3DA]/80 flex flex-wrap items-center justify-between gap-4 text-xs text-[#66716A]">
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1.5">

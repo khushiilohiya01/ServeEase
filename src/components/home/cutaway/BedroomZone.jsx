@@ -16,7 +16,6 @@ export function BedroomZone({ isSelected, onSelect }) {
       onKeyDown={handleKeyDown}
       className="cursor-pointer focus:outline-none group"
     >
-      {/* Room Backdrop */}
       <rect
         x="20"
         y="20"
@@ -29,7 +28,6 @@ export function BedroomZone({ isSelected, onSelect }) {
         className="transition-colors duration-200 group-hover:fill-[#F2F7F1]"
       />
 
-      {/* Window with Indian Grills */}
       <rect
         x="36"
         y="44"
@@ -48,7 +46,6 @@ export function BedroomZone({ isSelected, onSelect }) {
         fill="url(#hero-window-grill)"
       />
 
-      {/* Split AC Unit mounted high on wall */}
       <rect
         x="175"
         y="40"
@@ -69,7 +66,6 @@ export function BedroomZone({ isSelected, onSelect }) {
       />
       <circle cx="288" cy="52" r="3" fill="#367A55" />
 
-      {/* Soft pulsating AC Airflow Waves */}
       <g className="hero-ac-flow">
         <path
           d="M 195,78 Q 208,98 200,118"
@@ -94,7 +90,6 @@ export function BedroomZone({ isSelected, onSelect }) {
         />
       </g>
 
-      {/* Wooden Wardrobe / Almirah */}
       <rect
         x="36"
         y="136"
@@ -130,7 +125,6 @@ export function BedroomZone({ isSelected, onSelect }) {
         strokeWidth="2.2"
       />
 
-      {/* Double Bed with Pillows and Blanket */}
       <rect
         x="130"
         y="166"
@@ -151,7 +145,6 @@ export function BedroomZone({ isSelected, onSelect }) {
         stroke="#173D32"
         strokeWidth="2.2"
       />
-      {/* Pillows */}
       <rect
         x="248"
         y="176"
@@ -172,7 +165,6 @@ export function BedroomZone({ isSelected, onSelect }) {
         stroke="#173D32"
         strokeWidth="1.8"
       />
-      {/* Throw blanket */}
       <rect
         x="130"
         y="166"
@@ -185,7 +177,6 @@ export function BedroomZone({ isSelected, onSelect }) {
         strokeWidth="2"
       />
 
-      {/* Room Tag Indicator */}
       <g transform="translate(36, 32)">
         <rect
           width="104"

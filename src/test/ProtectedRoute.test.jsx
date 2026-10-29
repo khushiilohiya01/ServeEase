@@ -55,9 +55,7 @@ describe('ProtectedRoute component', () => {
       </MemoryRouter>
     );
 
-    // Protected content is not rendered
     expect(screen.queryByText('Booking Details')).not.toBeInTheDocument();
-    // Redirected to login
     expect(screen.getByText('Login Page Target')).toBeInTheDocument();
   });
 });

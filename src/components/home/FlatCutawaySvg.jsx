@@ -6,14 +6,6 @@ import { BalconyZone } from './cutaway/BalconyZone';
 import { KitchenZone } from './cutaway/KitchenZone';
 import { HallZone } from './cutaway/HallZone';
 
-/**
- * 2BHK Flat Cutaway SVG Architectural Illustration
- * Modular component structure:
- * - StructuralFrame (outer slabs & walls)
- * - BedroomZone, BathroomZone, BalconyZone, KitchenZone, HallZone
- * - Accessible keyboard navigation with visible focus rings
- * - Smooth CSS animations strictly disabled under prefers-reduced-motion
- */
 export const FlatCutawaySvg = memo(function FlatCutawaySvg({
   selectedRoom = null,
   onSelectRoom,
@@ -72,7 +64,6 @@ export const FlatCutawaySvg = memo(function FlatCutawaySvg({
         aria-label="2BHK flat interactive architectural cutaway"
       >
         <defs>
-          {/* Pattern for Window Grills */}
           <pattern
             id="hero-window-grill"
             width="12"
@@ -87,7 +78,6 @@ export const FlatCutawaySvg = memo(function FlatCutawaySvg({
             />
           </pattern>
 
-          {/* AC airflow gradient */}
           <linearGradient id="hero-ac-grad" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="#245544" stopOpacity="0.5" />
             <stop offset="100%" stopColor="#245544" stopOpacity="0" />

@@ -23,7 +23,6 @@ export function ProfilePage() {
   const [addresses, setAddresses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Profile Form state
   const [profileData, setProfileData] = useState({
     full_name: user?.full_name || '',
     phone: user?.phone || '',
@@ -31,7 +30,6 @@ export function ProfilePage() {
   });
   const [isSavingProfile, setIsSavingProfile] = useState(false);
 
-  // New Address Modal state
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [addressForm, setAddressForm] = useState({
     label: 'Home',
@@ -178,7 +176,6 @@ export function ProfilePage() {
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* Left Column: Personal Information */}
         <div className="space-y-6">
           <Card className="border-[#DDE3DA] shadow-sm">
             <CardHeader className="pb-4 border-b border-[#DDE3DA]/60">
@@ -224,7 +221,6 @@ export function ProfilePage() {
           </Card>
         </div>
 
-        {/* Right 2 Columns: Saved Addresses */}
         <div className="lg:col-span-2 space-y-6">
           <Card className="border-[#DDE3DA] shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-[#DDE3DA]/60">
@@ -312,7 +308,6 @@ export function ProfilePage() {
         </div>
       </div>
 
-      {/* Add Address Modal */}
       <Modal
         isOpen={isAddressModalOpen}
         onClose={() => setIsAddressModalOpen(false)}

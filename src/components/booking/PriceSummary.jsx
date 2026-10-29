@@ -1,7 +1,8 @@
 import { ShieldCheck } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
 import { formatCurrency, formatDuration } from '../../lib/formatters';
-import { TAX_RATE, PLATFORM_FEE } from '../../lib/constants';
+import { priceBreakdown } from '../../lib/pricing';
+import { ServiceSpotIllustration } from '../illustrations/ServiceSpotIllustration';
 
 export function PriceSummary({
   service,
@@ -13,9 +14,8 @@ export function PriceSummary({
   if (!service) return null;
 
   const basePrice = service.base_price || 0;
-  const taxes = Math.round(basePrice * TAX_RATE * 100) / 100;
-  const fee = PLATFORM_FEE;
-  const total = Math.max(0, Math.round((basePrice + taxes + fee - couponDiscount) * 100) / 100);
+  const { tax: taxes, platformFee: fee, total: beforeDiscount } = priceBreakdown(basePrice);
+  const total = Math.max(0, beforeDiscount - couponDiscount);
 
   return (
     <Card className="bg-white border-neutral-200/80 sticky top-24">
@@ -24,12 +24,12 @@ export function PriceSummary({
       </CardHeader>
 
       <CardContent className="space-y-4 pt-4">
-        {/* Service item mini preview */}
         <div className="flex gap-3 pb-4 border-b border-neutral-100">
-          <img
-            src={service.image_url}
-            alt={service.name}
-            className="w-16 h-16 rounded-xl object-cover shrink-0 border border-neutral-100"
+          <ServiceSpotIllustration
+            serviceId={service.id}
+            category={service.category}
+            aspect="aspect-square"
+            className="w-16 h-16 shrink-0"
           />
           <div className="min-w-0">
             <h4 className="text-xs font-bold text-neutral-900 line-clamp-1">{service.name}</h4>
@@ -40,7 +40,6 @@ export function PriceSummary({
           </div>
         </div>
 
-        {/* Schedule & Address details if selected */}
         {(scheduledDate || scheduledSlot || address) && (
           <div className="bg-neutral-50 rounded-xl p-3 text-xs space-y-1.5 border border-neutral-100">
             {scheduledDate && (
@@ -66,7 +65,6 @@ export function PriceSummary({
           </div>
         )}
 
-        {/* Price Breakdown */}
         <div className="space-y-2 text-xs text-neutral-600 pt-1">
           <div className="flex justify-between">
             <span>Base Service Rate</span>
@@ -97,7 +95,7 @@ export function PriceSummary({
           <div className="pt-3 border-t border-neutral-200 flex justify-between items-baseline">
             <div>
               <span className="text-sm font-bold text-neutral-900 block">Total Due</span>
-              <span className="text-[10px] text-neutral-400">Server verified final rate</span>
+              <span className="text-[10px] text-neutral-400">Incl. GST and platform fee</span>
             </div>
             <span className="text-xl font-bold text-neutral-900">
               {formatCurrency(total)}
@@ -105,7 +103,6 @@ export function PriceSummary({
           </div>
         </div>
 
-        {/* Guarantee Banner */}
         <div className="pt-3 border-t border-neutral-100 flex items-center gap-2 text-[11px] text-neutral-500">
           <ShieldCheck className="w-4 h-4 text-teal-600 shrink-0" />
           <span>Covered by ServeEase 100% Happiness Guarantee</span>

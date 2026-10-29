@@ -101,7 +101,6 @@ export function ServiceDetailPage() {
 
   return (
     <div className="container-custom py-8 sm:py-12">
-      {/* Breadcrumb back navigation */}
       <div className="mb-6">
         <Link
           to="/services"
@@ -113,9 +112,7 @@ export function ServiceDetailPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* Main Details (Left 2 Columns) */}
         <div className="lg:col-span-2 space-y-8">
-          {/* Main Visual: Spot Illustration */}
           <div className="relative aspect-16/9 sm:aspect-21/9 rounded-3xl overflow-hidden shadow-sm bg-[#FAFBF8] border border-[#DDE4DB] p-6 flex items-center justify-center">
             <ServiceSpotIllustration
               serviceId={service.id}
@@ -135,7 +132,6 @@ export function ServiceDetailPage() {
             </div>
           </div>
 
-          {/* Heading & Meta */}
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-2">
               <span className="text-xs uppercase font-bold tracking-wider text-[#173D32] bg-[#E8EDE7] px-2.5 py-0.5 rounded-full">
@@ -169,7 +165,6 @@ export function ServiceDetailPage() {
             </p>
           </div>
 
-          {/* Spares Note Callout */}
           {service.sparesNote && (
             <div className="p-4 rounded-2xl bg-[#F7F8F4] border border-[#DDE4DB] text-xs sm:text-sm text-[#191E1B] flex items-start gap-3">
               <Info className="w-5 h-5 text-[#173D32] shrink-0 mt-0.5" />
@@ -180,7 +175,6 @@ export function ServiceDetailPage() {
             </div>
           )}
 
-          {/* Service Inclusions Checklist */}
           {inclusions.length > 0 && (
             <div className="bg-white rounded-2xl border border-[#DDE4DB] p-6 shadow-xs">
               <h2 className="text-base font-bold text-[#191E1B] flex items-center gap-2 mb-4">
@@ -198,17 +192,14 @@ export function ServiceDetailPage() {
             </div>
           )}
 
-          {/* Global Trust Line */}
           <div className="p-4 rounded-2xl bg-[#E8EDE7]/60 border border-[#DDE4DB] text-xs text-[#173D32] font-medium text-center">
             Pay after the job · UPI or cash · Spare parts at MRP · 30-day warranty
           </div>
         </div>
 
-        {/* Right Sticky Booking Callout */}
         <div className="lg:sticky lg:top-24">
           <Card className="border-[#DDE4DB] shadow-md bg-white">
             <CardContent className="p-6 space-y-6">
-              {/* Dynamic Pricing Box */}
               <div>
                 <span className="text-xs uppercase font-semibold text-[#647269] tracking-wider block mb-1">
                   {pricing?.kind === 'quote'
@@ -239,7 +230,6 @@ export function ServiceDetailPage() {
                 )}
               </div>
 
-              {/* Segmented BHK Selector on detail view */}
               {pricing?.kind === 'per_bhk' && (
                 <div className="space-y-2 pt-2 border-t border-[#DDE4DB]/70">
                   <label className="text-xs font-semibold text-[#191E1B] block">
@@ -280,7 +270,6 @@ export function ServiceDetailPage() {
                 </div>
               )}
 
-              {/* Quantity Stepper for per_unit services */}
               {pricing?.kind === 'per_unit' && (
                 <div className="space-y-2 pt-2 border-t border-[#DDE4DB]/70">
                   <div className="flex items-center justify-between text-xs font-semibold text-[#191E1B]">
@@ -311,7 +300,6 @@ export function ServiceDetailPage() {
                 </div>
               )}
 
-              {/* Booking Specifications */}
               <div className="space-y-2.5 pt-4 border-t border-[#DDE4DB]/60 text-xs text-[#647269]">
                 <div className="flex justify-between">
                   <span>Duration</span>
@@ -327,7 +315,6 @@ export function ServiceDetailPage() {
                 </div>
               </div>
 
-              {/* Actions */}
               <div className="pt-2 space-y-3">
                 <Link to={`/booking/${service.id}`} className="block">
                   <Button

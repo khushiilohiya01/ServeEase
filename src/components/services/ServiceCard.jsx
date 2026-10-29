@@ -26,7 +26,6 @@ export function ServiceCard({ service }) {
       hover
       className="flex flex-col h-full bg-white border border-[#DDE4DB] hover:border-[#173D32]/50 transition-all duration-200 p-4 rounded-2xl group shadow-2xs hover:shadow-xs"
     >
-      {/* 1. Architectural Spot Illustration with Hover Micro-motion */}
       <Link to={`/services/${id}`} className="block mb-3 shrink-0">
         <ServiceSpotIllustration
           serviceId={id}
@@ -35,28 +34,23 @@ export function ServiceCard({ service }) {
         />
       </Link>
 
-      {/* 2. Content */}
       <div className="flex-1 flex flex-col justify-between">
         <div>
-          {/* Service Name */}
           <Link to={`/services/${id}`}>
             <h3 className="text-base font-bold text-[#191E1B] group-hover:text-[#173D32] transition-colors leading-snug">
               {name}
             </h3>
           </Link>
 
-          {/* One-line Plain Description (no ellipsis truncation) */}
           <p className="text-xs text-[#647269] mt-1.5 leading-relaxed">
             {description}
           </p>
 
-          {/* Duration */}
           <div className="mt-2.5 flex items-center gap-1.5 text-xs text-[#647269]">
             <Clock className="w-3.5 h-3.5 text-[#647269]" />
             <span>{formatDuration(duration)}</span>
           </div>
 
-          {/* Segmented BHK switch for per_bhk services */}
           {pricing?.kind === 'per_bhk' && (
             <div className="mt-3 flex items-center gap-1 p-1 bg-[#F7F8F4] border border-[#DDE4DB] rounded-lg">
               {['1BHK', '2BHK', '3BHK'].map((bhk) => {
@@ -80,7 +74,6 @@ export function ServiceCard({ service }) {
           )}
         </div>
 
-        {/* 3. Pricing and Actions */}
         <div className="mt-4 pt-3 border-t border-[#DDE4DB]/70 space-y-2.5">
           <div className="text-xs sm:text-sm font-bold text-[#191E1B] leading-snug">
             {priceDisplay}

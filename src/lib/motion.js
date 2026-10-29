@@ -1,10 +1,3 @@
-/**
- * Motion System presets for ServeEase:
- * - Fluid ease-out [0.16, 1, 0.3, 1]
- * - Standard reveal: 0.7s - 0.8s
- * - Stagger interval: 0.06s - 0.10s
- * - Interaction springs for tactile touch feedback
- */
 
 export const easeOut = [0.16, 1, 0.3, 1];
 

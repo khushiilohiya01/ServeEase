@@ -45,7 +45,6 @@ export function PaymentsPage() {
         description="Review all receipts, transaction records, and payment method authorisations."
       />
 
-      {/* Summary Banner - clean single KPI */}
       {payments.length > 0 && (
         <div className="max-w-xs">
           <Card className="p-5 border-neutral-200/80">
@@ -62,7 +61,6 @@ export function PaymentsPage() {
         </div>
       )}
 
-      {/* Payment Transactions Table / Card List */}
       {isLoading ? (
         <div className="space-y-3 min-h-[300px]">
           <Skeleton className="h-20 rounded-xl" />

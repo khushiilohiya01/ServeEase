@@ -5,10 +5,8 @@ export function BookingStepper({ currentStep = 1, steps = ['Schedule', 'Address'
   return (
     <div className="w-full max-w-xl mx-auto mb-8 sm:mb-10 px-2">
       <div className="relative flex items-center justify-between">
-        {/* Background Connecting Line */}
         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-neutral-200 z-0" />
 
-        {/* Dynamic Progress Line */}
         <div
           className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-teal-700 transition-all duration-300 z-0"
           style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}

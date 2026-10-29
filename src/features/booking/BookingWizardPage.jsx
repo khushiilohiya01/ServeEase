@@ -8,6 +8,8 @@ import {
   Check,
 } from 'lucide-react';
 import { apiRequest } from '../../lib/apiClient';
+import { TIME_SLOTS } from '../../lib/constants';
+import { firstOpenSlot, isSlotInPast, slotToISO } from '../../lib/dates';
 import { BookingStepper } from '../../components/booking/BookingStepper';
 import { DateSlotPicker } from '../../components/booking/DateSlotPicker';
 import { PriceSummary } from '../../components/booking/PriceSummary';
@@ -17,6 +19,7 @@ import { Input } from '../../components/ui/Input';
 import { Textarea } from '../../components/ui/Textarea';
 import { Skeleton } from '../../components/ui/Skeleton';
 import toast from 'react-hot-toast';
+import { ServiceSpotIllustration } from '../../components/illustrations/ServiceSpotIllustration';
 
 export function BookingWizardPage() {
   const { serviceId } = useParams();
@@ -27,19 +30,14 @@ export function BookingWizardPage() {
   const [isLoadingService, setIsLoadingService] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Wizard Step State (1: Schedule, 2: Address & Notes, 3: Review)
   const [currentStep, setCurrentStep] = useState(1);
 
-  // Form State
-  const [selectedDate, setSelectedDate] = useState(() => {
-    const today = new Date();
-    return today.toISOString().split('T')[0];
-  });
-  const [selectedSlot, setSelectedSlot] = useState('10:00 AM - 12:00 PM');
+  const [initialSlot] = useState(() => firstOpenSlot(TIME_SLOTS));
+  const [selectedDate, setSelectedDate] = useState(initialSlot.date);
+  const [selectedSlot, setSelectedSlot] = useState(initialSlot.slot);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [notes, setNotes] = useState('');
 
-  // New Address form toggle & fields
   const [isAddingNewAddress, setIsAddingNewAddress] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const [newAddress, setNewAddress] = useState({
@@ -53,7 +51,6 @@ export function BookingWizardPage() {
     is_default: true,
   });
 
-  // Load service & saved addresses
   useEffect(() => {
     async function loadData() {
       setIsLoadingService(true);
@@ -84,7 +81,6 @@ export function BookingWizardPage() {
     loadData();
   }, [serviceId]);
 
-  // Geolocation Handler (permission-based, editable confirmation)
   const handleUseCurrentLocation = () => {
     if (!navigator.geolocation) {
       toast.error('Geolocation is not supported by your browser.');
@@ -96,7 +92,6 @@ export function BookingWizardPage() {
       (pos) => {
         setIsLocating(false);
         const { latitude, longitude } = pos.coords;
-        // Resolved mock reverse-geocoded address based on coordinate presence
         setNewAddress((prev) => ({
           ...prev,
           line1: `Detected Location (${latitude.toFixed(3)}, ${longitude.toFixed(3)})`,
@@ -145,6 +140,10 @@ export function BookingWizardPage() {
         toast.error('Please pick a date and time slot.');
         return;
       }
+      if (isSlotInPast(selectedDate, selectedSlot)) {
+        toast.error('That slot has already started. Please pick a later one.');
+        return;
+      }
       setCurrentStep(2);
     } else if (currentStep === 2) {
       if (!selectedAddressId && !isAddingNewAddress) {
@@ -162,13 +161,10 @@ export function BookingWizardPage() {
   const handleCreateBooking = async () => {
     setIsSubmitting(true);
     try {
-      // Build ISO schedule timestamp
-      const scheduledAtIso = `${selectedDate}T10:00:00Z`;
-
       const payload = {
-        service_id: Number(serviceId),
+        service_id: service.id,
         address_id: selectedAddressId,
-        scheduled_at: scheduledAtIso,
+        scheduled_at: slotToISO(selectedDate, selectedSlot),
         notes,
         custom_address: isAddingNewAddress ? newAddress : null,
       };
@@ -213,16 +209,13 @@ export function BookingWizardPage() {
 
   return (
     <div className="container-custom py-8 sm:py-12">
-      {/* Wizard Step Indicator */}
       <BookingStepper
         currentStep={currentStep}
         steps={['Select Time', 'Address & Notes', 'Review & Confirm']}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* Main Step Body */}
         <div className="lg:col-span-2 space-y-6">
-          {/* STEP 1: Date and Slot */}
           {currentStep === 1 && (
             <Card className="border-neutral-200/90 shadow-sm">
               <CardContent className="p-6 sm:p-8 space-y-6">
@@ -257,7 +250,6 @@ export function BookingWizardPage() {
             </Card>
           )}
 
-          {/* STEP 2: Address & Notes */}
           {currentStep === 2 && (
             <Card className="border-neutral-200/90 shadow-sm">
               <CardContent className="p-6 sm:p-8 space-y-6">
@@ -294,7 +286,6 @@ export function BookingWizardPage() {
                   </div>
                 </div>
 
-                {/* Existing Address Selection */}
                 {!isAddingNewAddress && addresses.length > 0 && (
                   <div className="space-y-3">
                     <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-700">
@@ -334,7 +325,6 @@ export function BookingWizardPage() {
                   </div>
                 )}
 
-                {/* New Address Entry Form */}
                 {isAddingNewAddress && (
                   <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-4">
                     <div className="flex justify-between items-center">
@@ -401,7 +391,6 @@ export function BookingWizardPage() {
                   </div>
                 )}
 
-                {/* Special Instructions / Notes */}
                 <div className="pt-2">
                   <Textarea
                     label="Special Notes for the Pro (Optional)"
@@ -412,7 +401,6 @@ export function BookingWizardPage() {
                   />
                 </div>
 
-                {/* Action Buttons */}
                 <div className="pt-4 border-t border-neutral-100 flex items-center justify-between">
                   <Button
                     variant="ghost"
@@ -436,7 +424,6 @@ export function BookingWizardPage() {
             </Card>
           )}
 
-          {/* STEP 3: Review & Finalize Pending Booking */}
           {currentStep === 3 && (
             <Card className="border-neutral-200/90 shadow-sm">
               <CardContent className="p-6 sm:p-8 space-y-6">
@@ -450,12 +437,12 @@ export function BookingWizardPage() {
                 </div>
 
                 <div className="space-y-4">
-                  {/* Service Card */}
                   <div className="bg-neutral-50 p-4 rounded-xl border border-neutral-200/80 flex items-start gap-4">
-                    <img
-                      src={service.image_url}
-                      alt={service.name}
-                      className="w-16 h-16 rounded-xl object-cover shrink-0"
+                    <ServiceSpotIllustration
+                      serviceId={service.id}
+                      category={service.category}
+                      aspect="aspect-square"
+                      className="w-16 h-16 shrink-0"
                     />
                     <div>
                       <h3 className="text-sm font-bold text-neutral-900">{service.name}</h3>
@@ -463,7 +450,6 @@ export function BookingWizardPage() {
                     </div>
                   </div>
 
-                  {/* Schedule & Address Review Grid */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="p-4 rounded-xl border border-neutral-200 bg-white space-y-1">
                       <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider block">
@@ -493,7 +479,6 @@ export function BookingWizardPage() {
                     </div>
                   </div>
 
-                  {/* Notes review */}
                   {notes && (
                     <div className="p-4 rounded-xl border border-neutral-200 bg-white text-xs">
                       <span className="font-bold text-neutral-500 uppercase tracking-wider block mb-1">
@@ -504,7 +489,6 @@ export function BookingWizardPage() {
                   )}
                 </div>
 
-                {/* Final Submission Buttons */}
                 <div className="pt-4 border-t border-neutral-100 flex items-center justify-between">
                   <Button
                     variant="ghost"
@@ -531,7 +515,6 @@ export function BookingWizardPage() {
           )}
         </div>
 
-        {/* Right Sticky Pricing Sidebar */}
         <div>
           <PriceSummary
             service={service}

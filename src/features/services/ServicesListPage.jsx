@@ -88,7 +88,6 @@ export function ServicesListPage() {
         onClearFilters={handleReset}
       />
 
-      {/* Global trust line under the catalog */}
       <div className="mt-12 pt-8 border-t border-[#DDE4DB] text-center">
         <p className="text-sm font-semibold text-[#173D32] bg-[#F7F8F4] inline-block px-5 py-2.5 rounded-full border border-[#DDE4DB]/80 shadow-2xs">
           Pay after the job · UPI or cash · Spare parts at MRP · 30-day warranty

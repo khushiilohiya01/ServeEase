@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { X, Mail, Lock, User, Phone, ShieldCheck, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
+import { safeRedirect } from '../../lib/formatters';
 
 export function AuthModal() {
   const navigate = useNavigate();
@@ -29,7 +30,6 @@ export function AuthModal() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  // Close on Escape key & prevent layout shifts when scroll is locked
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape' && isOpen) {
@@ -97,14 +97,15 @@ export function AuthModal() {
       return;
     }
 
-    if (!password || password.length < 6) {
-      setErrorMsg('Password must be at least 6 characters long');
+    if (!password || password.length < 8) {
+      setErrorMsg('Password must be at least 8 characters long');
       return;
     }
 
     setIsSubmitting(true);
     try {
-      const returnPath = localStorage.getItem('serveease_auth_return_to');
+      const storedReturn = localStorage.getItem('serveease_auth_return_to');
+      const returnPath = storedReturn ? safeRedirect(storedReturn) : null;
       if (mode === 'signin') {
         const cleanEmail = identifier.trim().toLowerCase();
         await login({ email: cleanEmail, password });
@@ -120,7 +121,7 @@ export function AuthModal() {
         const cleanEmail = identifier.includes('@')
           ? identifier.trim().toLowerCase()
           : `${identifier.trim()}@serveease.demo`;
-        const phone = useMobile ? identifier.trim() : '+91 98765 43210';
+        const phone = useMobile ? identifier.trim() : '';
         await registerUser({
           full_name: fullName.trim(),
           email: cleanEmail,
@@ -160,7 +161,6 @@ export function AuthModal() {
       />
 
       <div className="relative w-full max-w-[440px] bg-white rounded-[26px] shadow-2xl border border-neutral-200/80 p-6 sm:p-8 z-10 my-auto transform transition-all duration-200">
-        {/* Top Bar: Brand tag with green dot + Close Button */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#173D32] shrink-0" aria-hidden="true" />
@@ -178,7 +178,6 @@ export function AuthModal() {
           </button>
         </div>
 
-        {/* Modal Heading & Subheading */}
         <div className="mb-5">
           <h2
             id="auth-modal-title"
@@ -193,7 +192,6 @@ export function AuthModal() {
           </p>
         </div>
 
-        {/* Segmented Mode Selector */}
         <div className="bg-[#F4F3EF] p-1 rounded-full flex gap-1 mb-5" role="tablist">
           <button
             type="button"
@@ -234,7 +232,6 @@ export function AuthModal() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-          {/* Full Name (Create mode only) */}
           {mode === 'create' && (
             <div>
               <label
@@ -260,7 +257,6 @@ export function AuthModal() {
             </div>
           )}
 
-          {/* Email / Mobile Field */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label
@@ -296,7 +292,6 @@ export function AuthModal() {
             </div>
           </div>
 
-          {/* Password Field */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label
@@ -342,13 +337,13 @@ export function AuthModal() {
                 <div className="flex items-center justify-between text-[11px]">
                   <span className="text-neutral-500">Strength:</span>
                   <span className={`font-semibold ${
-                    password.length < 6
+                    password.length < 8
                       ? 'text-rose-600'
                       : password.length < 8
                       ? 'text-amber-600'
                       : 'text-emerald-600'
                   }`}>
-                    {password.length < 6
+                    {password.length < 8
                       ? 'Too short (min 6)'
                       : password.length < 8
                       ? 'Moderate'
@@ -358,7 +353,7 @@ export function AuthModal() {
                 <div className="w-full h-1 bg-neutral-100 rounded-full overflow-hidden">
                   <div
                     className={`h-full transition-all duration-300 ${
-                      password.length < 6
+                      password.length < 8
                         ? 'w-1/4 bg-rose-500'
                         : password.length < 8
                         ? 'w-2/3 bg-amber-500'
@@ -370,12 +365,11 @@ export function AuthModal() {
             )}
             {mode === 'create' && !password && (
               <p className="text-[11px] text-neutral-500 mt-1">
-                Password must be at least 6 characters with mixed characters.
+                Password must be at least 8 characters.
               </p>
             )}
           </div>
 
-          {/* Confirm Password (Create mode only) */}
           {mode === 'create' && (
             <div>
               <label
@@ -401,7 +395,6 @@ export function AuthModal() {
             </div>
           )}
 
-          {/* Remember me (Sign in only) */}
           {mode === 'signin' && (
             <div className="flex items-center gap-2 pt-0.5">
               <input
@@ -420,7 +413,6 @@ export function AuthModal() {
             </div>
           )}
 
-          {/* Required Terms & Privacy Checkbox (Create mode only) */}
           {mode === 'create' && (
             <div className="flex items-start gap-2 pt-0.5">
               <input
@@ -442,7 +434,6 @@ export function AuthModal() {
             </div>
           )}
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={isSubmitting}
@@ -459,7 +450,6 @@ export function AuthModal() {
           </button>
         </form>
 
-        {/* Development autofill helper - hidden outside development */}
         {import.meta.env.DEV && (
           <div className="text-center mt-4">
             <button

@@ -1,6 +1,3 @@
-/**
- * Canonical Constants for ServeEase
- */
 export const SERVICE_CATEGORIES = [
   { id: 'all', name: 'All Services', icon: 'Sparkles', shortName: 'All' },
   { id: 'ac', name: 'AC Services', icon: 'Wind', shortName: 'AC', count: 5 },
@@ -15,7 +12,6 @@ export const SERVICE_CATEGORIES = [
   { id: 'odd_jobs', name: 'Odd Jobs & Mounts', icon: 'Wrench', shortName: 'Odd Jobs', count: 6 },
 ];
 
-// Compatibility map for URL queries and historical category slugs
 export const CATEGORY_COMPATIBILITY_MAP = {
   home_cleaning: 'cleaning',
   cleaning: 'cleaning',

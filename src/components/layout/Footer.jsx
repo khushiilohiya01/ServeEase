@@ -30,12 +30,10 @@ export function Footer() {
   return (
     <footer className="bg-[#121820] text-neutral-300 pt-16 pb-12 border-t border-neutral-800" aria-label="Site Footer">
       <div className="container-custom space-y-14">
-        {/* Architectural Illustration Header */}
         <div className="max-w-4xl mx-auto opacity-75 hover:opacity-100 transition-opacity duration-500">
           <ArchitecturalIllustration className="w-full h-auto max-h-48" />
         </div>
 
-        {/* Editorial Brand Statement */}
         <div className="pt-2 pb-6 border-b border-neutral-800/80 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-2 max-w-xl">
             <span className="text-xs font-bold uppercase tracking-wider text-[#A9C9AC]">
@@ -65,9 +63,7 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Navigation Columns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
-          {/* Col 1 & 2: Brand and Contact */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-xl bg-[#173D32] border border-[#A9C9AC]/30 flex items-center justify-center text-[#A9C9AC]">
@@ -90,8 +86,8 @@ export function Footer() {
             </div>
 
             <p className="text-xs text-neutral-400 leading-relaxed max-w-sm">
-              The trustworthy, effortless home-services platform. Backed by background-verified
-              technicians, transparent pricing, and a 30-day rework warranty.
+              Home repairs and cleaning from verified technicians, with prices shown upfront
+              and a 30-day rework warranty.
             </p>
 
             <div className="pt-2 text-xs text-neutral-400 space-y-2 font-normal">
@@ -108,7 +104,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Col 3: Service Disciplines */}
           <div>
             <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">
               Disciplines
@@ -132,7 +127,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 4: Customer Portal */}
           <div>
             <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">
               Customer Portal
@@ -196,7 +190,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Col 5: Company & Legal */}
           <div>
             <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">
               Trust & Safety
@@ -262,7 +255,6 @@ export function Footer() {
           </div>
         </div>
 
-        {/* We serve neighbourhood list */}
         <div className="pt-8 border-t border-neutral-800/80 space-y-2">
           <div className="flex items-center gap-2 text-xs font-bold text-neutral-300 uppercase tracking-wider">
             <MapPin className="w-3.5 h-3.5 text-[#A9C9AC]" />
@@ -281,7 +273,6 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Bottom Copyright & Rights */}
         <div className="pt-8 border-t border-neutral-800 text-xs text-neutral-500 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>© {new Date().getFullYear()} ServeEase Technologies Inc. Crafted for quiet luxury in home care.</p>
           <div className="flex items-center gap-6">
@@ -292,7 +283,6 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Accessible Legal Modal */}
       {legalModalContent && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div className="bg-[#1C222B] text-white rounded-3xl border border-neutral-700 max-w-lg w-full p-6 sm:p-8 space-y-4 shadow-2xl relative">

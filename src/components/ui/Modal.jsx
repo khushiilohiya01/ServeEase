@@ -39,14 +39,12 @@ export function Modal({
       aria-modal="true"
       aria-labelledby={title ? 'modal-title' : undefined}
     >
-      {/* Backdrop */}
       <div
         className="fixed inset-0 bg-neutral-900/60 backdrop-blur-xs transition-opacity duration-200"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Modal Dialog */}
       <div
         ref={modalRef}
         className={clsx(

@@ -25,7 +25,6 @@ export function ServiceFilters({
 
   return (
     <div className="bg-white rounded-2xl border border-[#DDE4DB] p-4 sm:p-5 shadow-xs mb-8 space-y-4">
-      {/* Top row: Search input & Sort dropdown */}
       <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
         <div className="relative flex-1 max-w-lg">
           <Input
@@ -72,7 +71,6 @@ export function ServiceFilters({
         </div>
       </div>
 
-      {/* Room Filter Chips (All, Kitchen, Bathroom, Bedroom, Hall, Balcony, Whole home) */}
       <div className="pt-2 border-t border-[#DDE4DB]/60 flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
         <span className="text-xs font-semibold text-[#647269] uppercase tracking-wider shrink-0 mr-1 hidden sm:inline">
           Room:
@@ -107,7 +105,6 @@ export function ServiceFilters({
         })}
       </div>
 
-      {/* Category Pills (horizontally scrollable on mobile) */}
       <div className="pt-2 border-t border-[#DDE4DB]/60 flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
         <span className="text-xs font-semibold text-[#647269] uppercase tracking-wider shrink-0 mr-1 hidden sm:inline">
           Category:
@@ -131,7 +128,6 @@ export function ServiceFilters({
         })}
       </div>
 
-      {/* Results counter indicator */}
       <div className="flex items-center justify-between text-xs text-[#647269] pt-1">
         <span>
           Showing <strong className="text-[#191E1B]">{totalResults}</strong> available{' '}

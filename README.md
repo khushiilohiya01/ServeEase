@@ -1,116 +1,75 @@
-# ServeEase — On-Demand Home Services Booking Platform
+# ServeEase
 
-A responsive single-page web application for discovering and booking doorstep home repair, cleaning, and maintenance services. Built with **React 19**, **Tailwind CSS v4**, and **Vite**.
+A booking site for home services (AC repair, cleaning, plumbing, electrical, pest control and so on), built with React, Vite and Tailwind.
 
-Authentication, bookings, and checkout are simulated client-side through an interactive mock data store with `localStorage` persistence, allowing full end-to-end exploration without a remote backend server.
+There's no backend yet. All the data (services, users, bookings, addresses, payments) lives in a small mock store in `src/lib/apiClient.js` that saves to `localStorage`, so the whole flow works in the browser. Every page goes through `apiRequest()`, so pointing it at a real API later should only need `VITE_API_BASE_URL`.
 
----
+## What's in it
 
-## 🔗 Live Demo & Deployment
+- Browse and search services by name or by problem ("ac not cooling", "tap leaking"), filter by category or room, sort by price/rating/duration
+- Interactive 2BHK cutaway on the home page: click a room to see the services for it
+- Cart with per-BHK pricing for cleaning/painting type services
+- 3-step booking: date and 2-hour slot, address (saved, new, or from GPS), then review
+- Checkout with a fake card payment or pay-after-service
+- Dashboard, bookings list, reschedule/cancel, saved addresses, payment history
+- Protected routes that send you back where you were after logging in
 
-- **Live URL**: `[Deploy link here — e.g. https://serveease.vercel.app]`
-- **Single Page Application (SPA) Routing**: Configured with route rewrites via `vercel.json` and `public/_redirects` so refreshing client routes (e.g., `/bookings`, `/dashboard`) works seamlessly.
-
----
-
-## 🔐 Demo Credentials
-
-You can test the customer experience using the seeded demo credentials or by clicking **"Fill with Demo Customer"** on the login screen:
-
-- **Email**: `rahul.sharma@example.com` (or `alex.rivera@example.com`)
-- **Password**: `demopassword` (or `demo1234`)
-- **Simulated Card**: Pre-filled test card (`•••• •••• •••• 4242`) or Pay-after-service option.
-
----
-
-## 🌟 Key Features
-
-1. **Service Discovery & Search (`/`, `/services`, `/services/:id`)**:
-   - Real-time search by keyword, service name, or symptom.
-   - Category filtering (AC, Plumbing, Electrical, Cleaning, Appliances, Carpentry) and multi-field sorting.
-   - Interactive 2BHK flat architectural cutaway to explore services room by room.
-
-2. **Customer Authentication & Route Protection (`/login`, `/signup`)**:
-   - Form validation powered by **Zod** and **React Hook Form**.
-   - Client session management with protected routes that preserve the intended destination URL on redirect.
-
-3. **Multi-Step Booking Wizard (`/booking/:serviceId`)**:
-   - **Step 1 (Schedule)**: 14-day date picker with 2-hour arrival windows.
-   - **Step 2 (Address & Notes)**: Saved address selection, manual entry, or browser geolocation.
-   - **Step 3 (Review)**: Itemized cost calculation (base fare, 5% GST, and platform fee).
-
-4. **Simulated Checkout & Booking Confirmation (`/checkout/:bookingId`, `/booking-success/:bookingId`)**:
-   - Interactive payment simulation (demo card or cash/pay after service).
-   - Generates a booking confirmation reference with scheduled technician details.
-
-5. **Customer Portal (`/dashboard`, `/bookings`, `/profile`, `/payments`)**:
-   - Overview of active bookings, completed jobs, and total spend.
-   - Reschedule or cancel appointments.
-   - Saved address book management.
-
----
-
-## 🏗️ Tech Stack
-
-| Layer | Technologies |
-|---|---|
-| **Framework** | React 19 + Vite 8 + JavaScript |
-| **Styling** | Tailwind CSS v4 + Plus Jakarta Sans Typography |
-| **Routing** | React Router v7 with route code-splitting (`React.lazy`) |
-| **Form & Validation** | React Hook Form + Zod |
-| **Animation & Scroll** | Framer Motion + Lenis Smooth Scroll |
-| **State Management** | Context API (`AuthContext`, `CartContext`) + LocalStorage Store |
-| **Icons & Notifications** | Lucide React + React Hot Toast |
-| **Testing** | Vitest + React Testing Library + jsdom |
-
----
-
-## ⚡ Performance Optimization
-
-- **Bundle Optimization**: Initial production bundle was reduced from **520 kB** down to **120 kB** (~77% reduction in main chunk size) by configuring manual chunk splitting for `framer-motion`, `lenis`, and core libraries in `vite.config.js`.
-- **Dynamic Imports**: Route-level code splitting ensures secondary views (Dashboard, Checkout, Details) load on demand.
-
----
-
-## 🧪 Testing
-
-The repository includes automated tests covering validation, route guards, price calculations, and booking workflows:
+## Running it
 
 ```bash
-# Run unit and component tests with Vitest
-npm test
-
-# Run tests in watch mode
-npm run test:watch
+npm install
+npm run dev
 ```
 
-**Test Coverage Highlights**:
-- **Zod Schemas**: Input sanitization, password constraints, email validation, and matching confirmations.
-- **Route Guards**: `ProtectedRoute` redirection and URL query destination preservation.
-- **Calculations**: Itemized totals, 5% GST tax calculation, platform fees, and currency formatters.
-- **Booking Workflows**: Step definitions, payload structures, and time slot validation.
+Then open http://localhost:5173.
 
----
+Demo login:
 
-## 🚀 Quick Start
+| Email | Password |
+|---|---|
+| rahul.sharma@example.com | demopassword |
+| alex.rivera@example.com | demo1234 |
 
-1. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+In dev mode the login page also has a button that fills these in. You can sign up with any email as well; the account is saved in your browser.
 
-2. **Start the development server**:
-   ```bash
-   npm run dev
-   ```
-   Open `http://localhost:5173/` in your browser.
+To reset everything, clear the site's localStorage.
 
-3. **Run the test suite**:
-   ```bash
-   npm test
-   ```
+## Scripts
 
-4. **Build for production**:
-   ```bash
-   npm run build
-   ```
+```bash
+npm run dev        # dev server
+npm run build      # production build into dist/
+npm run preview    # serve the build locally
+npm test           # vitest
+npm run lint       # eslint
+```
+
+## Environment
+
+Copy `.env.example` to `.env`. Both values are optional:
+
+- `VITE_API_BASE_URL`: real API base URL. Leave empty to use the mock store.
+- `VITE_ENABLE_MOCK_FALLBACK`: if `true`, requests fall back to the mock store when the API can't be reached. Off by default so a broken API shows an error instead of silently using fake data.
+
+## Project layout
+
+```
+src/
+  app/          router and providers
+  features/     one folder per page/flow (auth, booking, checkout, bookings, ...)
+  components/   shared UI, layout, home page sections, illustrations
+  context/      AuthContext (session, location, auth modal) and CartContext
+  data/         service catalogue, cities/localities, seasonal banners
+  lib/          api client + mock store, pricing, date helpers, formatters
+  test/         vitest tests
+```
+
+Pricing is 5% GST plus a ₹49 platform fee (`src/lib/pricing.js`). Booking times are stored as ISO timestamps built from the chosen local date and slot (`src/lib/dates.js`).
+
+## Stack
+
+React 19, React Router 7 (pages are lazy loaded), Tailwind CSS 4, Framer Motion, Lenis, lucide-react, react-hot-toast. Tests use Vitest and Testing Library.
+
+## Deploying
+
+It's a static SPA. `vercel.json` and `public/_redirects` rewrite every path to `index.html` so refreshing on `/bookings` etc. works on Vercel or Netlify.

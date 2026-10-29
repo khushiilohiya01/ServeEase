@@ -8,7 +8,6 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(getAuthToken());
   const [isLoading, setIsLoading] = useState(true);
 
-  // Restore authenticated session on initial mount
   const checkSession = useCallback(async () => {
     const existingToken = getAuthToken();
     if (!existingToken) {
@@ -65,7 +64,6 @@ export function AuthProvider({ children }) {
       body: JSON.stringify({ full_name, email, password, phone }),
     });
 
-    // Registration creates the account. User proceeds to sign in with their credentials.
     return res?.user || { full_name, email };
   };
 
@@ -73,7 +71,7 @@ export function AuthProvider({ children }) {
     try {
       await apiRequest('/auth/logout', { method: 'POST' });
     } catch {
-      // Continue client cleanup even if network fails
+      // clear local state anyway
     } finally {
       setAuthToken(null);
       setToken(null);
@@ -101,7 +99,7 @@ export function AuthProvider({ children }) {
     try {
       localStorage.setItem('serveease_city', city);
     } catch {
-      // storage unavailable
+      // ignore
     }
   };
 
@@ -110,7 +108,7 @@ export function AuthProvider({ children }) {
     try {
       localStorage.setItem('serveease_locality', locality);
     } catch {
-      // storage unavailable
+      // ignore
     }
   };
 
@@ -120,7 +118,7 @@ export function AuthProvider({ children }) {
       try {
         localStorage.setItem('serveease_city', city);
       } catch {
-        // storage unavailable
+        // ignore
       }
     }
     if (locality) {
@@ -128,7 +126,7 @@ export function AuthProvider({ children }) {
       try {
         localStorage.setItem('serveease_locality', locality);
       } catch {
-        // storage unavailable
+        // ignore
       }
     }
     if (pincode) {
@@ -136,7 +134,7 @@ export function AuthProvider({ children }) {
       try {
         localStorage.setItem('serveease_pincode', pincode);
       } catch {
-        // storage unavailable
+        // ignore
       }
     }
   };
@@ -163,12 +161,10 @@ export function AuthProvider({ children }) {
     logout,
     updateProfile,
     refreshSession: checkSession,
-    // Global Auth Modal controls
     authModalState,
     openAuthModal,
     closeAuthModal,
     setAuthModalMode,
-    // Global Location controls
     selectedCity,
     setSelectedCity,
     selectedLocality,

@@ -12,7 +12,7 @@ export function formatDate(dateString) {
   try {
     const d = new Date(dateString);
     if (isNaN(d.getTime())) return dateString;
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat('en-IN', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
@@ -27,7 +27,7 @@ export function formatDateTime(dateString) {
   try {
     const d = new Date(dateString);
     if (isNaN(d.getTime())) return dateString;
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat('en-IN', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
@@ -65,4 +65,9 @@ export function getStatusBadgeVariant(status) {
     default:
       return { variant: 'neutral', label: (status || 'UNKNOWN').toUpperCase() };
   }
+}
+
+// Only allow in-app paths as post-login redirects ("/foo", not "//evil.com" or "https://...").
+export function safeRedirect(path, fallback = '/dashboard') {
+  return typeof path === 'string' && path.startsWith('/') && !path.startsWith('//') ? path : fallback;
 }

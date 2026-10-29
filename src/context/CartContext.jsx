@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { priceBreakdown } from '../lib/pricing';
 import { getServiceNumericPrice } from '../data/servicesData';
 
 const CartContext = createContext(null);
@@ -27,7 +28,7 @@ export function CartProvider({ children }) {
     try {
       localStorage.setItem('serveease_selected_bhk', bhk);
     } catch {
-      // storage unavailable
+      // ignore
     }
   };
 
@@ -35,7 +36,7 @@ export function CartProvider({ children }) {
     try {
       localStorage.setItem('serveease_guest_cart', JSON.stringify(items));
     } catch {
-      // storage unavailable
+      // ignore
     }
   }, [items]);
 
@@ -139,10 +140,9 @@ export function CartProvider({ children }) {
     setItems([]);
   };
 
-  const subtotal = items.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
-  const tax = Math.round(subtotal * 0.05); // 5% GST
-  const platformFee = items.length > 0 ? 49 : 0;
-  const total = subtotal + tax + platformFee;
+  const { subtotal, tax, platformFee, total } = priceBreakdown(
+    items.reduce((sum, item) => sum + (Number(item.price) || 0), 0)
+  );
 
   const value = {
     items,

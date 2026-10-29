@@ -23,8 +23,8 @@ export const addressSchema = z.object({
   line1: z.string().trim().min(5, 'Street address is required'),
   line2: z.string().trim().optional(),
   city: z.string().trim().min(2, 'City is required'),
-  state: z.string().trim().min(2, 'State / Province is required'),
-  postal_code: z.string().trim().min(3, 'Postal / ZIP code is required'),
-  country: z.string().trim().default('United States'),
+  state: z.string().trim().min(2, 'State is required'),
+  postal_code: z.string().trim().min(3, 'PIN code is required'),
+  country: z.string().trim().default('India'),
   is_default: z.boolean().default(false),
 });

@@ -1,7 +1,6 @@
 export function StructuralFrame() {
   return (
     <>
-      {/* 1. OUTER SLABS & STRUCTURAL WALLS */}
       <rect
         x="12"
         y="12"
@@ -13,7 +12,6 @@ export function StructuralFrame() {
         strokeWidth="3.5"
       />
 
-      {/* Horizontal floor dividing slab */}
       <rect
         x="12"
         y="266"
@@ -24,7 +22,6 @@ export function StructuralFrame() {
         strokeWidth="2"
       />
 
-      {/* Vertical dividing walls upper floor */}
       <rect
         x="368"
         y="12"
@@ -44,7 +41,6 @@ export function StructuralFrame() {
         strokeWidth="2"
       />
 
-      {/* Vertical dividing wall lower floor (Kitchen vs Hall) */}
       <rect
         x="368"
         y="278"

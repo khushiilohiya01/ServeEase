@@ -49,7 +49,6 @@ export function BookingSuccessPage() {
     <div className="container-custom py-12 sm:py-20 flex justify-center">
       <div className="w-full max-w-2xl">
         <Card className="border-neutral-200/90 shadow-xl overflow-hidden">
-          {/* Green Confirmation Header */}
           <div className="bg-emerald-600 text-white p-8 text-center relative overflow-hidden">
             <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-xs flex items-center justify-center mx-auto mb-4 border border-white/30">
               <CheckCircle2 className="w-10 h-10 text-white" />
@@ -66,7 +65,6 @@ export function BookingSuccessPage() {
           </div>
 
           <CardContent className="p-6 sm:p-8 space-y-6">
-            {/* Meta tags */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-4 rounded-xl bg-neutral-50 border border-neutral-100 text-xs">
               <div>
                 <span className="text-neutral-400 block font-medium">Booking ID</span>
@@ -86,7 +84,6 @@ export function BookingSuccessPage() {
               </div>
             </div>
 
-            {/* Appointment summary */}
             <div className="space-y-4">
               <h3 className="text-xs font-bold text-neutral-900 uppercase tracking-wider">
                 Appointment Summary
@@ -126,7 +123,6 @@ export function BookingSuccessPage() {
               </div>
             </div>
 
-            {/* What to expect */}
             <div className="p-4 rounded-xl bg-teal-50/50 border border-teal-100 text-xs text-teal-950 space-y-1.5">
               <div className="font-bold flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-teal-700" />
@@ -137,7 +133,6 @@ export function BookingSuccessPage() {
               </p>
             </div>
 
-            {/* Navigation Actions */}
             <div className="pt-2 flex flex-col sm:flex-row gap-3">
               <Link to="/bookings" className="flex-1">
                 <Button variant="primary" size="md" className="w-full" icon={FileCheck}>

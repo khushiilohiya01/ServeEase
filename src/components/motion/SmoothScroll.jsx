@@ -3,7 +3,7 @@ import Lenis from 'lenis';
 
 export function SmoothScroll({ children }) {
   useEffect(() => {
-    // Respect OS-level reduced motion preference
+    // no smooth scroll if the OS asks for reduced motion
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
