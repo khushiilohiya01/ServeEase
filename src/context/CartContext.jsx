@@ -52,72 +52,71 @@ export function CartProvider({ children }) {
 
     const price = getServiceNumericPrice(service, effectiveBhk, quantity);
 
-    setItems((prev) => {
-      const existingIdx = prev.findIndex((i) => i.serviceId === service.id && i.bhk === effectiveBhk);
-      if (existingIdx > -1) {
-        toast.success(`'${service.name}' is already in your cart`);
-        return prev;
-      }
-      const newItem = {
-        cartItemId: `${service.id}-${effectiveBhk || 'std'}-${Date.now()}`,
-        serviceId: service.id,
-        name: service.name,
-        category: service.category,
-        image_url: service.image || service.image_url,
-        description: service.description,
-        pricing: service.pricing,
-        isBhkEligible: service.pricing?.kind === 'per_bhk',
-        bhk: effectiveBhk,
-        quantity,
-        price,
-      };
-      toast.success(`Added '${service.name}' to cart`);
-      return [...prev, newItem];
-    });
+    if (items.some((i) => i.serviceId === service.id && i.bhk === effectiveBhk)) {
+      toast.success(`'${service.name}' is already in your cart`);
+      return;
+    }
+
+    const newItem = {
+      cartItemId: `${service.id}-${effectiveBhk || 'std'}-${Date.now()}`,
+      serviceId: service.id,
+      name: service.name,
+      category: service.category,
+      image_url: service.image || service.image_url,
+      description: service.description,
+      pricing: service.pricing,
+      isBhkEligible: service.pricing?.kind === 'per_bhk',
+      bhk: effectiveBhk,
+      quantity,
+      price,
+    };
+    setItems((prev) => [...prev, newItem]);
+    toast.success(`Added '${service.name}' to cart`);
   };
 
   const addMultipleToCart = (servicesList) => {
-    setItems((prev) => {
-      const updated = [...prev];
-      let addedCount = 0;
-      servicesList.forEach(({ service, bhk = selectedBhk, quantity = 1 }) => {
-        const effectiveBhk = service.pricing?.kind === 'per_bhk' ? bhk : null;
-        const exists = updated.some((i) => i.serviceId === service.id && i.bhk === effectiveBhk);
-        if (!exists) {
-          const price = getServiceNumericPrice(service, effectiveBhk, quantity);
-          updated.push({
-            cartItemId: `${service.id}-${effectiveBhk || 'std'}-${Date.now()}-${Math.random()}`,
-            serviceId: service.id,
-            name: service.name,
-            category: service.category,
-            image_url: service.image || service.image_url,
-            description: service.description,
-            pricing: service.pricing,
-            isBhkEligible: service.pricing?.kind === 'per_bhk',
-            bhk: effectiveBhk,
-            quantity,
-            price,
-          });
-          addedCount += 1;
-        }
-      });
-      if (addedCount > 0) {
-        toast.success(`Added ${addedCount} services to your cart`);
-      } else {
-        toast('Selected services are already in your cart');
+    const updated = [...items];
+    let addedCount = 0;
+    servicesList.forEach(({ service, bhk = selectedBhk, quantity = 1 }) => {
+      const effectiveBhk = service.pricing?.kind === 'per_bhk' ? bhk : null;
+      const exists = updated.some((i) => i.serviceId === service.id && i.bhk === effectiveBhk);
+      if (!exists) {
+        const price = getServiceNumericPrice(service, effectiveBhk, quantity);
+        updated.push({
+          cartItemId: `${service.id}-${effectiveBhk || 'std'}-${Date.now()}-${Math.random()}`,
+          serviceId: service.id,
+          name: service.name,
+          category: service.category,
+          image_url: service.image || service.image_url,
+          description: service.description,
+          pricing: service.pricing,
+          isBhkEligible: service.pricing?.kind === 'per_bhk',
+          bhk: effectiveBhk,
+          quantity,
+          price,
+        });
+        addedCount += 1;
       }
-      return updated;
     });
+    setItems(updated);
+    if (addedCount > 0) {
+      toast.success(`Added ${addedCount} services to your cart`);
+    } else {
+      toast('Selected services are already in your cart');
+    }
   };
 
   const removeFromCart = (cartItemId) => {
-    setItems((prev) => {
-      const found = prev.find((i) => i.cartItemId === cartItemId);
-      if (found) {
-        toast.success(`Removed '${found.name}' from cart`);
-      }
-      return prev.filter((i) => i.cartItemId !== cartItemId);
-    });
+    const found = items.find((i) => i.cartItemId === cartItemId);
+    if (!found) return;
+    setItems((prev) => prev.filter((i) => i.cartItemId !== cartItemId));
+    toast.success(`Removed '${found.name}' from cart`);
+  };
+
+  // per-BHK services count as in the cart only for the BHK that was added
+  const isInCart = (service, bhk = selectedBhk) => {
+    const effectiveBhk = service.pricing?.kind === 'per_bhk' ? bhk : null;
+    return items.some((i) => i.serviceId === service.id && i.bhk === effectiveBhk);
   };
 
   const updateBhk = (cartItemId, newBhk) => {
@@ -156,6 +155,7 @@ export function CartProvider({ children }) {
     addToCart,
     addMultipleToCart,
     removeFromCart,
+    isInCart,
     updateBhk,
     clearCart,
   };

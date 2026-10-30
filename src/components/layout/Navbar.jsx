@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   Menu,
   X,
@@ -18,6 +19,35 @@ import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 import { ServicesMegaMenu } from './ServicesMegaMenu';
 import { LocationModal } from '../location/LocationModal';
+
+// the bag gives a little shake and the badge pops whenever the count changes
+function CartBagIcon({ count, className }) {
+  return (
+    <motion.span
+      key={count}
+      className="block"
+      initial={{ rotate: 0 }}
+      animate={{ rotate: count > 0 ? [0, -14, 10, -6, 0] : 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <ShoppingBag className={className} />
+    </motion.span>
+  );
+}
+
+function CartCountBadge({ count, className }) {
+  return (
+    <motion.span
+      key={count}
+      initial={{ scale: 0.3 }}
+      animate={{ scale: 1 }}
+      transition={{ type: 'spring', stiffness: 500, damping: 15 }}
+      className={`absolute -top-1 -right-1 rounded-full bg-[#173D32] text-white font-bold flex items-center justify-center ${className}`}
+    >
+      {count}
+    </motion.span>
+  );
+}
 
 export function Navbar() {
   const { user, isAuthenticated, logout, openAuthModal, selectedCity, selectedLocality } = useAuth();
@@ -226,11 +256,9 @@ export function Navbar() {
               aria-label={`View cart with ${cartCount} items`}
               className="relative p-2.5 rounded-xl text-[#191E1B] hover:bg-[#E8EBE2]/60 transition-colors cursor-pointer"
             >
-              <ShoppingBag className="w-4.5 h-4.5" />
+              <CartBagIcon count={cartCount} className="w-4.5 h-4.5" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#173D32] text-white text-[10px] font-bold flex items-center justify-center shadow-xs animate-scale-in">
-                  {cartCount}
-                </span>
+                <CartCountBadge count={cartCount} className="w-5 h-5 text-[10px] shadow-xs" />
               )}
             </Link>
 
@@ -266,7 +294,7 @@ export function Navbar() {
                     />
                     <div
                       role="menu"
-                      className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-[#DDE3DA] py-1.5 z-30 transition-all"
+                      className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-[#DDE3DA] py-1.5 z-30 origin-top-right animate-in fade-in zoom-in-95 slide-in-from-top-2"
                     >
                       <div className="px-4 py-3 border-b border-[#DDE3DA]/60">
                         <p className="text-xs font-bold text-[#191E1B]">{user?.full_name}</p>
@@ -353,11 +381,9 @@ export function Navbar() {
               aria-label={`View cart with ${cartCount} items`}
               className="relative p-2 text-[#191E1B]"
             >
-              <ShoppingBag className="w-5 h-5" />
+              <CartBagIcon count={cartCount} className="w-5 h-5" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#173D32] text-white text-[9px] font-bold flex items-center justify-center">
-                  {cartCount}
-                </span>
+                <CartCountBadge count={cartCount} className="w-4 h-4 text-[9px]" />
               )}
             </Link>
 
@@ -379,166 +405,178 @@ export function Navbar() {
         />
       </header>
 
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div
-            className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"
-            onClick={() => setMobileMenuOpen(false)}
-            aria-hidden="true"
-          />
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div key="mobile-menu" className="fixed inset-0 z-50 lg:hidden" exit={{ opacity: 1 }}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-0 bg-black/40 backdrop-blur-xs"
+              onClick={() => setMobileMenuOpen(false)}
+              aria-hidden="true"
+            />
 
-          <div className="fixed inset-y-0 right-0 w-full max-w-sm bg-[#F7F7F2] border-l border-[#DDE3DA] shadow-2xl p-6 flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right duration-250">
-            <div>
-              <div className="flex items-center justify-between pb-6 border-b border-[#DDE3DA]">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-[#173D32] text-[#A9C9AC] flex items-center justify-center">
-                    <Home className="w-4 h-4" />
-                  </div>
-                  <span className="text-lg font-bold text-[#191E1B]">
-                    ServeEase
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-xl text-[#66716A] hover:bg-[#E8EBE2]"
-                  aria-label="Close menu"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              <div className="py-4">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    setIsLocationModalOpen(true);
-                  }}
-                  className="w-full flex items-center justify-between p-3 rounded-2xl bg-white border border-[#DDE3DA] text-xs font-semibold text-[#191E1B]"
-                >
-                  <div className="flex items-center gap-2 min-w-0 pr-2">
-                    <MapPin className="w-4 h-4 text-[#173D32] shrink-0" />
-                    <span className="truncate">
-                      Serving in {selectedLocality ? `${selectedLocality}, ${selectedCity}` : selectedCity || 'Bengaluru'}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', stiffness: 320, damping: 34 }}
+              className="fixed inset-y-0 right-0 w-full max-w-sm bg-[#F7F7F2] border-l border-[#DDE3DA] shadow-2xl p-6 flex flex-col justify-between overflow-y-auto"
+            >
+              <div>
+                <div className="flex items-center justify-between pb-6 border-b border-[#DDE3DA]">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-[#173D32] text-[#A9C9AC] flex items-center justify-center">
+                      <Home className="w-4 h-4" />
+                    </div>
+                    <span className="text-lg font-bold text-[#191E1B]">
+                      ServeEase
                     </span>
                   </div>
-                  <span className="text-[11px] text-[#173D32] font-bold">Change</span>
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-2 rounded-xl text-[#66716A] hover:bg-[#E8EBE2]"
+                    aria-label="Close menu"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <div className="py-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setIsLocationModalOpen(true);
+                    }}
+                    className="w-full flex items-center justify-between p-3 rounded-2xl bg-white border border-[#DDE3DA] text-xs font-semibold text-[#191E1B]"
+                  >
+                    <div className="flex items-center gap-2 min-w-0 pr-2">
+                      <MapPin className="w-4 h-4 text-[#173D32] shrink-0" />
+                      <span className="truncate">
+                        Serving in {selectedLocality ? `${selectedLocality}, ${selectedCity}` : selectedCity || 'Bengaluru'}
+                      </span>
+                    </div>
+                    <span className="text-[11px] text-[#173D32] font-bold">Change</span>
+                  </button>
+                </div>
+
+                <nav className="space-y-1.5 py-2">
+                  <Link
+                    to="/"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-[#191E1B] hover:bg-[#E8EBE2]"
+                  >
+                    <span>Home</span>
+                    <ArrowRight className="w-4 h-4 text-[#66716A]" />
+                  </Link>
+
+                  <Link
+                    to="/services"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-[#191E1B] hover:bg-[#E8EBE2]"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span>All Services</span>
+                      <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-[#A9C9AC]/40 text-[#173D32]">
+                        50+ Services
+                      </span>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-[#66716A]" />
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={() => scrollToSection('how-it-works')}
+                    className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-[#191E1B] hover:bg-[#E8EBE2] text-left cursor-pointer"
+                  >
+                    <span>How It Works</span>
+                    <ArrowRight className="w-4 h-4 text-[#66716A]" />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => scrollToSection('why-serveease')}
+                    className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-[#191E1B] hover:bg-[#E8EBE2] text-left cursor-pointer"
+                  >
+                    <span>Why ServeEase</span>
+                    <ArrowRight className="w-4 h-4 text-[#66716A]" />
+                  </button>
+
+                  {isAuthenticated && (
+                    <>
+                      <div className="pt-2 pb-1 text-[11px] font-bold uppercase tracking-wider text-[#66716A] px-4">
+                        My Account
+                      </div>
+                      <Link
+                        to="/dashboard"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-[#191E1B] hover:bg-[#E8EBE2]"
+                      >
+                        <LayoutDashboard className="w-4 h-4 text-[#66716A]" />
+                        <span>Dashboard</span>
+                      </Link>
+                      <Link
+                        to="/bookings"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-[#191E1B] hover:bg-[#E8EBE2]"
+                      >
+                        <Calendar className="w-4 h-4 text-[#66716A]" />
+                        <span>Bookings</span>
+                      </Link>
+                      <Link
+                        to="/profile"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-[#191E1B] hover:bg-[#E8EBE2]"
+                      >
+                        <User className="w-4 h-4 text-[#66716A]" />
+                        <span>Profile & Address</span>
+                      </Link>
+                    </>
+                  )}
+                </nav>
               </div>
 
-              <nav className="space-y-1.5 py-2">
-                <Link
-                  to="/"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-[#191E1B] hover:bg-[#E8EBE2]"
-                >
-                  <span>Home</span>
-                  <ArrowRight className="w-4 h-4 text-[#66716A]" />
-                </Link>
+              <div className="pt-6 border-t border-[#DDE3DA] space-y-3">
+                {isAuthenticated ? (
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="w-full py-2.5 rounded-xl bg-white border border-[#DDE3DA] text-xs font-semibold text-[#B54848] flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Sign Out ({user?.full_name?.split(' ')[0]})</span>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      openAuthModal('signin');
+                    }}
+                    className="w-full py-2.5 rounded-xl bg-white border border-[#DDE3DA] text-xs font-semibold text-[#191E1B] flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <User className="w-4 h-4 text-[#173D32]" />
+                    <span>Sign In / Create Account</span>
+                  </button>
+                )}
 
                 <Link
                   to="/services"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-[#191E1B] hover:bg-[#E8EBE2]"
+                  className="w-full py-3 rounded-xl bg-[#173D32] text-white text-sm font-semibold flex items-center justify-center gap-2 shadow-sm"
                 >
-                  <div className="flex items-center gap-2">
-                    <span>All Services</span>
-                    <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-[#A9C9AC]/40 text-[#173D32]">
-                      50+ Services
-                    </span>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-[#66716A]" />
+                  <span>Book a Service</span>
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
-
-                <button
-                  type="button"
-                  onClick={() => scrollToSection('how-it-works')}
-                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-[#191E1B] hover:bg-[#E8EBE2] text-left cursor-pointer"
-                >
-                  <span>How It Works</span>
-                  <ArrowRight className="w-4 h-4 text-[#66716A]" />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => scrollToSection('why-serveease')}
-                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-[#191E1B] hover:bg-[#E8EBE2] text-left cursor-pointer"
-                >
-                  <span>Why ServeEase</span>
-                  <ArrowRight className="w-4 h-4 text-[#66716A]" />
-                </button>
-
-                {isAuthenticated && (
-                  <>
-                    <div className="pt-2 pb-1 text-[11px] font-bold uppercase tracking-wider text-[#66716A] px-4">
-                      My Account
-                    </div>
-                    <Link
-                      to="/dashboard"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-[#191E1B] hover:bg-[#E8EBE2]"
-                    >
-                      <LayoutDashboard className="w-4 h-4 text-[#66716A]" />
-                      <span>Dashboard</span>
-                    </Link>
-                    <Link
-                      to="/bookings"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-[#191E1B] hover:bg-[#E8EBE2]"
-                    >
-                      <Calendar className="w-4 h-4 text-[#66716A]" />
-                      <span>Bookings</span>
-                    </Link>
-                    <Link
-                      to="/profile"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-[#191E1B] hover:bg-[#E8EBE2]"
-                    >
-                      <User className="w-4 h-4 text-[#66716A]" />
-                      <span>Profile & Address</span>
-                    </Link>
-                  </>
-                )}
-              </nav>
-            </div>
-
-            <div className="pt-6 border-t border-[#DDE3DA] space-y-3">
-              {isAuthenticated ? (
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="w-full py-2.5 rounded-xl bg-white border border-[#DDE3DA] text-xs font-semibold text-[#B54848] flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span>Sign Out ({user?.full_name?.split(' ')[0]})</span>
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    openAuthModal('signin');
-                  }}
-                  className="w-full py-2.5 rounded-xl bg-white border border-[#DDE3DA] text-xs font-semibold text-[#191E1B] flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <User className="w-4 h-4 text-[#173D32]" />
-                  <span>Sign In / Create Account</span>
-                </button>
-              )}
-
-              <Link
-                to="/services"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full py-3 rounded-xl bg-[#173D32] text-white text-sm font-semibold flex items-center justify-center gap-2 shadow-sm"
-              >
-                <span>Book a Service</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <LocationModal
         isOpen={isLocationModalOpen}

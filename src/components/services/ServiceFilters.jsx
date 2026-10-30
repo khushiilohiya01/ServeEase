@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Search, X } from 'lucide-react';
 import { SERVICE_CATEGORIES, SORT_OPTIONS } from '../../lib/constants';
 import { ROOMS } from '../../data/servicesData';
@@ -23,22 +24,48 @@ export function ServiceFilters({
     selectedRoom !== 'all' ||
     selectedSort !== 'recommended';
 
+  // the box updates instantly, the search itself waits until you pause typing
+  const [draftQuery, setDraftQuery] = useState(searchQuery);
+  const [lastQuery, setLastQuery] = useState(searchQuery);
+  const [emittedQuery, setEmittedQuery] = useState(searchQuery);
+
+  if (searchQuery !== lastQuery) {
+    setLastQuery(searchQuery);
+    // only overwrite what's typed when the query changed from outside (reset, back button)
+    if (searchQuery !== emittedQuery) setDraftQuery(searchQuery);
+  }
+
+  useEffect(() => {
+    if (draftQuery === searchQuery) return undefined;
+    const timer = setTimeout(() => {
+      setEmittedQuery(draftQuery);
+      onSearchChange(draftQuery);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [draftQuery, searchQuery, onSearchChange]);
+
+  const clearSearch = () => {
+    setDraftQuery('');
+    setEmittedQuery('');
+    onSearchChange('');
+  };
+
   return (
     <div className="bg-white rounded-2xl border border-[#DDE4DB] p-4 sm:p-5 shadow-xs mb-8 space-y-4">
       <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
         <div className="relative flex-1 max-w-lg">
           <Input
             placeholder="Search symptoms: 'ac thanda nahi', 'tap leak', 'cockroach'..."
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
+            value={draftQuery}
+            onChange={(e) => setDraftQuery(e.target.value)}
             startIcon={Search}
             className="w-full text-sm"
             aria-label="Search services or symptoms"
           />
-          {searchQuery && (
+          {draftQuery && (
             <button
               type="button"
-              onClick={() => onSearchChange('')}
+              onClick={clearSearch}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-[#647269] hover:text-[#191E1B] p-1 cursor-pointer"
               aria-label="Clear search query"
             >

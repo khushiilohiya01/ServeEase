@@ -1,7 +1,25 @@
+import { motion } from 'framer-motion';
 import { ServiceCard } from './ServiceCard';
 import { ServiceCardSkeleton } from '../ui/Skeleton';
 import { EmptyState } from '../ui/EmptyState';
 import { ErrorState } from '../ui/ErrorState';
+import { listItem } from '../../lib/motion';
+
+// slides a card up as it scrolls into view; index staggers cards in the same row
+export function RevealCard({ index = 0, children }) {
+  return (
+    <motion.div
+      className="h-full"
+      custom={index}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.15 }}
+      variants={listItem}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 export function ServiceGrid({
   services = [],
@@ -40,8 +58,10 @@ export function ServiceGrid({
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {services.map((service) => (
-        <ServiceCard key={service.id} service={service} featured={featured} />
+      {services.map((service, index) => (
+        <RevealCard key={service.id} index={index % 3}>
+          <ServiceCard service={service} featured={featured} />
+        </RevealCard>
       ))}
     </div>
   );

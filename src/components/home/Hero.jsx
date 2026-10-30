@@ -161,7 +161,7 @@ export function Hero() {
 
       <div className="container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-          <div className="lg:col-span-6 space-y-4 text-left">
+          <div className="lg:col-span-6 space-y-4 text-left animate-in fade-in slide-in-from-bottom-4">
             <div>
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#DDE4DB] text-[#173D32] text-xs font-semibold shadow-2xs">
                 <span className="w-2 h-2 rounded-full bg-[#173D32] animate-pulse" />
@@ -444,7 +444,7 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="lg:col-span-6 relative hidden lg:block">
+          <div className="lg:col-span-6 relative hidden lg:block animate-in fade-in zoom-in-95 [animation-delay:150ms] [animation-duration:0.7s]">
             <div className="w-full max-w-xl mx-auto">
               <FlatCutawaySvg
                 selectedRoom={selectedRoom}

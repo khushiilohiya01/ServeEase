@@ -99,7 +99,7 @@ export function SignupPage() {
             Create your account
           </h1>
           <p className="text-xs sm:text-[13px] text-neutral-500 mt-1.5 leading-relaxed">
-            Join over 140,000 households enjoying worry-free home maintenance.
+            Make an account to book and keep track of your home services.
           </p>
         </div>
 
@@ -330,7 +330,7 @@ export function SignupPage() {
 
         <div className="mt-5 pt-4 border-t border-neutral-100 flex items-center justify-center gap-1.5 text-[11px] text-neutral-500">
           <ShieldCheck className="w-3.5 h-3.5 text-teal-700 shrink-0" />
-          <span>256-bit encrypted • We never share your details</span>
+          <span>We never share your details</span>
         </div>
       </div>
     </div>

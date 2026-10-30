@@ -160,7 +160,7 @@ export function AuthModal() {
         aria-hidden="true"
       />
 
-      <div className="relative w-full max-w-[440px] bg-white rounded-[26px] shadow-2xl border border-neutral-200/80 p-6 sm:p-8 z-10 my-auto transform transition-all duration-200">
+      <div className="relative w-full max-w-[440px] bg-white rounded-[26px] shadow-2xl border border-neutral-200/80 p-6 sm:p-8 z-10 my-auto animate-in fade-in zoom-in-95 slide-in-from-bottom-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#173D32] shrink-0" aria-hidden="true" />
@@ -464,7 +464,7 @@ export function AuthModal() {
 
         <div className="mt-5 pt-4 border-t border-neutral-100 flex items-center justify-center gap-1.5 text-[11px] text-neutral-500">
           <ShieldCheck className="w-3.5 h-3.5 text-[#173D32] shrink-0" />
-          <span>256-bit encrypted • We never share your details</span>
+          <span>We never share your details</span>
         </div>
       </div>
     </div>,

@@ -42,7 +42,7 @@ export function PaymentsPage() {
           </Badge>
         }
         title="Payment & Billing History"
-        description="Review all receipts, transaction records, and payment method authorisations."
+        description="All your receipts and payments in one place."
       />
 
       {payments.length > 0 && (

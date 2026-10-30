@@ -57,7 +57,7 @@ export function Testimonials() {
             id="testimonials-heading"
             className="heading-section text-[#191E1B]"
           >
-            Trusted in thousands of thoughtful homes.
+            What our customers say.
           </h2>
         </div>
 

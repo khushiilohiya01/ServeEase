@@ -212,7 +212,7 @@ export function BookingDetailPage() {
               {booking.notes && (
                 <div className="p-3.5 bg-[#F7F7F2] rounded-xl border border-[#DDE3DA] text-xs text-neutral-700">
                   <span className="font-bold text-[#66716A] uppercase tracking-wider block mb-1">
-                    Special Notes / Access Code:
+                    Notes for the technician:
                   </span>
                   <p>{booking.notes}</p>
                 </div>
@@ -283,7 +283,7 @@ export function BookingDetailPage() {
               ServeEase Guarantee
             </h3>
             <p className="text-neutral-600 leading-relaxed">
-              Every appointment includes full damage insurance protection and a 100% satisfaction guarantee. If the job is not completed to your standard, a pro will return free of charge.
+              If the work isn't right within 30 days, we'll send someone back to fix it at no cost.
             </p>
             <div className="pt-3 border-t border-neutral-100">
               <span className="text-neutral-400 block font-medium">Customer Support Hotline</span>
@@ -330,7 +330,7 @@ export function BookingDetailPage() {
       >
         <div className="space-y-4 pt-2 text-xs text-neutral-600">
           <p>
-            Cancellations made more than 2 hours before the scheduled appointment window are eligible for a full automatic refund to the original payment method.
+            Cancel at least 2 hours before your slot and you'll get a full refund to the same payment method.
           </p>
           <div className="flex justify-end gap-2 pt-4 border-t border-neutral-100">
             <Button variant="ghost" size="sm" onClick={() => setIsCancelOpen(false)}>

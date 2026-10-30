@@ -19,7 +19,7 @@ const CATEGORY_ITEMS = [
   {
     id: 'home_cleaning',
     name: 'Home Cleaning',
-    desc: 'Deep home, kitchen, bathroom & sofa sanitization',
+    desc: 'Deep cleaning for the home, kitchen, bathrooms & sofas',
     icon: Sparkles,
     badge: 'Popular',
   },
@@ -122,10 +122,10 @@ export function ServicesMegaMenu({ isOpen, onClose }) {
               <div className="flex items-center justify-between pb-3 border-b border-[#DDE3DA]/80">
                 <div>
                   <h3 className="text-xs font-semibold uppercase tracking-wider text-[#66716A]">
-                    Curated Home Disciplines
+                    Services
                   </h3>
                   <p className="text-sm font-semibold text-[#191E1B]">
-                    Specialized technicians with upfront flat rates
+                    Fixed prices, shown before you book
                   </p>
                 </div>
                 <Link
@@ -197,7 +197,7 @@ export function ServicesMegaMenu({ isOpen, onClose }) {
                 </div>
 
                 <p className="text-xs text-[#66716A] leading-relaxed mb-3">
-                  Hospital-grade scrubbers, certified 2-person team, and eco-friendly formulas for bathrooms, kitchens & living spaces.
+                  A two-person team cleans your kitchen, bathrooms and living areas top to bottom, with machines for the floors.
                 </p>
 
                 <div className="space-y-1.5 text-xs text-[#191E1B] font-medium">

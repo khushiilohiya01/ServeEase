@@ -19,7 +19,7 @@ const TRUST_PILLARS = [
   {
     icon: Headphones,
     title: 'Dedicated Support',
-    desc: 'Assistance before, during, and after',
+    desc: 'Help before, during and after the job',
   },
 ];
 

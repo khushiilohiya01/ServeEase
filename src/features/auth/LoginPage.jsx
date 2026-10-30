@@ -72,7 +72,7 @@ export function LoginPage() {
             Sign in to your account
           </h1>
           <p className="text-xs sm:text-[13px] text-neutral-500 mt-1.5 leading-relaxed">
-            Track pro arrivals, review warranties, and reorder verified services.
+            See your bookings, track your technician and book again in a tap.
           </p>
         </div>
 
@@ -237,7 +237,7 @@ export function LoginPage() {
 
         <div className="mt-5 pt-4 border-t border-neutral-100 flex items-center justify-center gap-1.5 text-[11px] text-neutral-500">
           <ShieldCheck className="w-3.5 h-3.5 text-teal-700 shrink-0" />
-          <span>256-bit encrypted • We never share your details</span>
+          <span>We never share your details</span>
         </div>
       </div>
     </div>

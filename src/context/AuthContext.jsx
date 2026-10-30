@@ -113,6 +113,12 @@ export function AuthProvider({ children }) {
   };
 
   const setSelectedLocation = ({ city, locality, pincode }) => {
+    try {
+      // once an area is chosen (by hand or detected) we stop auto-detecting
+      localStorage.setItem('serveease_location_checked', 'true');
+    } catch {
+      // ignore
+    }
     if (city) {
       setSelectedCityState(city);
       try {

@@ -137,7 +137,7 @@ export function CartCheckoutPage() {
           Complete Your Booking
         </h1>
         <p className="text-xs sm:text-sm text-neutral-500 mt-1">
-          Select doorstep arrival window, address, and payment method.
+          Pick a time, an address and how you'd like to pay.
         </p>
       </div>
 
@@ -287,7 +287,7 @@ export function CartCheckoutPage() {
 
               <div>
                 <label className="block text-xs font-semibold text-neutral-700 uppercase mb-1">
-                  Technician Instructions (Optional)
+                  Notes for the technician (optional)
                 </label>
                 <textarea
                   rows={2}
@@ -322,7 +322,7 @@ export function CartCheckoutPage() {
                 <div>
                   <h4 className="text-xs font-bold text-neutral-900">Pay After Service</h4>
                   <p className="text-[11px] text-neutral-500 mt-0.5">
-                    Inspect completed work before releasing payment via Cash, UPI, or Card.
+                    Check the work first, then pay by cash, UPI or card.
                   </p>
                 </div>
               </button>
@@ -340,7 +340,7 @@ export function CartCheckoutPage() {
                 <div>
                   <h4 className="text-xs font-bold text-neutral-900">Online Payment / UPI</h4>
                   <p className="text-[11px] text-neutral-500 mt-0.5">
-                    Pay securely using Google Pay, PhonePe, Paytm, or Credit/Debit Card.
+                    Pay now with Google Pay, PhonePe, Paytm or a card.
                   </p>
                 </div>
               </button>
@@ -386,7 +386,7 @@ export function CartCheckoutPage() {
               <span className="font-semibold text-neutral-900">{formatCurrency(tax)}</span>
             </div>
             <div className="flex justify-between">
-              <span>Doorstep Platform & Safety Fee</span>
+              <span>Visit fee</span>
               <span className="font-semibold text-neutral-900">{formatCurrency(platformFee)}</span>
             </div>
             <div className="pt-3 border-t border-[#DDE3DA]/60 flex justify-between items-baseline text-sm">
@@ -404,11 +404,11 @@ export function CartCheckoutPage() {
             isLoading={isSubmitting}
             onClick={handleConfirmBooking}
           >
-            Confirm & Schedule Booking
+            Confirm booking
           </Button>
 
           <p className="text-center text-[11px] text-[#66716A]">
-            Pay after service completion via UPI or cash. 100% satisfaction guarantee.
+            Pay after the job by UPI or cash.
           </p>
 
           <div className="pt-3 border-t border-[#DDE3DA]/60 space-y-2 text-[11px] text-[#66716A]">

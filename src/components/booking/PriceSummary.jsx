@@ -105,7 +105,7 @@ export function PriceSummary({
 
         <div className="pt-3 border-t border-neutral-100 flex items-center gap-2 text-[11px] text-neutral-500">
           <ShieldCheck className="w-4 h-4 text-teal-600 shrink-0" />
-          <span>Covered by ServeEase 100% Happiness Guarantee</span>
+          <span>Covered by our 30-day warranty</span>
         </div>
       </CardContent>
     </Card>

@@ -61,7 +61,7 @@ export function DateSlotPicker({
       <div>
         <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-700 mb-3 flex items-center gap-1.5">
           <Clock className="w-4 h-4 text-teal-700" />
-          Choose 2-Hour Arrival Slot
+          Pick a 2-hour arrival slot
         </label>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">

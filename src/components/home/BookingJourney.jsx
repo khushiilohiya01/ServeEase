@@ -85,7 +85,7 @@ export function BookingJourney() {
               id="journey-heading"
               className="heading-section text-[#191E1B]"
             >
-              Four steps. One easier home.
+              Four steps and it's sorted.
             </h2>
             <p className="text-sm sm:text-base text-[#647269] leading-relaxed">
               From finding the right service to getting it done.
@@ -260,7 +260,7 @@ export function BookingJourney() {
             <span className="font-medium">Every stage is backed by our upfront pricing & 30-day rework guarantee</span>
           </div>
           <span className="text-[11px] text-[#647269]/80 font-normal">
-            No on-site surprise charges • Direct human phone support
+            No surprise charges at the door • Real people on the phone
           </span>
         </div>
       </div>

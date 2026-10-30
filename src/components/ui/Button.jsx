@@ -17,11 +17,11 @@ export const Button = forwardRef(function Button(
   },
   ref
 ) {
-  const baseStyles = 'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 cursor-pointer disabled:cursor-not-allowed select-none active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2';
+  const baseStyles = 'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 ease-out cursor-pointer disabled:cursor-not-allowed select-none active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2';
 
   const variants = {
     primary:
-      'bg-[#173D32] text-white hover:bg-[#245544] active:bg-[#0a1f18] shadow-xs hover:shadow-sm disabled:bg-[#173D32]/40 disabled:shadow-none focus-visible:outline-[#173D32]',
+      'btn-shine bg-[#173D32] text-white hover:bg-[#245544] active:bg-[#0a1f18] shadow-xs hover:shadow-md hover:-translate-y-px disabled:bg-[#173D32]/40 disabled:shadow-none focus-visible:outline-[#173D32]',
     secondary:
       'border border-[#DDE3DA] bg-white text-[#173D32] hover:bg-[#F7F7F2] hover:border-[#173D32]/50 shadow-2xs hover:shadow-xs disabled:border-[#DDE3DA]/60 disabled:text-[#66716A]/50 focus-visible:outline-[#173D32]',
     outline:
@@ -31,7 +31,7 @@ export const Button = forwardRef(function Button(
     danger:
       'bg-[#B54848] text-white hover:bg-[#9c3a3a] shadow-xs disabled:bg-[#B54848]/40 focus-visible:outline-[#B54848]',
     teal:
-      'bg-[#173D32] text-white hover:bg-[#245544] shadow-xs disabled:bg-[#173D32]/40 focus-visible:outline-[#173D32]',
+      'btn-shine bg-[#173D32] text-white hover:bg-[#245544] shadow-xs disabled:bg-[#173D32]/40 focus-visible:outline-[#173D32]',
   };
 
   const sizes = {

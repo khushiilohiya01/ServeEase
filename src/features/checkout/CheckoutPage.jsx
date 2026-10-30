@@ -133,7 +133,7 @@ export function CheckoutPage() {
             Secure Checkout
           </Badge>
           <h1 className="text-2xl sm:text-3xl font-bold text-[#191E1B] tracking-tight">
-            Finalize Your Booking & Payment
+            Pay for your booking
           </h1>
           <p className="text-xs sm:text-sm text-[#647269] mt-1">
             Booking ID: {booking.id}
@@ -157,7 +157,7 @@ export function CheckoutPage() {
                 <div className="p-4 rounded-xl bg-[#E8EDE7]/60 border border-[#DDE4DB] text-xs text-[#173D32] space-y-1">
                   <div className="font-semibold flex items-center gap-1.5 text-[#173D32]">
                     <ShieldCheck className="w-4 h-4 text-[#173D32]" />
-                    Instant Secure Payment Gateway (Demo)
+                    Pay online (demo)
                   </div>
                   <p className="text-[#647269]">
                     Supports UPI (GPay, PhonePe, Paytm), Credit/Debit Cards, and NetBanking. No real money will be charged.
@@ -219,10 +219,10 @@ export function CheckoutPage() {
                       <CheckCircle className="w-5 h-5 text-[#647269]" />
                       <div>
                         <span className="text-sm font-semibold text-[#191E1B] block">
-                          Pay Upon Pro Arrival & Completion
+                          Pay after the job
                         </span>
                         <span className="text-xs text-[#647269]">
-                          Direct digital payment after you inspect completed work.
+                          Check the work first, then pay by UPI, cash or card.
                         </span>
                       </div>
                     </div>
@@ -241,7 +241,7 @@ export function CheckoutPage() {
                     Confirm & Authorize {formatCurrency(booking.total_amount)}
                   </Button>
                   <p className="text-center text-[11px] text-[#647269] mt-2.5">
-                    Demo Mode: Simulated transaction only. By clicking Confirm, you agree to ServeEase terms.
+                    This is a demo, so no money is taken. By confirming you agree to the ServeEase terms.
                   </p>
                 </div>
               </CardContent>

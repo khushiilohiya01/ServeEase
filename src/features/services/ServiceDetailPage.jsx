@@ -179,7 +179,7 @@ export function ServiceDetailPage() {
             <div className="bg-white rounded-2xl border border-[#DDE4DB] p-6 shadow-xs">
               <h2 className="text-base font-bold text-[#191E1B] flex items-center gap-2 mb-4">
                 <CheckCircle2 className="w-5 h-5 text-[#173D32]" />
-                What&apos;s Included in This Service
+                What&apos;s included
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {inclusions.map((item, idx) => (
