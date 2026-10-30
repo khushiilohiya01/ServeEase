@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Stagger, StaggerItem } from '../motion/Reveal';
 
 export function FinalCTA() {
   return (
@@ -20,8 +21,8 @@ export function FinalCTA() {
         </svg>
       </div>
 
-      <div className="container-custom relative z-10 max-w-3xl text-center space-y-4 lg:space-y-6">
-        <div className="space-y-3">
+      <Stagger className="container-custom relative z-10 max-w-3xl text-center space-y-4 lg:space-y-6">
+        <StaggerItem className="space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-[#A9C9AC] text-xs font-semibold backdrop-blur-md border border-white/10">
             <Sparkles className="w-3.5 h-3.5 text-[#A9C9AC]" />
             <span>Something at home needs fixing?</span>
@@ -38,16 +39,16 @@ export function FinalCTA() {
             Pick a service, choose a slot, and a verified technician turns up. You see the
             price before you book.
           </p>
-        </div>
+        </StaggerItem>
 
-        <div className="space-y-4 lg:space-y-5">
+        <StaggerItem className="space-y-4 lg:space-y-5">
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               to="/services"
-              className="px-7 py-3.5 rounded-2xl bg-white hover:bg-[#F7F7F2] text-[#173D32] text-sm sm:text-base font-bold transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-101 active:scale-99 flex items-center gap-2.5"
+              className="px-7 py-3.5 rounded-2xl bg-white hover:bg-[#F7F7F2] text-[#173D32] text-sm sm:text-base font-bold transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-99 flex items-center gap-2.5 group"
             >
               <span>Find Your Service</span>
-              <ArrowRight className="w-4 h-4 text-[#173D32]" />
+              <ArrowRight className="w-4 h-4 text-[#173D32] transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
 
@@ -65,8 +66,8 @@ export function FinalCTA() {
               <span>Pay after inspection</span>
             </div>
           </div>
-        </div>
-      </div>
+        </StaggerItem>
+      </Stagger>
     </section>
   );
 }

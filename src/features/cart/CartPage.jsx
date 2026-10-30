@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   Trash2,
   ArrowRight,
@@ -13,6 +14,7 @@ import { Card } from '../../components/ui/Card';
 import { formatCurrency } from '../../lib/formatters';
 import { PAYMENT_PROMISE, GUARANTEE_PROMISE } from '../../lib/constants';
 import { ServiceSpotIllustration } from '../../components/illustrations/ServiceSpotIllustration';
+import { listItem } from '../../lib/motion';
 
 export function CartPage() {
   const { items, removeFromCart, updateBhk, subtotal, tax, platformFee, total } = useCart();
@@ -66,69 +68,81 @@ export function CartPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div className="lg:col-span-8 space-y-4">
-          {items.map((item) => (
-            <Card key={item.cartItemId} className="p-5 border-[#DDE4DB] bg-white">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div className="flex items-start gap-4">
-                  <ServiceSpotIllustration
-                    serviceId={item.serviceId || item.id}
-                    category={item.category}
-                    aspect="aspect-square"
-                    className="w-16 h-16 sm:w-20 sm:h-20 shrink-0"
-                  />
-                  <div>
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-[#173D32] bg-[#E8EDE7] px-2.5 py-0.5 rounded-full border border-[#DDE4DB]/60">
-                      {item.category?.replace('_', ' ')}
-                    </span>
-                    <h3 className="text-base font-semibold text-[#191E1B] mt-1">
-                      {item.name}
-                    </h3>
-                    <p className="text-xs text-[#647269] line-clamp-1 mt-0.5">
-                      {item.description}
-                    </p>
-
-                    {item.isBhkEligible && (
-                      <div className="mt-3 flex items-center gap-2">
-                        <span className="text-xs font-semibold text-[#191E1B]">
-                          Apartment Size:
+          <AnimatePresence mode="popLayout" initial={false}>
+            {items.map((item, index) => (
+              <motion.div
+                key={item.cartItemId}
+                layout
+                custom={index}
+                variants={listItem}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                <Card className="p-5 border-[#DDE4DB] bg-white">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="flex items-start gap-4">
+                      <ServiceSpotIllustration
+                        serviceId={item.serviceId || item.id}
+                        category={item.category}
+                        aspect="aspect-square"
+                        className="w-16 h-16 sm:w-20 sm:h-20 shrink-0"
+                      />
+                      <div>
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-[#173D32] bg-[#E8EDE7] px-2.5 py-0.5 rounded-full border border-[#DDE4DB]/60">
+                          {item.category?.replace('_', ' ')}
                         </span>
-                        <div className="inline-flex rounded-lg border border-[#DDE4DB] bg-[#F7F8F4] p-0.5">
-                          {[1, 2, 3, 4].map((level) => (
-                            <button
-                              key={level}
-                              type="button"
-                              onClick={() => updateBhk(item.cartItemId, level)}
-                              className={`px-2.5 py-1 text-xs font-semibold rounded-md transition-all cursor-pointer ${
-                                item.bhk === level
-                                  ? 'bg-[#173D32] text-white shadow-xs'
-                                  : 'text-[#647269] hover:text-[#191E1B]'
-                              }`}
-                            >
-                              {level} BHK
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                        <h3 className="text-base font-semibold text-[#191E1B] mt-1">
+                          {item.name}
+                        </h3>
+                        <p className="text-xs text-[#647269] line-clamp-1 mt-0.5">
+                          {item.description}
+                        </p>
 
-                <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-[#DDE4DB]/60">
-                  <span className="text-lg font-bold text-[#191E1B]">
-                    {formatCurrency(item.price)}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => removeFromCart(item.cartItemId)}
-                    className="p-1.5 text-[#647269] hover:text-[#B54848] rounded-lg hover:bg-rose-50 transition-colors cursor-pointer mt-1"
-                    aria-label={`Remove ${item.name} from cart`}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </Card>
-          ))}
+                        {item.isBhkEligible && (
+                          <div className="mt-3 flex items-center gap-2">
+                            <span className="text-xs font-semibold text-[#191E1B]">
+                              Apartment Size:
+                            </span>
+                            <div className="inline-flex rounded-lg border border-[#DDE4DB] bg-[#F7F8F4] p-0.5">
+                              {[1, 2, 3, 4].map((level) => (
+                                <button
+                                  key={level}
+                                  type="button"
+                                  onClick={() => updateBhk(item.cartItemId, level)}
+                                  className={`px-2.5 py-1 text-xs font-semibold rounded-md transition-all cursor-pointer ${
+                                    item.bhk === level
+                                      ? 'bg-[#173D32] text-white shadow-xs'
+                                      : 'text-[#647269] hover:text-[#191E1B]'
+                                  }`}
+                                >
+                                  {level} BHK
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto pt-3 sm:pt-0 border-t sm:border-t-0 border-[#DDE4DB]/60">
+                      <span className="text-lg font-bold text-[#191E1B]">
+                        {formatCurrency(item.price)}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => removeFromCart(item.cartItemId)}
+                        className="p-1.5 text-[#647269] hover:text-[#B54848] rounded-lg hover:bg-rose-50 transition-colors cursor-pointer mt-1"
+                        aria-label={`Remove ${item.name} from cart`}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
 
         <div className="lg:col-span-4 bg-white rounded-3xl p-6 border border-[#DDE4DB] shadow-sm space-y-5">

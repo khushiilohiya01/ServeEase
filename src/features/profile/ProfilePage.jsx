@@ -17,6 +17,7 @@ import { Badge } from '../../components/ui/Badge';
 import { Modal } from '../../components/ui/Modal';
 import { Skeleton } from '../../components/ui/Skeleton';
 import toast from 'react-hot-toast';
+import { describeGeoError, getCurrentCoords, reverseGeocode } from '../../lib/geolocation';
 
 export function ProfilePage() {
   const { user, updateProfile } = useAuth();
@@ -75,30 +76,29 @@ export function ProfilePage() {
     }
   };
 
-  const handleUseCurrentLocation = () => {
-    if (!navigator.geolocation) {
-      toast.error('Browser geolocation is not available.');
-      return;
-    }
+  const handleUseCurrentLocation = async () => {
     setIsLocating(true);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setIsLocating(false);
-        const { latitude, longitude } = pos.coords;
+    try {
+      const coords = await getCurrentCoords();
+      const place = await reverseGeocode(coords).catch(() => null);
+      if (place) {
         setAddressForm((prev) => ({
           ...prev,
-          line1: `Detected Location (${latitude.toFixed(3)}, ${longitude.toFixed(3)})`,
-          city: 'Bengaluru',
-          state: 'Karnataka',
-          postal_code: '560103',
+          line1: place.line1,
+          line2: place.line2,
+          city: place.city || prev.city,
+          state: place.state || prev.state,
+          postal_code: place.postal_code || prev.postal_code,
         }));
-        toast.success('Coordinates retrieved. Please review and edit the address fields.');
-      },
-      () => {
-        setIsLocating(false);
-        toast.error('Location permission was denied. Enter manually.');
+        toast.success('Address filled from your location. Add your flat or house number.');
+      } else {
+        toast.error('Found you, but could not look up the address. Please type it in.');
       }
-    );
+    } catch (err) {
+      toast.error(describeGeoError(err));
+    } finally {
+      setIsLocating(false);
+    }
   };
 
   const handleSaveAddress = async (e) => {

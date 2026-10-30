@@ -4,66 +4,65 @@ import {
   Mail,
   Phone,
   X,
-  ArrowUpRight,
   ShieldCheck,
-  MapPin,
+  BadgeCheck,
+  RotateCcw,
+  Wallet,
 } from 'lucide-react';
 import { SERVICE_CATEGORIES } from '../../lib/constants';
 import { useAuth } from '../../context/AuthContext';
-import { CITIES_CONFIG } from '../../data/locationsData';
 import { ArchitecturalIllustration } from '../home/ArchitecturalIllustration';
 
+// just the most booked categories; "View All Services" covers the rest
+const FOOTER_CATEGORY_IDS = ['ac', 'cleaning', 'electrician', 'plumber', 'appliances', 'pest_control'];
+
+// promises the product actually makes, shown along the bottom row
+const FOOTER_PROMISES = [
+  { icon: BadgeCheck, label: 'Verified professionals' },
+  { icon: RotateCcw, label: '30-day rework warranty' },
+  { icon: Wallet, label: 'Pay after the job' },
+];
+
 export function Footer() {
-  const { user, openAuthModal, selectedCity, selectedLocality } = useAuth();
+  const { user, openAuthModal } = useAuth();
   const [legalModalContent, setLegalModalContent] = useState(null);
 
-  const activeCategories = SERVICE_CATEGORIES.filter((c) => c.id !== 'all');
-  const currentCityConfig =
-    CITIES_CONFIG.find(
-      (c) => c.name.toLowerCase() === (selectedCity || 'Bengaluru').toLowerCase()
-    ) || CITIES_CONFIG[0];
+  const activeCategories = FOOTER_CATEGORY_IDS
+    .map((id) => SERVICE_CATEGORIES.find((c) => c.id === id))
+    .filter(Boolean);
 
   const openLegalModal = (title, content) => {
     setLegalModalContent({ title, content });
   };
 
   return (
-    <footer className="bg-[#121820] text-neutral-300 pt-16 pb-12 border-t border-neutral-800" aria-label="Site Footer">
-      <div className="container-custom space-y-14">
-        <div className="max-w-4xl mx-auto opacity-75 hover:opacity-100 transition-opacity duration-500">
-          <ArchitecturalIllustration className="w-full h-auto max-h-48" />
-        </div>
-
-        <div className="pt-2 pb-6 border-b border-neutral-800/80 flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="space-y-2 max-w-xl">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#A9C9AC]">
+    <footer
+      className="bg-[#121820] text-neutral-300 py-10 lg:py-8 border-t border-neutral-800 lg:min-h-[calc(100dvh-var(--navbar-height))] flex flex-col justify-center"
+      aria-label="Site Footer"
+    >
+      <div className="container-custom space-y-8 lg:space-y-10">
+        <div className="pb-8 border-b border-neutral-800/80 grid grid-cols-1 md:grid-cols-2 items-center gap-8">
+          <div className="space-y-3 max-w-lg">
+            <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[#A9C9AC]">
+              <span className="w-6 h-px bg-[#A9C9AC]" aria-hidden="true" />
               The ServeEase Standard
             </span>
-            <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-              Thoughtful care for modern homes.
+            <h3 className="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-tight">
+              Thoughtful care for <br className="hidden sm:block" />
+              modern homes.
             </h3>
-            <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed font-normal">
-              Combining master craftsmanship, upfront flat rates, and verified specialists
-              across India&apos;s leading residential communities.
+            <p className="text-sm text-neutral-400 leading-relaxed max-w-md">
+              Master craftsmanship, upfront flat rates and verified specialists across
+              India&apos;s leading residential communities.
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="px-3 py-1.5 rounded-full bg-neutral-900 border border-neutral-800 text-xs font-medium text-neutral-300 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#52A88B]" />
-              <span>Serving in {selectedLocality ? `${selectedLocality}, ${selectedCity}` : selectedCity || 'Bengaluru'}</span>
-            </div>
-            <Link
-              to="/services"
-              className="px-4 py-2 rounded-xl bg-white hover:bg-neutral-100 text-[#121820] text-xs font-bold transition-all flex items-center gap-1.5"
-            >
-              <span>Book Now</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </Link>
+          <div className="hidden md:block opacity-75 hover:opacity-100 transition-opacity duration-500">
+            <ArchitecturalIllustration className="w-full h-auto max-h-36" />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10">
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-xl bg-[#173D32] border border-[#A9C9AC]/30 flex items-center justify-center text-[#A9C9AC]">
@@ -255,37 +254,22 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-neutral-800/80 space-y-2">
-          <div className="flex items-center gap-2 text-xs font-bold text-neutral-300 uppercase tracking-wider">
-            <MapPin className="w-3.5 h-3.5 text-[#A9C9AC]" />
-            <span>We serve across {currentCityConfig.name}:</span>
-          </div>
-          <div className="flex flex-wrap gap-x-3 gap-y-1.5 text-xs text-neutral-400">
-            {currentCityConfig.localities.map((loc) => (
-              <Link
-                key={loc.name}
-                to={`/services?locality=${encodeURIComponent(loc.name)}`}
-                className="hover:text-white transition-colors"
-              >
-                {loc.name} <span className="text-neutral-600">({loc.pincode})</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <div className="pt-8 border-t border-neutral-800 text-xs text-neutral-500 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="pt-6 border-t border-neutral-800 text-xs text-neutral-500 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>© {new Date().getFullYear()} ServeEase Technologies Inc. Crafted for quiet luxury in home care.</p>
-          <div className="flex items-center gap-6">
-            <span>Encrypted SSL 256-bit</span>
-            <span>PCI-DSS Compliant</span>
-            <span>Zero Data Brokerage</span>
-          </div>
+          <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            {FOOTER_PROMISES.map(({ icon: Icon, label }) => (
+              <li key={label} className="flex items-center gap-1.5">
+                <Icon className="w-3.5 h-3.5 text-[#A9C9AC]" />
+                <span>{label}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 
       {legalModalContent && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="bg-[#1C222B] text-white rounded-3xl border border-neutral-700 max-w-lg w-full p-6 sm:p-8 space-y-4 shadow-2xl relative">
+          <div className="animate-in fade-in zoom-in-95 slide-in-from-bottom-4 bg-[#1C222B] text-white rounded-3xl border border-neutral-700 max-w-lg w-full p-6 sm:p-8 space-y-4 shadow-2xl relative">
             <div className="flex items-center justify-between pb-3 border-b border-neutral-700">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-[#A9C9AC]" />

@@ -12,10 +12,10 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import {
   CITIES_CONFIG,
-  findNearestLocality,
   findLocalityByPincode,
   searchLocalities,
 } from '../../data/locationsData';
+import { describeDetectedArea, describeGeoError, detectServiceArea } from '../../lib/geolocation';
 import toast from 'react-hot-toast';
 
 export function LocationModal({ isOpen, onClose }) {
@@ -76,13 +76,15 @@ function LocationModalContent({ onClose }) {
       (c) => c.name.toLowerCase() === activeCityTab.toLowerCase()
     ) || CITIES_CONFIG[0];
 
-  const handleSelectLocality = (city, locality) => {
+  const handleSelectLocality = (city, locality, message) => {
     setSelectedLocation({
       city: city.name,
       locality: locality.name,
       pincode: locality.pincode,
     });
-    toast.success(`Service area set to ${locality.name}, ${city.name}`);
+    toast.success(message || `Service area set to ${locality.name}, ${city.name}`, {
+      duration: message ? 6000 : 4000,
+    });
     onClose();
   };
 
@@ -106,38 +108,29 @@ function LocationModalContent({ onClose }) {
     }
   };
 
-  const handleDetectLocation = () => {
+  const handleDetectLocation = async () => {
     setIsDetecting(true);
     setGeoError(null);
 
-    if (!('geolocation' in navigator)) {
+    try {
+      const result = await detectServiceArea();
+      if (result.covered) {
+        handleSelectLocality(result.city, result.locality, describeDetectedArea(result));
+        return;
+      }
+      const where = result.place?.area && result.place?.city
+        ? `${result.place.area}, ${result.place.city}`
+        : result.place?.city;
+      setGeoError(
+        where
+          ? `Looks like you're in ${where}. We don't serve there yet, so pick the nearest area below.`
+          : "You seem to be outside our service areas. Pick the nearest area below."
+      );
+    } catch (err) {
+      setGeoError(describeGeoError(err));
+    } finally {
       setIsDetecting(false);
-      setGeoError('Geolocation is not supported by your browser.');
-      return;
     }
-
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setIsDetecting(false);
-        const { latitude, longitude } = pos.coords;
-        const nearest = findNearestLocality(latitude, longitude);
-
-        if (nearest && nearest.locality) {
-          handleSelectLocality(nearest.city, nearest.locality);
-        } else {
-          setGeoError('Could not determine nearest service hub.');
-        }
-      },
-      (err) => {
-        setIsDetecting(false);
-        setGeoError(
-          err.code === 1
-            ? 'Location permission was denied. Please pick your locality from the list below.'
-            : 'Unable to detect location. Please search by locality or pincode.'
-        );
-      },
-      { timeout: 7000, enableHighAccuracy: false }
-    );
   };
 
   const handleNotifySubmit = (e) => {
@@ -163,7 +156,7 @@ function LocationModalContent({ onClose }) {
         aria-hidden="true"
       />
 
-      <div className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-[#DDE4DB] p-5 sm:p-7 z-10 my-auto transform transition-all duration-200 space-y-4 max-h-[90vh] flex flex-col">
+      <div className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-[#DDE4DB] p-5 sm:p-7 z-10 my-auto animate-in fade-in zoom-in-95 slide-in-from-bottom-4 space-y-4 max-h-[90vh] flex flex-col">
         <div className="flex items-center justify-between pb-2 border-b border-[#DDE4DB]/70">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#173D32]" />
@@ -202,7 +195,7 @@ function LocationModalContent({ onClose }) {
           >
             <Navigation className={`w-4 h-4 ${isDetecting ? 'animate-spin' : ''}`} />
             <span>
-              {isDetecting ? 'Detecting nearest service pro...' : 'Use my current location'}
+              {isDetecting ? 'Finding your location...' : 'Use my current location'}
             </span>
           </button>
 

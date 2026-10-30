@@ -10,7 +10,7 @@ export function Skeleton({ className = '', variant = 'rectangular', ...props }) 
   return (
     <div
       className={clsx(
-        'animate-pulse bg-[#E8EBE2]/80',
+        'skeleton-shimmer bg-[#E8EBE2]/80',
         variants[variant] || variants.rectangular,
         className
       )}

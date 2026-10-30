@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
   CheckCircle2,
   Calendar,
@@ -14,6 +15,42 @@ import { Button } from '../../components/ui/Button';
 import { Card, CardContent } from '../../components/ui/Card';
 import { Badge } from '../../components/ui/Badge';
 import { Skeleton } from '../../components/ui/Skeleton';
+
+const BURST_DOTS = Array.from({ length: 12 }, (_, i) => {
+  const angle = (i / 12) * Math.PI * 2;
+  return { x: Math.cos(angle) * 70, y: Math.sin(angle) * 70, delay: 0.25 + (i % 3) * 0.04 };
+});
+
+// check mark that springs in with a ring of dots bursting out of it
+function SuccessCheck() {
+  return (
+    <div className="relative w-16 h-16 mx-auto mb-4">
+      {BURST_DOTS.map((dot, i) => (
+        <motion.span
+          key={i}
+          className={`absolute left-1/2 top-1/2 -ml-1 -mt-1 w-2 h-2 rounded-full ${i % 2 ? 'bg-[#A9C9AC]' : 'bg-white'}`}
+          initial={{ x: 0, y: 0, opacity: 0, scale: 0 }}
+          animate={{ x: dot.x, y: dot.y, opacity: [0, 1, 0], scale: [0, 1, 0.5] }}
+          transition={{ duration: 0.9, delay: dot.delay, ease: 'easeOut' }}
+        />
+      ))}
+      <motion.span
+        className="absolute inset-0 rounded-full border-2 border-white/60"
+        initial={{ scale: 1, opacity: 0.8 }}
+        animate={{ scale: 1.8, opacity: 0 }}
+        transition={{ duration: 1.2, delay: 0.3, repeat: 2, repeatDelay: 0.6 }}
+      />
+      <motion.div
+        className="relative w-16 h-16 rounded-full bg-white/20 backdrop-blur-xs flex items-center justify-center border border-white/30"
+        initial={{ scale: 0, rotate: -45 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 14, delay: 0.1 }}
+      >
+        <CheckCircle2 className="w-10 h-10 text-white" />
+      </motion.div>
+    </div>
+  );
+}
 
 export function BookingSuccessPage() {
   const { bookingId } = useParams();
@@ -50,9 +87,7 @@ export function BookingSuccessPage() {
       <div className="w-full max-w-2xl">
         <Card className="border-neutral-200/90 shadow-xl overflow-hidden">
           <div className="bg-emerald-600 text-white p-8 text-center relative overflow-hidden">
-            <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-xs flex items-center justify-center mx-auto mb-4 border border-white/30">
-              <CheckCircle2 className="w-10 h-10 text-white" />
-            </div>
+            <SuccessCheck />
             <Badge variant="teal" size="sm" className="bg-white/20 text-white border-white/30 mb-2">
               Appointment Confirmed
             </Badge>

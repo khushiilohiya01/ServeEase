@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   Plus,
   Compass,
@@ -20,6 +21,8 @@ import { Textarea } from '../../components/ui/Textarea';
 import { Skeleton } from '../../components/ui/Skeleton';
 import toast from 'react-hot-toast';
 import { ServiceSpotIllustration } from '../../components/illustrations/ServiceSpotIllustration';
+import { stepSlide } from '../../lib/motion';
+import { describeGeoError, getCurrentCoords, reverseGeocode } from '../../lib/geolocation';
 
 export function BookingWizardPage() {
   const { serviceId } = useParams();
@@ -31,6 +34,13 @@ export function BookingWizardPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [currentStep, setCurrentStep] = useState(1);
+  const [prevStep, setPrevStep] = useState(1);
+  const [stepDirection, setStepDirection] = useState(1);
+
+  if (currentStep !== prevStep) {
+    setStepDirection(currentStep > prevStep ? 1 : -1);
+    setPrevStep(currentStep);
+  }
 
   const [initialSlot] = useState(() => firstOpenSlot(TIME_SLOTS));
   const [selectedDate, setSelectedDate] = useState(initialSlot.date);
@@ -81,34 +91,30 @@ export function BookingWizardPage() {
     loadData();
   }, [serviceId]);
 
-  const handleUseCurrentLocation = () => {
-    if (!navigator.geolocation) {
-      toast.error('Geolocation is not supported by your browser.');
-      return;
-    }
-
+  const handleUseCurrentLocation = async () => {
     setIsLocating(true);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setIsLocating(false);
-        const { latitude, longitude } = pos.coords;
+    try {
+      const coords = await getCurrentCoords();
+      const place = await reverseGeocode(coords).catch(() => null);
+      if (place) {
         setNewAddress((prev) => ({
           ...prev,
-          line1: `Detected Location (${latitude.toFixed(3)}, ${longitude.toFixed(3)})`,
-          city: 'Bengaluru',
-          state: 'Karnataka',
-          postal_code: '560103',
+          line1: place.line1,
+          line2: place.line2,
+          city: place.city || prev.city,
+          state: place.state || prev.state,
+          postal_code: place.postal_code || prev.postal_code,
         }));
-        setIsAddingNewAddress(true);
-        toast.success('Coordinates located. Please verify street number and unit details.');
-      },
-      (err) => {
-        setIsLocating(false);
-        console.warn('Geolocation denied or failed:', err.message);
-        toast.error('Location permission was denied. Please enter address manually.');
-      },
-      { timeout: 10000 }
-    );
+        toast.success('Address filled from your location. Add your flat or house number.');
+      } else {
+        toast.error('Found you, but could not look up the address. Please type it in.');
+      }
+      setIsAddingNewAddress(true);
+    } catch (err) {
+      toast.error(describeGeoError(err));
+    } finally {
+      setIsLocating(false);
+    }
   };
 
   const handleSaveNewAddress = async () => {
@@ -215,304 +221,315 @@ export function BookingWizardPage() {
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        <div className="lg:col-span-2 space-y-6">
-          {currentStep === 1 && (
-            <Card className="border-neutral-200/90 shadow-sm">
-              <CardContent className="p-6 sm:p-8 space-y-6">
-                <div>
-                  <h2 className="text-lg font-bold text-neutral-900">
-                    Step 1: Choose Appointment Date & Time
-                  </h2>
-                  <p className="text-xs text-neutral-500 mt-1">
-                    Select when you would like the certified specialist to arrive at your property.
-                  </p>
-                </div>
+        <div className="lg:col-span-2 space-y-6 overflow-x-clip">
+          <AnimatePresence mode="wait" custom={stepDirection} initial={false}>
+            <motion.div
+              key={currentStep}
+              custom={stepDirection}
+              variants={stepSlide}
+              initial="enter"
+              animate="center"
+              exit="exit"
+            >
+              {currentStep === 1 && (
+                <Card className="border-neutral-200/90 shadow-sm">
+                  <CardContent className="p-6 sm:p-8 space-y-6">
+                    <div>
+                      <h2 className="text-lg font-bold text-neutral-900">
+                        Step 1: Choose Appointment Date & Time
+                      </h2>
+                      <p className="text-xs text-neutral-500 mt-1">
+                        Select when you would like the certified specialist to arrive at your property.
+                      </p>
+                    </div>
 
-                <DateSlotPicker
-                  selectedDate={selectedDate}
-                  onDateChange={setSelectedDate}
-                  selectedSlot={selectedSlot}
-                  onSlotChange={setSelectedSlot}
-                />
+                    <DateSlotPicker
+                      selectedDate={selectedDate}
+                      onDateChange={setSelectedDate}
+                      selectedSlot={selectedSlot}
+                      onSlotChange={setSelectedSlot}
+                    />
 
-                <div className="pt-4 border-t border-neutral-100 flex justify-end">
-                  <Button
-                    variant="primary"
-                    size="md"
-                    onClick={handleNextStep}
-                    icon={ArrowRight}
-                    iconPosition="right"
-                  >
-                    Continue to Address
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+                    <div className="pt-4 border-t border-neutral-100 flex justify-end">
+                      <Button
+                        variant="primary"
+                        size="md"
+                        onClick={handleNextStep}
+                        icon={ArrowRight}
+                        iconPosition="right"
+                      >
+                        Continue to Address
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
-          {currentStep === 2 && (
-            <Card className="border-neutral-200/90 shadow-sm">
-              <CardContent className="p-6 sm:p-8 space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div>
-                    <h2 className="text-lg font-bold text-neutral-900">
-                      Step 2: Service Location & Instructions
-                    </h2>
-                    <p className="text-xs text-neutral-500 mt-1">
-                      Choose where the service will be performed.
-                    </p>
-                  </div>
+              {currentStep === 2 && (
+                <Card className="border-neutral-200/90 shadow-sm">
+                  <CardContent className="p-6 sm:p-8 space-y-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div>
+                        <h2 className="text-lg font-bold text-neutral-900">
+                          Step 2: Service Location & Instructions
+                        </h2>
+                        <p className="text-xs text-neutral-500 mt-1">
+                          Choose where the service will be performed.
+                        </p>
+                      </div>
 
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleUseCurrentLocation}
-                      isLoading={isLocating}
-                      icon={Compass}
-                    >
-                      Use My Location
-                    </Button>
-                    {!isAddingNewAddress && (
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={handleUseCurrentLocation}
+                          isLoading={isLocating}
+                          icon={Compass}
+                        >
+                          Use My Location
+                        </Button>
+                        {!isAddingNewAddress && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setIsAddingNewAddress(true)}
+                            icon={Plus}
+                          >
+                            New Address
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+
+                    {!isAddingNewAddress && addresses.length > 0 && (
+                      <div className="space-y-3">
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-700">
+                          Saved Addresses
+                        </label>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {addresses.map((addr) => {
+                            const isSelected = selectedAddressId === addr.id;
+                            return (
+                              <div
+                                key={addr.id}
+                                onClick={() => setSelectedAddressId(addr.id)}
+                                className={`p-4 rounded-xl border transition-all cursor-pointer relative ${
+                                  isSelected
+                                    ? 'border-teal-700 bg-teal-50/30 ring-2 ring-teal-700/20'
+                                    : 'border-neutral-200 bg-white hover:border-neutral-300'
+                                }`}
+                              >
+                                <div className="flex items-start justify-between">
+                                  <span className="text-xs font-bold text-neutral-900">
+                                    {addr.label}
+                                  </span>
+                                  {isSelected && (
+                                    <span className="w-5 h-5 rounded-full bg-teal-700 text-white flex items-center justify-center">
+                                      <Check className="w-3 h-3" />
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-xs text-neutral-600 mt-1 line-clamp-1">{addr.line1}</p>
+                                <p className="text-[11px] text-neutral-400">
+                                  {addr.city}, {addr.state} {addr.postal_code}
+                                </p>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {isAddingNewAddress && (
+                      <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-4">
+                        <div className="flex justify-between items-center">
+                          <h3 className="text-xs font-bold text-neutral-900 uppercase tracking-wider">
+                            Enter Address Details
+                          </h3>
+                          {addresses.length > 0 && (
+                            <button
+                              type="button"
+                              onClick={() => setIsAddingNewAddress(false)}
+                              className="text-xs text-teal-700 font-semibold"
+                            >
+                              Cancel / Use Saved
+                            </button>
+                          )}
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <Input
+                            label="Address Label"
+                            placeholder="e.g. Home, Vacation Villa"
+                            value={newAddress.label}
+                            onChange={(e) => setNewAddress({ ...newAddress, label: e.target.value })}
+                          />
+                          <Input
+                            label="Street Line 1"
+                            placeholder="123 Maple Street"
+                            value={newAddress.line1}
+                            onChange={(e) => setNewAddress({ ...newAddress, line1: e.target.value })}
+                            required
+                          />
+                          <Input
+                            label="Unit / Suite / Apt (Optional)"
+                            placeholder="Apt 4B"
+                            value={newAddress.line2}
+                            onChange={(e) => setNewAddress({ ...newAddress, line2: e.target.value })}
+                          />
+                          <Input
+                            label="City"
+                            placeholder="Bengaluru"
+                            value={newAddress.city}
+                            onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })}
+                            required
+                          />
+                          <Input
+                            label="State"
+                            placeholder="Karnataka"
+                            value={newAddress.state}
+                            onChange={(e) => setNewAddress({ ...newAddress, state: e.target.value })}
+                            required
+                          />
+                          <Input
+                            label="PIN Code"
+                            placeholder="560103"
+                            value={newAddress.postal_code}
+                            onChange={(e) => setNewAddress({ ...newAddress, postal_code: e.target.value })}
+                            required
+                          />
+                        </div>
+
+                        <Button variant="secondary" size="sm" onClick={handleSaveNewAddress}>
+                          Save Address to Bookings
+                        </Button>
+                      </div>
+                    )}
+
+                    <div className="pt-2">
+                      <Textarea
+                        label="Special Notes for the Pro (Optional)"
+                        placeholder="Provide parking instructions, gate codes, pet details, or specific problem focus areas..."
+                        rows={3}
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="pt-4 border-t border-neutral-100 flex items-center justify-between">
                       <Button
                         variant="ghost"
-                        size="sm"
-                        onClick={() => setIsAddingNewAddress(true)}
-                        icon={Plus}
+                        size="md"
+                        onClick={() => setCurrentStep(1)}
+                        icon={ArrowLeft}
                       >
-                        New Address
+                        Back to Schedule
                       </Button>
-                    )}
-                  </div>
-                </div>
-
-                {!isAddingNewAddress && addresses.length > 0 && (
-                  <div className="space-y-3">
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-neutral-700">
-                      Saved Addresses
-                    </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {addresses.map((addr) => {
-                        const isSelected = selectedAddressId === addr.id;
-                        return (
-                          <div
-                            key={addr.id}
-                            onClick={() => setSelectedAddressId(addr.id)}
-                            className={`p-4 rounded-xl border transition-all cursor-pointer relative ${
-                              isSelected
-                                ? 'border-teal-700 bg-teal-50/30 ring-2 ring-teal-700/20'
-                                : 'border-neutral-200 bg-white hover:border-neutral-300'
-                            }`}
-                          >
-                            <div className="flex items-start justify-between">
-                              <span className="text-xs font-bold text-neutral-900">
-                                {addr.label}
-                              </span>
-                              {isSelected && (
-                                <span className="w-5 h-5 rounded-full bg-teal-700 text-white flex items-center justify-center">
-                                  <Check className="w-3 h-3" />
-                                </span>
-                              )}
-                            </div>
-                            <p className="text-xs text-neutral-600 mt-1 line-clamp-1">{addr.line1}</p>
-                            <p className="text-[11px] text-neutral-400">
-                              {addr.city}, {addr.state} {addr.postal_code}
-                            </p>
-                          </div>
-                        );
-                      })}
+                      <Button
+                        variant="primary"
+                        size="md"
+                        onClick={handleNextStep}
+                        icon={ArrowRight}
+                        iconPosition="right"
+                      >
+                        Review Booking
+                      </Button>
                     </div>
-                  </div>
-                )}
+                  </CardContent>
+                </Card>
+              )}
 
-                {isAddingNewAddress && (
-                  <div className="bg-neutral-50 p-5 rounded-2xl border border-neutral-200 space-y-4">
-                    <div className="flex justify-between items-center">
-                      <h3 className="text-xs font-bold text-neutral-900 uppercase tracking-wider">
-                        Enter Address Details
-                      </h3>
-                      {addresses.length > 0 && (
-                        <button
-                          type="button"
-                          onClick={() => setIsAddingNewAddress(false)}
-                          className="text-xs text-teal-700 font-semibold"
-                        >
-                          Cancel / Use Saved
-                        </button>
-                      )}
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <Input
-                        label="Address Label"
-                        placeholder="e.g. Home, Vacation Villa"
-                        value={newAddress.label}
-                        onChange={(e) => setNewAddress({ ...newAddress, label: e.target.value })}
-                      />
-                      <Input
-                        label="Street Line 1"
-                        placeholder="123 Maple Street"
-                        value={newAddress.line1}
-                        onChange={(e) => setNewAddress({ ...newAddress, line1: e.target.value })}
-                        required
-                      />
-                      <Input
-                        label="Unit / Suite / Apt (Optional)"
-                        placeholder="Apt 4B"
-                        value={newAddress.line2}
-                        onChange={(e) => setNewAddress({ ...newAddress, line2: e.target.value })}
-                      />
-                      <Input
-                        label="City"
-                        placeholder="Bengaluru"
-                        value={newAddress.city}
-                        onChange={(e) => setNewAddress({ ...newAddress, city: e.target.value })}
-                        required
-                      />
-                      <Input
-                        label="State"
-                        placeholder="Karnataka"
-                        value={newAddress.state}
-                        onChange={(e) => setNewAddress({ ...newAddress, state: e.target.value })}
-                        required
-                      />
-                      <Input
-                        label="PIN Code"
-                        placeholder="560103"
-                        value={newAddress.postal_code}
-                        onChange={(e) => setNewAddress({ ...newAddress, postal_code: e.target.value })}
-                        required
-                      />
-                    </div>
-
-                    <Button variant="secondary" size="sm" onClick={handleSaveNewAddress}>
-                      Save Address to Bookings
-                    </Button>
-                  </div>
-                )}
-
-                <div className="pt-2">
-                  <Textarea
-                    label="Special Notes for the Pro (Optional)"
-                    placeholder="Provide parking instructions, gate codes, pet details, or specific problem focus areas..."
-                    rows={3}
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                  />
-                </div>
-
-                <div className="pt-4 border-t border-neutral-100 flex items-center justify-between">
-                  <Button
-                    variant="ghost"
-                    size="md"
-                    onClick={() => setCurrentStep(1)}
-                    icon={ArrowLeft}
-                  >
-                    Back to Schedule
-                  </Button>
-                  <Button
-                    variant="primary"
-                    size="md"
-                    onClick={handleNextStep}
-                    icon={ArrowRight}
-                    iconPosition="right"
-                  >
-                    Review Booking
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {currentStep === 3 && (
-            <Card className="border-neutral-200/90 shadow-sm">
-              <CardContent className="p-6 sm:p-8 space-y-6">
-                <div>
-                  <h2 className="text-lg font-bold text-neutral-900">
-                    Step 3: Review & Confirm Booking Details
-                  </h2>
-                  <p className="text-xs text-neutral-500 mt-1">
-                    Please inspect your appointment details before proceeding to safe payment checkout.
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="bg-neutral-50 p-4 rounded-xl border border-neutral-200/80 flex items-start gap-4">
-                    <ServiceSpotIllustration
-                      serviceId={service.id}
-                      category={service.category}
-                      aspect="aspect-square"
-                      className="w-16 h-16 shrink-0"
-                    />
+              {currentStep === 3 && (
+                <Card className="border-neutral-200/90 shadow-sm">
+                  <CardContent className="p-6 sm:p-8 space-y-6">
                     <div>
-                      <h3 className="text-sm font-bold text-neutral-900">{service.name}</h3>
-                      <p className="text-xs text-neutral-500 mt-0.5">{service.description}</p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="p-4 rounded-xl border border-neutral-200 bg-white space-y-1">
-                      <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider block">
-                        Schedule
-                      </span>
-                      <p className="text-sm font-bold text-neutral-800">{selectedDate}</p>
-                      <p className="text-xs text-teal-700 font-semibold">{selectedSlot}</p>
+                      <h2 className="text-lg font-bold text-neutral-900">
+                        Step 3: Review & Confirm Booking Details
+                      </h2>
+                      <p className="text-xs text-neutral-500 mt-1">
+                        Please inspect your appointment details before proceeding to safe payment checkout.
+                      </p>
                     </div>
 
-                    <div className="p-4 rounded-xl border border-neutral-200 bg-white space-y-1">
-                      <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider block">
-                        Service Address
-                      </span>
-                      {currentSelectedAddress ? (
-                        <>
-                          <p className="text-sm font-bold text-neutral-800">
-                            {currentSelectedAddress.label}: {currentSelectedAddress.line1}
-                          </p>
-                          <p className="text-xs text-neutral-500">
-                            {currentSelectedAddress.city}, {currentSelectedAddress.state}{' '}
-                            {currentSelectedAddress.postal_code}
-                          </p>
-                        </>
-                      ) : (
-                        <p className="text-xs text-rose-500">No address selected</p>
+                    <div className="space-y-4">
+                      <div className="bg-neutral-50 p-4 rounded-xl border border-neutral-200/80 flex items-start gap-4">
+                        <ServiceSpotIllustration
+                          serviceId={service.id}
+                          category={service.category}
+                          aspect="aspect-square"
+                          className="w-16 h-16 shrink-0"
+                        />
+                        <div>
+                          <h3 className="text-sm font-bold text-neutral-900">{service.name}</h3>
+                          <p className="text-xs text-neutral-500 mt-0.5">{service.description}</p>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="p-4 rounded-xl border border-neutral-200 bg-white space-y-1">
+                          <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider block">
+                            Schedule
+                          </span>
+                          <p className="text-sm font-bold text-neutral-800">{selectedDate}</p>
+                          <p className="text-xs text-teal-700 font-semibold">{selectedSlot}</p>
+                        </div>
+
+                        <div className="p-4 rounded-xl border border-neutral-200 bg-white space-y-1">
+                          <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider block">
+                            Service Address
+                          </span>
+                          {currentSelectedAddress ? (
+                            <>
+                              <p className="text-sm font-bold text-neutral-800">
+                                {currentSelectedAddress.label}: {currentSelectedAddress.line1}
+                              </p>
+                              <p className="text-xs text-neutral-500">
+                                {currentSelectedAddress.city}, {currentSelectedAddress.state}{' '}
+                                {currentSelectedAddress.postal_code}
+                              </p>
+                            </>
+                          ) : (
+                            <p className="text-xs text-rose-500">No address selected</p>
+                          )}
+                        </div>
+                      </div>
+
+                      {notes && (
+                        <div className="p-4 rounded-xl border border-neutral-200 bg-white text-xs">
+                          <span className="font-bold text-neutral-500 uppercase tracking-wider block mb-1">
+                            Instructions / Notes:
+                          </span>
+                          <p className="text-neutral-700">{notes}</p>
+                        </div>
                       )}
                     </div>
-                  </div>
 
-                  {notes && (
-                    <div className="p-4 rounded-xl border border-neutral-200 bg-white text-xs">
-                      <span className="font-bold text-neutral-500 uppercase tracking-wider block mb-1">
-                        Instructions / Notes:
-                      </span>
-                      <p className="text-neutral-700">{notes}</p>
+                    <div className="pt-4 border-t border-neutral-100 flex items-center justify-between">
+                      <Button
+                        variant="ghost"
+                        size="md"
+                        onClick={() => setCurrentStep(2)}
+                        icon={ArrowLeft}
+                      >
+                        Back to Address
+                      </Button>
+
+                      <Button
+                        variant="primary"
+                        size="lg"
+                        onClick={handleCreateBooking}
+                        isLoading={isSubmitting}
+                        icon={ArrowRight}
+                        iconPosition="right"
+                      >
+                        Proceed to Checkout
+                      </Button>
                     </div>
-                  )}
-                </div>
-
-                <div className="pt-4 border-t border-neutral-100 flex items-center justify-between">
-                  <Button
-                    variant="ghost"
-                    size="md"
-                    onClick={() => setCurrentStep(2)}
-                    icon={ArrowLeft}
-                  >
-                    Back to Address
-                  </Button>
-
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    onClick={handleCreateBooking}
-                    isLoading={isSubmitting}
-                    icon={ArrowRight}
-                    iconPosition="right"
-                  >
-                    Proceed to Checkout
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+                  </CardContent>
+                </Card>
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         <div>

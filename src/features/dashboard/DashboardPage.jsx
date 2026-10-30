@@ -265,16 +265,25 @@ export function DashboardPage() {
               <Link
                 key={b.id}
                 to={`/bookings/${b.id}`}
-                className="block p-4 rounded-xl bg-white border border-neutral-200 hover:border-neutral-300 hover:shadow-xs transition-all"
+                className="group block p-3 sm:p-4 rounded-2xl bg-white border border-neutral-200 hover:border-[#173D32]/40 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-neutral-100 flex items-center justify-center font-bold text-neutral-700">
-                      #{b.id}
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-neutral-900 text-sm">{b.service?.name}</h4>
-                      <p className="text-neutral-500">{formatDateTime(b.scheduled_at)}</p>
+                  <div className="flex items-center gap-3 min-w-0">
+                    <ServiceSpotIllustration
+                      serviceId={b.service?.id}
+                      category={b.service?.category}
+                      aspect="aspect-square"
+                      className="w-12 h-12 shrink-0 p-1.5! rounded-[12px]!"
+                    />
+                    <div className="min-w-0">
+                      <h4 className="font-bold text-neutral-900 text-sm truncate group-hover:text-[#173D32] transition-colors">
+                        {b.service?.name}
+                      </h4>
+                      <p className="text-neutral-500 flex items-center gap-1.5 mt-0.5">
+                        <Calendar className="w-3.5 h-3.5 shrink-0" />
+                        <span>{formatDateTime(b.scheduled_at)}</span>
+                      </p>
+                      <p className="text-[11px] text-neutral-400 mt-0.5">Booking #{b.id}</p>
                     </div>
                   </div>
 
@@ -296,6 +305,7 @@ export function DashboardPage() {
                     >
                       {b.status}
                     </Badge>
+                    <ArrowRight className="hidden sm:block w-4 h-4 text-neutral-400 transition-transform group-hover:translate-x-1 group-hover:text-[#173D32]" />
                   </div>
                 </div>
               </Link>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Clock } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Check, Clock, Plus } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { formatDuration } from '../../lib/formatters';
 import { useCart } from '../../context/CartContext';
@@ -7,7 +8,7 @@ import { formatPricingDisplay } from '../../data/servicesData';
 import { ServiceSpotIllustration } from '../illustrations/ServiceSpotIllustration';
 
 export function ServiceCard({ service }) {
-  const { addToCart, selectedBhk, setSelectedBhk } = useCart();
+  const { addToCart, isInCart, selectedBhk, setSelectedBhk } = useCart();
   const {
     id,
     name,
@@ -20,18 +21,21 @@ export function ServiceCard({ service }) {
 
   const duration = durationMins || duration_minutes || 45;
   const priceDisplay = formatPricingDisplay(pricing, selectedBhk);
+  const inCart = isInCart(service);
 
   return (
     <Card
       hover
-      className="flex flex-col h-full bg-white border border-[#DDE4DB] hover:border-[#173D32]/50 transition-all duration-200 p-4 rounded-2xl group shadow-2xs hover:shadow-xs"
+      className="flex flex-col h-full bg-white border border-[#DDE4DB] hover:border-[#173D32]/50 p-4 rounded-2xl group shadow-2xs hover:shadow-xl hover:shadow-[#173D32]/8"
     >
-      <Link to={`/services/${id}`} className="block mb-3 shrink-0">
-        <ServiceSpotIllustration
-          serviceId={id}
-          category={category}
-          aspect="aspect-16/10"
-        />
+      <Link to={`/services/${id}`} className="block mb-3 shrink-0 overflow-hidden rounded-xl">
+        <div className="transition-transform duration-500 ease-out group-hover:scale-105">
+          <ServiceSpotIllustration
+            serviceId={id}
+            category={category}
+            aspect="aspect-16/10"
+          />
+        </div>
       </Link>
 
       <div className="flex-1 flex flex-col justify-between">
@@ -83,19 +87,38 @@ export function ServiceCard({ service }) {
             <Link to={`/booking/${id}`} className="flex-1">
               <button
                 type="button"
-                className="w-full py-2 text-xs font-bold rounded-xl bg-[#173D32] hover:bg-[#245544] text-white transition-colors cursor-pointer shadow-2xs text-center"
+                className="btn-shine w-full py-2 text-xs font-bold rounded-xl bg-[#173D32] hover:bg-[#245544] text-white transition-all duration-200 cursor-pointer shadow-2xs hover:shadow-md active:scale-95 text-center"
               >
                 Book
               </button>
             </Link>
-            <button
-              type="button"
-              onClick={() => addToCart(service, { bhk: selectedBhk })}
-              className="px-3.5 py-2 text-xs font-semibold rounded-xl border border-[#DDE4DB] hover:border-[#173D32] text-[#191E1B] hover:text-[#173D32] bg-white transition-colors cursor-pointer shadow-2xs"
-              aria-label={`Add ${name} to cart`}
-            >
-              Add
-            </button>
+            {inCart ? (
+              <Link
+                to="/cart"
+                className="px-3 py-2 text-xs font-semibold rounded-xl border border-[#367A55]/40 bg-[#EAF2E9] text-[#173D32] hover:border-[#173D32] transition-colors shadow-2xs inline-flex items-center gap-1"
+                aria-label={`${name} is in your cart. View cart`}
+              >
+                <motion.span
+                  initial={{ scale: 0, rotate: -90 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ type: 'spring', stiffness: 500, damping: 18 }}
+                  className="inline-flex"
+                >
+                  <Check className="w-3.5 h-3.5" />
+                </motion.span>
+                Added
+              </Link>
+            ) : (
+              <button
+                type="button"
+                onClick={() => addToCart(service, { bhk: selectedBhk })}
+                className="px-3 py-2 text-xs font-semibold rounded-xl border border-[#DDE4DB] hover:border-[#173D32] text-[#191E1B] hover:text-[#173D32] hover:bg-[#F2F7F4] bg-white transition-all duration-200 cursor-pointer shadow-2xs active:scale-90 inline-flex items-center gap-1"
+                aria-label={`Add ${name} to cart`}
+              >
+                <Plus className="w-3.5 h-3.5" />
+                Add
+              </button>
+            )}
           </div>
         </div>
       </div>

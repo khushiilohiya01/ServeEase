@@ -160,7 +160,7 @@ export function AuthModal() {
         aria-hidden="true"
       />
 
-      <div className="relative w-full max-w-[440px] bg-white rounded-[26px] shadow-2xl border border-neutral-200/80 p-6 sm:p-8 z-10 my-auto transform transition-all duration-200">
+      <div className="relative w-full max-w-[440px] bg-white rounded-[26px] shadow-2xl border border-neutral-200/80 p-6 sm:p-8 z-10 my-auto animate-in fade-in zoom-in-95 slide-in-from-bottom-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#173D32] shrink-0" aria-hidden="true" />

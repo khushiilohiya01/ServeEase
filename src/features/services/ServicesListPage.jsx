@@ -48,7 +48,8 @@ export function ServicesListPage() {
     } else {
       next.set(key, value);
     }
-    setSearchParams(next);
+    // typing a search shouldn't fill the back button with every keystroke
+    setSearchParams(next, { replace: key === 'q' });
   };
 
   const handleReset = () => {
@@ -80,13 +81,22 @@ export function ServicesListPage() {
         totalResults={services.length}
       />
 
-      <ServiceGrid
-        services={services}
-        isLoading={isLoading}
-        error={error}
-        onRetry={() => window.location.reload()}
-        onClearFilters={handleReset}
-      />
+      {/* keep the old results on screen (dimmed) while new ones load, instead of flashing skeletons */}
+      <div className={`transition-opacity duration-300 ${isLoading && services.length > 0 ? 'opacity-50 pointer-events-none' : ''}`}>
+        <ServiceGrid
+          services={services}
+          isLoading={isLoading && services.length === 0}
+          error={error}
+          onRetry={() => window.location.reload()}
+          emptyTitle={queryQ ? `No services match "${queryQ}"` : 'No services found'}
+          emptyDescription={
+            queryQ
+              ? 'Try describing the problem in fewer words, like "fan", "leak" or "cleaning", or clear the filters to see everything.'
+              : 'Nothing matches these filters yet. Clear them to see every service.'
+          }
+          onClearFilters={handleReset}
+        />
+      </div>
 
       <div className="mt-12 pt-8 border-t border-[#DDE4DB] text-center">
         <p className="text-sm font-semibold text-[#173D32] bg-[#F7F8F4] inline-block px-5 py-2.5 rounded-full border border-[#DDE4DB]/80 shadow-2xs">
