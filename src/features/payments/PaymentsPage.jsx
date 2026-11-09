@@ -36,11 +36,6 @@ export function PaymentsPage() {
   return (
     <div className="container-custom py-8 sm:py-12 space-y-8">
       <PageHeader
-        badge={
-          <Badge variant="primary" size="sm">
-            Billing & Invoices
-          </Badge>
-        }
         title="Payment & Billing History"
         description="All your receipts and payments in one place."
       />

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
   Search,
   ArrowRight,
@@ -162,18 +163,29 @@ export function Hero() {
       <div className="container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
           <div className="lg:col-span-6 space-y-4 text-left animate-in fade-in slide-in-from-bottom-4">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#DDE4DB] text-[#173D32] text-xs font-semibold shadow-2xs">
-                <span className="w-2 h-2 rounded-full bg-[#173D32] animate-pulse" />
-                <span>
-                  Verified pros in {selectedLocality}, {selectedCity}
-                </span>
-              </div>
-            </div>
-
             <h1 className="heading-hero text-[#191E1B]">
               What&apos;s not working{' '}
-              <span className="text-[#173D32]">at home?</span>
+              <span className="relative inline-block text-[#173D32]">
+                at home?
+                {/* hand-drawn underline that sketches itself in once */}
+                <svg
+                  className="absolute left-0 -bottom-[0.12em] w-full h-[0.32em] -z-10 overflow-visible"
+                  viewBox="0 0 220 14"
+                  preserveAspectRatio="none"
+                  aria-hidden="true"
+                >
+                  <motion.path
+                    d="M3 9.5C42 4 86 3.5 124 6.5S192 12 217 4.5"
+                    fill="none"
+                    stroke="#A9C9AC"
+                    strokeWidth="5"
+                    strokeLinecap="round"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 0.9, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  />
+                </svg>
+              </span>
             </h1>
 
             <p className="text-sm sm:text-base text-[#647269] max-w-xl leading-relaxed font-normal">

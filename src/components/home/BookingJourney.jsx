@@ -5,7 +5,6 @@ import {
   CheckSquare,
   Calendar,
   CheckCircle2,
-  Sparkles,
   ArrowRight,
   ChevronRight,
 } from 'lucide-react';
@@ -77,10 +76,7 @@ export function BookingJourney() {
       <div className="container-custom space-y-4 lg:space-y-5 xl:space-y-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="max-w-xl space-y-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8EDE7] text-[#173D32] text-xs font-semibold">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>How It Works</span>
-            </div>
+
             <h2
               id="journey-heading"
               className="heading-section text-[#191E1B]"

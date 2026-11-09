@@ -1,21 +1,18 @@
 import { Reveal, Stagger, StaggerItem } from '../motion/Reveal';
-import { ShieldCheck, CalendarCheck, Receipt, Sparkles } from 'lucide-react';
+import { ShieldCheck, CalendarCheck, Receipt } from 'lucide-react';
 
 const PROPOSITIONS = [
   {
-    number: '01',
     icon: ShieldCheck,
     title: 'Reliable home care',
     desc: 'We check ID and past work, and test every technician on an actual job before they get any bookings.',
   },
   {
-    number: '02',
     icon: CalendarCheck,
     title: 'Simple scheduling',
     desc: 'Pick a two-hour slot that suits you. We message you when the technician is on the way, so you are not stuck waiting at home.',
   },
   {
-    number: '03',
     icon: Receipt,
     title: 'Clear service information',
     desc: 'You see what is included and what it costs before you book. No haggling at the door and no surprise charges for travel or parts.',
@@ -47,10 +44,7 @@ export function WhyServeEase() {
 
           <Reveal direction="right" delay={0.1} className="lg:col-span-7 space-y-4 lg:space-y-5 xl:space-y-6 order-1 lg:order-2">
             <div className="space-y-2.5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8EDE7] text-[#173D32] text-xs font-semibold">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Why ServeEase</span>
-              </div>
+
               <h2
                 id="why-heading"
                 className="heading-section text-[#191E1B]"
@@ -69,7 +63,7 @@ export function WhyServeEase() {
                 const Icon = prop.icon;
                 return (
                   <StaggerItem
-                    key={prop.number}
+                    key={prop.title}
                     className="pt-3 lg:pt-3.5 xl:pt-4 first:pt-0 flex items-start gap-4 group"
                   >
                     <div className="w-9 h-9 rounded-xl bg-[#F7F8F4] border border-[#DDE4DB] text-[#173D32] flex items-center justify-center shrink-0 mt-0.5 transition-all duration-300 group-hover:bg-[#173D32] group-hover:text-white group-hover:rotate-6 group-hover:scale-110">
@@ -77,9 +71,6 @@ export function WhyServeEase() {
                     </div>
                     <div className="space-y-1 flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-[#173D32] font-mono">
-                          {prop.number}
-                        </span>
                         <h3 className="text-sm sm:text-base font-semibold text-[#191E1B] tracking-tight">
                           {prop.title}
                         </h3>

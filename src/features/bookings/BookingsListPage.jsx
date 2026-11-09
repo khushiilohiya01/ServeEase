@@ -50,11 +50,6 @@ export function BookingsListPage() {
   return (
     <div className="container-custom py-8 sm:py-12 space-y-8">
       <PageHeader
-        badge={
-          <Badge variant="primary" size="sm">
-            Your account
-          </Badge>
-        }
         title="My bookings"
         description="Check, reschedule or cancel your bookings."
         actions={

@@ -57,7 +57,7 @@ export const PAYMENT_STATUSES = {
 };
 
 export const TAX_RATE = 0.05; // 5% GST
-export const PLATFORM_FEE = 49; // ₹49 platform & insurance fee
+export const PLATFORM_FEE = 49; // ₹49 visit fee, skipped when the subtotal is 0
 
 export const PAYMENT_PROMISE = 'Pay after service completion — inspect work before paying';
 export const GUARANTEE_PROMISE = '30-day rework guarantee on all verified services';

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Stagger, StaggerItem } from '../motion/Reveal';
 
 export function FinalCTA() {
@@ -23,11 +23,6 @@ export function FinalCTA() {
 
       <Stagger className="container-custom relative z-10 max-w-3xl text-center space-y-4 lg:space-y-6">
         <StaggerItem className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-[#A9C9AC] text-xs font-semibold backdrop-blur-md border border-white/10">
-            <Sparkles className="w-3.5 h-3.5 text-[#A9C9AC]" />
-            <span>Ready when you are</span>
-          </div>
-
           <h2
             id="cta-heading"
             className="heading-section text-white"

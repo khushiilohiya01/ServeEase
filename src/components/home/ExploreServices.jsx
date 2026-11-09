@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import {
-  Sparkles,
   ArrowRight,
   ShieldCheck,
 } from 'lucide-react';
@@ -32,10 +31,7 @@ export function ExploreServices() {
       <div className="container-custom space-y-8 lg:space-y-10">
         <Reveal className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8EDE7] text-[#173D32] text-xs font-semibold">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Explore Services</span>
-            </div>
+
             <h2 id="explore-heading" className="heading-section text-[#191E1B]">
               Whatever's broken, we have someone for it.
             </h2>

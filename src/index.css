@@ -32,10 +32,6 @@
   --color-success: var(--success);
   --color-error: var(--error);
 
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 22px;
-  --radius-xl: 30px;
 
   --container-max: 1320px;
 
@@ -121,6 +117,8 @@
 
   body {
     font-family: var(--font-sans);
+    caret-color: var(--primary);
+    font-variant-numeric: tabular-nums;
     background-color: var(--color-background);
     color: var(--color-text);
     margin: 0;
@@ -130,6 +128,10 @@
 
   h1, h2, h3, h4, h5, h6 {
     letter-spacing: -0.02em;
+  }
+
+  a {
+    text-underline-offset: 3px;
   }
 }
 

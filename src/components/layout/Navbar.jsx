@@ -180,7 +180,7 @@ export function Navbar() {
               to="/"
               end
               className={({ isActive }) =>
-                `text-sm font-medium transition-all duration-150 px-3.5 py-2 rounded-xl inline-flex items-center ${
+                `text-sm font-medium whitespace-nowrap transition-all duration-150 px-3.5 py-2 rounded-xl inline-flex items-center ${
                   isActive
                     ? 'text-[#173D32] bg-[#E8EBE2]/80 font-semibold'
                     : 'text-[#66716A] hover:text-[#191E1B] hover:bg-[#E8EBE2]/40'
@@ -200,7 +200,7 @@ export function Navbar() {
                 onFocus={() => setServicesMenuOpen(true)}
                 aria-expanded={servicesMenuOpen}
                 aria-haspopup="true"
-                className={`text-sm font-medium transition-all duration-150 px-3.5 py-2 rounded-xl inline-flex items-center gap-1.5 cursor-pointer ${
+                className={`text-sm font-medium whitespace-nowrap transition-all duration-150 px-3.5 py-2 rounded-xl inline-flex items-center gap-1.5 cursor-pointer ${
                   servicesMenuOpen || location.pathname.startsWith('/services')
                     ? 'text-[#173D32] bg-[#E8EBE2]/80 font-semibold'
                     : 'text-[#66716A] hover:text-[#191E1B] hover:bg-[#E8EBE2]/40'
@@ -223,7 +223,7 @@ export function Navbar() {
             <button
               type="button"
               onClick={() => scrollToSection('how-it-works')}
-              className="text-sm font-medium text-[#66716A] hover:text-[#191E1B] hover:bg-[#E8EBE2]/40 px-3.5 py-2 rounded-xl inline-flex items-center transition-colors cursor-pointer"
+              className="text-sm font-medium whitespace-nowrap text-[#66716A] hover:text-[#191E1B] hover:bg-[#E8EBE2]/40 px-3.5 py-2 rounded-xl inline-flex items-center transition-colors cursor-pointer"
             >
               How It Works
             </button>
@@ -231,17 +231,17 @@ export function Navbar() {
             <button
               type="button"
               onClick={() => scrollToSection('why-serveease')}
-              className="text-sm font-medium text-[#66716A] hover:text-[#191E1B] hover:bg-[#E8EBE2]/40 px-3.5 py-2 rounded-xl inline-flex items-center transition-colors cursor-pointer"
+              className="text-sm font-medium whitespace-nowrap text-[#66716A] hover:text-[#191E1B] hover:bg-[#E8EBE2]/40 px-3.5 py-2 rounded-xl hidden xl:inline-flex items-center transition-colors cursor-pointer"
             >
               Why ServeEase
             </button>
           </nav>
 
-          <div className="hidden sm:flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-2 xl:gap-3">
             <button
               type="button"
               onClick={() => setIsLocationModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#DDE3DA] hover:border-[#173D32]/40 text-xs font-semibold text-[#191E1B] transition-all cursor-pointer shadow-2xs hover:shadow-xs max-w-[200px]"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-[#DDE3DA] hover:border-[#173D32]/40 text-xs font-semibold text-[#191E1B] transition-all cursor-pointer shadow-2xs hover:shadow-xs max-w-[150px] xl:max-w-[200px]"
               aria-label={`Current location: ${selectedLocality || 'Koramangala'}, ${selectedCity || 'Bengaluru'}. Click to change.`}
             >
               <MapPin className="w-3.5 h-3.5 text-[#173D32] shrink-0" />
@@ -360,7 +360,7 @@ export function Navbar() {
               <button
                 type="button"
                 onClick={() => openAuthModal('signin')}
-                className="text-xs font-semibold text-[#191E1B] hover:text-[#173D32] px-3.5 py-2 rounded-xl hover:bg-[#E8EBE2]/50 transition-colors cursor-pointer"
+                className="text-xs font-semibold whitespace-nowrap text-[#191E1B] hover:text-[#173D32] px-3.5 py-2 rounded-xl hover:bg-[#E8EBE2]/50 transition-colors cursor-pointer"
               >
                 Sign In
               </button>
@@ -368,10 +368,10 @@ export function Navbar() {
 
             <Link
               to={cartCount > 0 ? '/cart' : '/services'}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#173D32] hover:bg-[#245544] text-white text-xs font-semibold transition-all duration-200 shadow-sm hover:shadow active:scale-98"
+              className="btn-shine group inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#173D32] hover:bg-[#245544] text-white text-xs font-semibold whitespace-nowrap transition-all duration-200 shadow-sm hover:shadow active:scale-98"
             >
               <span>{cartCount > 0 ? 'View Cart' : 'Book a Service'}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
 

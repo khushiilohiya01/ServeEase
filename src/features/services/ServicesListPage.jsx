@@ -4,7 +4,6 @@ import { apiRequest } from '../../lib/apiClient';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { ServiceFilters } from '../../components/services/ServiceFilters';
 import { ServiceGrid } from '../../components/services/ServiceGrid';
-import { Badge } from '../../components/ui/Badge';
 
 export function ServicesListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -59,11 +58,6 @@ export function ServicesListPage() {
   return (
     <div className="container-custom py-8 sm:py-12">
       <PageHeader
-        badge={
-          <Badge variant="primary" size="sm">
-            All services
-          </Badge>
-        }
         title="Find a service"
         description="Electricians, plumbers, cleaners and more, with the price shown before you book."
       />

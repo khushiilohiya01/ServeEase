@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Star, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react';
+import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const SAMPLE_TESTIMONIALS = [
@@ -49,10 +49,7 @@ export function Testimonials() {
     <section className="section-viewport bg-[#F7F8F4] border-b border-[#DDE4DB] py-6 lg:py-0" aria-labelledby="testimonials-heading">
       <div className="container-custom max-w-3xl space-y-4 lg:space-y-6 text-center">
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E8EDE7] text-[#173D32] text-xs font-semibold">
-            <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Customer Reviews</span>
-          </div>
+
           <h2
             id="testimonials-heading"
             className="heading-section text-[#191E1B]"

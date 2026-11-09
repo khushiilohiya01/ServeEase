@@ -166,11 +166,6 @@ export function ProfilePage() {
   return (
     <div className="container-custom py-8 sm:py-12 space-y-8">
       <PageHeader
-        badge={
-          <Badge variant="primary" size="sm">
-            Account Center
-          </Badge>
-        }
         title="Profile and addresses"
         description="Keep your details and saved addresses up to date so booking is quicker."
       />
