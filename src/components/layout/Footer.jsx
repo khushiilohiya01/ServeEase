@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Mail,
-  Phone,
   X,
   ShieldCheck,
   BadgeCheck,
@@ -88,19 +86,6 @@ export function Footer() {
               Home repairs and cleaning from verified technicians, with prices shown upfront
               and a 30-day rework warranty.
             </p>
-
-            <div className="pt-2 text-xs text-neutral-400 space-y-2 font-normal">
-              <div className="flex items-center gap-2">
-                <Mail className="w-3.5 h-3.5 text-[#A9C9AC]" />
-                <a href="mailto:support@serveease.com" className="hover:text-white transition-colors">
-                  support@serveease.com
-                </a>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="w-3.5 h-3.5 text-[#A9C9AC]" />
-                <span>+91 1800 200 4567 (Toll-Free, 8 AM – 8 PM)</span>
-              </div>
-            </div>
           </div>
 
           <div>
