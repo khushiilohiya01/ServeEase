@@ -2,11 +2,9 @@
 
 A booking site for home services in India: AC repair, cleaning, plumbing, electrical work, pest control and so on. Built with React, Vite and Tailwind.
 
-**Live:** https://your-site.vercel.app
+**Live:** https://servee-easee.vercel.app/
 
 **Demo login:** `rahul.sharma@example.com` / `demopassword`
-
-![ServeEase home page](docs/screenshot.png)
 
 There's no backend yet. All the data (services, users, bookings, addresses, payments) lives in a small mock store in `src/lib/apiClient.js` that saves to `localStorage`, so the whole flow works in the browser. Every page goes through `apiRequest()`, so a real API can be plugged in later through `VITE_API_BASE_URL`, as long as it follows the same endpoints as the mock store.
 
@@ -14,11 +12,13 @@ There's no backend yet. All the data (services, users, bookings, addresses, paym
 
 - Search services by name or by the problem you have ("ac not cooling", "tap leaking"), filter by category or room, sort by price, rating or duration
 - A 2BHK flat cutaway on the home page where you click a room to see the services for it
-- Cart, with per-BHK pricing for things like cleaning and painting
-- 3-step booking: pick a date and a 2-hour slot, choose an address (saved, new, or from GPS), then review
+- Detects your area from your location and fills in your real address when booking (reverse geocoding with OpenStreetMap)
+- Cart, with per-BHK pricing for things like cleaning and painting, and a cart bar that follows you while you browse
+- 3-step booking: pick a date and a 2-hour slot, choose an address (saved, new, or from your location), then review
 - Checkout with a fake card payment, or pay after the service
 - Dashboard, bookings list, reschedule and cancel, saved addresses, payment history
 - Protected pages that send you back to where you were after you log in
+- Page transitions and scroll animations with Framer Motion, and an automatic reload if a page fails to load after a new deploy
 
 ## Running it locally
 
@@ -63,7 +63,7 @@ src/
   test/         tests
 ```
 
-Prices are the service price plus 5% GST and a ₹49 platform fee (see `src/lib/pricing.js`). Booking times are saved as ISO timestamps built from the date and slot you pick, in your local time (see `src/lib/dates.js`).
+Prices are the service price plus 5% GST and a ₹49 visit fee (see `src/lib/pricing.js`). Booking times are saved as ISO timestamps built from the date and slot you pick, in your local time (see `src/lib/dates.js`).
 
 ## Stack
 
@@ -77,4 +77,5 @@ It's a static single-page app. `vercel.json` and `public/_redirects` send every 
 
 - No real backend or payments yet; everything is mock data in localStorage
 - The mock store keeps passwords in plain text. Fine for a demo, not for real users
+- Location lookups use OpenStreetMap's free Nominatim API, which is fine for a demo but would need a paid geocoder at real traffic
 - Next up: a Node/Express API, Razorpay in test mode, and an app for technicians
